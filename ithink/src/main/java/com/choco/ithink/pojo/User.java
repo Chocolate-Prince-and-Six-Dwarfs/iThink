@@ -1,10 +1,6 @@
 package com.choco.ithink.pojo;
 
-public class User {
-    private Integer userId;
-
-    private String userName;
-
+public class User extends UserKey {
     private String userPassword;
 
     private String userSex;
@@ -12,22 +8,6 @@ public class User {
     private String userEmail;
 
     private String userBirth;
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
-    }
 
     public String getUserPassword() {
         return userPassword;

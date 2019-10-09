@@ -3,7 +3,7 @@
 <mapper namespace="com.choco.ithink.DAO.mapper.UserMapper" >
   <resultMap id="BaseResultMap" type="com.choco.ithink.pojo.User" >
     <id column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <id column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
     <result column="user_sex" property="userSex" jdbcType="VARCHAR" />
     <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
@@ -84,15 +84,17 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.choco.ithink.pojo.UserKey" >
     select 
     <include refid="Base_Column_List" />
     from user_info
     where user_id = #{userId,jdbcType=INTEGER}
+      and user_name = #{userName,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="com.choco.ithink.pojo.UserKey" >
     delete from user_info
     where user_id = #{userId,jdbcType=INTEGER}
+      and user_name = #{userName,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.choco.ithink.pojo.UserExample" >
     delete from user_info
@@ -198,9 +200,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.choco.ithink.pojo.User" >
     update user_info
     <set >
-      <if test="userName != null" >
-        user_name = #{userName,jdbcType=VARCHAR},
-      </if>
       <if test="userPassword != null" >
         user_password = #{userPassword,jdbcType=VARCHAR},
       </if>
@@ -215,14 +214,15 @@
       </if>
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
+      and user_name = #{userName,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.choco.ithink.pojo.User" >
     update user_info
-    set user_name = #{userName,jdbcType=VARCHAR},
-      user_password = #{userPassword,jdbcType=VARCHAR},
+    set user_password = #{userPassword,jdbcType=VARCHAR},
       user_sex = #{userSex,jdbcType=VARCHAR},
       user_email = #{userEmail,jdbcType=VARCHAR},
       user_birth = #{userBirth,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=INTEGER}
+      and user_name = #{userName,jdbcType=VARCHAR}
   </update>
 </mapper>
