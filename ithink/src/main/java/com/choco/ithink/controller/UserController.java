@@ -1,6 +1,7 @@
 package com.choco.ithink.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import com.choco.ithink.interfaces.UserInterface;
 import com.choco.ithink.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class UserController implements UserInterface {
     // do: 检查用户名是否匹配
     // return: 匹配返回json格式{status: 1}, 若不匹配但用户已存在则返回{status: 0}, 若用户不存在则返回{status: -1}
     @RequestMapping("/isMatch")
+    @ResponseJSONP
     public JSONObject isMatch(String username, String pwd)
     {
         // 检查匹配
