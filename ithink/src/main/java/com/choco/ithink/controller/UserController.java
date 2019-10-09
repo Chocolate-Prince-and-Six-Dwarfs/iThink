@@ -23,9 +23,12 @@ public class UserController implements UserInterface {
         // 检查匹配
         Integer status = userService.checkUserPwd(username, pwd);
         String keyName = "status";
+
         // 拼接json
         JSONObject result = new JSONObject();
         result.put(keyName, status);
+
+        // 返回结果
         return result;
     }
 }
