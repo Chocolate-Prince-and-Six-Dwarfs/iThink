@@ -1,0 +1,54 @@
+{
+  "Ideas":[
+    {
+      "ideaID": "001",
+      "ideaTitle": "标题1",
+      "ideaContent": "该写写啥好呢？",
+      "ideaPublisher": "just1",
+      "ideaReleaseTime": "2019-9-10",
+      "ideaCommentList": ["评论1","评论2"],
+      "ideaCollectNumber": 20,
+      "ideaLikenumInt": 50
+    },
+    {
+      "ideaID": "002",
+      "ideaTitle": "标题2",
+      "ideaContent": "该写写啥好呢？",
+      "ideaPublisher": "just2",
+      "ideaReleaseTime": "2019-9-10",
+      "ideaCommentList": ["评论1","评论2"],
+      "ideaCollectNumber": 42,
+      "ideaLikenumInt": 142
+    },
+    {
+      "ideaID": "003",
+      "ideaTitle": "标题3",
+      "ideaContent": "该写写啥好呢？",
+      "ideaPublisher": "just3",
+      "ideaReleaseTime": "2019-9-10",
+      "ideaCommentList": ["评论1","评论2"],
+      "ideaCollectNumber": 14,
+      "ideaLikenumInt": 54
+    },
+    {
+      "ideaID": "004",
+      "ideaTitle": "标题4",
+      "ideaContent": "该写写啥好呢？",
+      "ideaPublisher": "just4",
+      "ideaReleaseTime": "2019-9-10",
+      "ideaCommentList": ["评论1","评论2"],
+      "ideaCollectNumber": 14,
+      "ideaLikenumInt": 24
+    },
+    {
+      "ideaID": "005",
+      "ideaTitle": "标题5",
+      "ideaContent": "该写写啥好呢？",
+      "ideaPublisher": "just5",
+      "ideaReleaseTime": "2019-9-10",
+      "ideaCommentList": ["评论1","评论2"],
+      "ideaCollectNumber": 74,
+      "ideaLikenumInt": 53
+    }
+  ]
+}
