@@ -14,9 +14,9 @@ function loadIdea(){
                     "                <p>发布者："+data.Ideas[i].ideaPublisher+"</p>\n" +
                     "                <p>点赞数："+data.Ideas[i].ideaLikenumInt+"</p>\n" +
                     "                <div class=\"more\">\n" +
-                    "                    <span><img src=\"img/支持.png\" alt=\"\">&nbsp支持</span>\n" +
-                    "                    <span><img src=\"img/评论.png\" alt=\"\">&nbsp评论</span>\n" +
-                    "                    <span><img src=\"img/收藏.png\" alt=\"\">&nbsp收藏</span>\n" +
+                    "                    <span><img src=\"/img/支持.png\" alt=\"\">&nbsp支持</span>\n" +
+                    "                    <span><img src=\"/img/评论.png\" alt=\"\">&nbsp评论</span>\n" +
+                    "                    <span><img src=\"/img/收藏.png\" alt=\"\">&nbsp收藏</span>\n" +
                     "                </div>\n" +
                     "            </div>";
                 $("#ideaList").append(a);
