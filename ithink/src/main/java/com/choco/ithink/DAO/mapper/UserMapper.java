@@ -2,7 +2,6 @@ package com.choco.ithink.DAO.mapper;
 
 import com.choco.ithink.pojo.User;
 import com.choco.ithink.pojo.UserExample;
-import com.choco.ithink.pojo.UserKey;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,7 +10,7 @@ public interface UserMapper {
 
     int deleteByExample(UserExample example);
 
-    int deleteByPrimaryKey(UserKey key);
+    int deleteByPrimaryKey(Integer userId);
 
     int insert(User record);
 
@@ -21,7 +20,7 @@ public interface UserMapper {
 
     List<User> selectByExample(UserExample example);
 
-    User selectByPrimaryKey(UserKey key);
+    User selectByPrimaryKey(Integer userId);
 
     int updateByExampleSelective(@Param("record") User record, @Param("example") UserExample example);
 

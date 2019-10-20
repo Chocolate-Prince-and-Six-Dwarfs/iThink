@@ -3,12 +3,12 @@
 <mapper namespace="com.choco.ithink.DAO.mapper.UserMapper" >
   <resultMap id="BaseResultMap" type="com.choco.ithink.pojo.User" >
     <id column="user_id" property="userId" jdbcType="INTEGER" />
-    <id column="user_email" property="userEmail" jdbcType="VARCHAR" />
-    <id column="user_phone" property="userPhone" jdbcType="VARCHAR" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
     <result column="user_sex" property="userSex" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
     <result column="user_birth" property="userBirth" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
     <result column="user_credit" property="userCredit" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.choco.ithink.pojo.User" extends="BaseResultMap" >
@@ -73,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    user_id, user_email, user_phone, user_name, user_password, user_sex, user_birth, 
+    user_id, user_name, user_password, user_sex, user_email, user_birth, user_phone, 
     user_credit
   </sql>
   <sql id="Blob_Column_List" >
@@ -109,21 +109,17 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="com.choco.ithink.pojo.UserKey" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from user_info
     where user_id = #{userId,jdbcType=INTEGER}
-      and user_email = #{userEmail,jdbcType=VARCHAR}
-      and user_phone = #{userPhone,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.choco.ithink.pojo.UserKey" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user_info
     where user_id = #{userId,jdbcType=INTEGER}
-      and user_email = #{userEmail,jdbcType=VARCHAR}
-      and user_phone = #{userPhone,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.choco.ithink.pojo.UserExample" >
     delete from user_info
@@ -132,13 +128,13 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.choco.ithink.pojo.User" >
-    insert into user_info (user_id, user_email, user_phone, 
-      user_name, user_password, user_sex, 
-      user_birth, user_credit, user_avatar
+    insert into user_info (user_id, user_name, user_password, 
+      user_sex, user_email, user_birth, 
+      user_phone, user_credit, user_avatar
       )
-    values (#{userId,jdbcType=INTEGER}, #{userEmail,jdbcType=VARCHAR}, #{userPhone,jdbcType=VARCHAR}, 
-      #{userName,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, #{userSex,jdbcType=VARCHAR}, 
-      #{userBirth,jdbcType=VARCHAR}, #{userCredit,jdbcType=INTEGER}, #{userAvatar,jdbcType=LONGVARBINARY}
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, 
+      #{userSex,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, #{userBirth,jdbcType=VARCHAR}, 
+      #{userPhone,jdbcType=VARCHAR}, #{userCredit,jdbcType=INTEGER}, #{userAvatar,jdbcType=LONGVARBINARY}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.choco.ithink.pojo.User" >
@@ -146,12 +142,6 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
         user_id,
-      </if>
-      <if test="userEmail != null" >
-        user_email,
-      </if>
-      <if test="userPhone != null" >
-        user_phone,
       </if>
       <if test="userName != null" >
         user_name,
@@ -162,8 +152,14 @@
       <if test="userSex != null" >
         user_sex,
       </if>
+      <if test="userEmail != null" >
+        user_email,
+      </if>
       <if test="userBirth != null" >
         user_birth,
+      </if>
+      <if test="userPhone != null" >
+        user_phone,
       </if>
       <if test="userCredit != null" >
         user_credit,
@@ -176,12 +172,6 @@
       <if test="userId != null" >
         #{userId,jdbcType=INTEGER},
       </if>
-      <if test="userEmail != null" >
-        #{userEmail,jdbcType=VARCHAR},
-      </if>
-      <if test="userPhone != null" >
-        #{userPhone,jdbcType=VARCHAR},
-      </if>
       <if test="userName != null" >
         #{userName,jdbcType=VARCHAR},
       </if>
@@ -191,8 +181,14 @@
       <if test="userSex != null" >
         #{userSex,jdbcType=VARCHAR},
       </if>
+      <if test="userEmail != null" >
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
       <if test="userBirth != null" >
         #{userBirth,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        #{userPhone,jdbcType=VARCHAR},
       </if>
       <if test="userCredit != null" >
         #{userCredit,jdbcType=INTEGER},
@@ -214,12 +210,6 @@
       <if test="record.userId != null" >
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
-      <if test="record.userEmail != null" >
-        user_email = #{record.userEmail,jdbcType=VARCHAR},
-      </if>
-      <if test="record.userPhone != null" >
-        user_phone = #{record.userPhone,jdbcType=VARCHAR},
-      </if>
       <if test="record.userName != null" >
         user_name = #{record.userName,jdbcType=VARCHAR},
       </if>
@@ -229,8 +219,14 @@
       <if test="record.userSex != null" >
         user_sex = #{record.userSex,jdbcType=VARCHAR},
       </if>
+      <if test="record.userEmail != null" >
+        user_email = #{record.userEmail,jdbcType=VARCHAR},
+      </if>
       <if test="record.userBirth != null" >
         user_birth = #{record.userBirth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPhone != null" >
+        user_phone = #{record.userPhone,jdbcType=VARCHAR},
       </if>
       <if test="record.userCredit != null" >
         user_credit = #{record.userCredit,jdbcType=INTEGER},
@@ -246,12 +242,12 @@
   <update id="updateByExampleWithBLOBs" parameterType="map" >
     update user_info
     set user_id = #{record.userId,jdbcType=INTEGER},
-      user_email = #{record.userEmail,jdbcType=VARCHAR},
-      user_phone = #{record.userPhone,jdbcType=VARCHAR},
       user_name = #{record.userName,jdbcType=VARCHAR},
       user_password = #{record.userPassword,jdbcType=VARCHAR},
       user_sex = #{record.userSex,jdbcType=VARCHAR},
+      user_email = #{record.userEmail,jdbcType=VARCHAR},
       user_birth = #{record.userBirth,jdbcType=VARCHAR},
+      user_phone = #{record.userPhone,jdbcType=VARCHAR},
       user_credit = #{record.userCredit,jdbcType=INTEGER},
       user_avatar = #{record.userAvatar,jdbcType=LONGVARBINARY}
     <if test="_parameter != null" >
@@ -261,12 +257,12 @@
   <update id="updateByExample" parameterType="map" >
     update user_info
     set user_id = #{record.userId,jdbcType=INTEGER},
-      user_email = #{record.userEmail,jdbcType=VARCHAR},
-      user_phone = #{record.userPhone,jdbcType=VARCHAR},
       user_name = #{record.userName,jdbcType=VARCHAR},
       user_password = #{record.userPassword,jdbcType=VARCHAR},
       user_sex = #{record.userSex,jdbcType=VARCHAR},
+      user_email = #{record.userEmail,jdbcType=VARCHAR},
       user_birth = #{record.userBirth,jdbcType=VARCHAR},
+      user_phone = #{record.userPhone,jdbcType=VARCHAR},
       user_credit = #{record.userCredit,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -284,8 +280,14 @@
       <if test="userSex != null" >
         user_sex = #{userSex,jdbcType=VARCHAR},
       </if>
+      <if test="userEmail != null" >
+        user_email = #{userEmail,jdbcType=VARCHAR},
+      </if>
       <if test="userBirth != null" >
         user_birth = #{userBirth,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        user_phone = #{userPhone,jdbcType=VARCHAR},
       </if>
       <if test="userCredit != null" >
         user_credit = #{userCredit,jdbcType=INTEGER},
@@ -295,30 +297,28 @@
       </if>
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
-      and user_email = #{userEmail,jdbcType=VARCHAR}
-      and user_phone = #{userPhone,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.choco.ithink.pojo.User" >
     update user_info
     set user_name = #{userName,jdbcType=VARCHAR},
       user_password = #{userPassword,jdbcType=VARCHAR},
       user_sex = #{userSex,jdbcType=VARCHAR},
+      user_email = #{userEmail,jdbcType=VARCHAR},
       user_birth = #{userBirth,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
       user_credit = #{userCredit,jdbcType=INTEGER},
       user_avatar = #{userAvatar,jdbcType=LONGVARBINARY}
     where user_id = #{userId,jdbcType=INTEGER}
-      and user_email = #{userEmail,jdbcType=VARCHAR}
-      and user_phone = #{userPhone,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.choco.ithink.pojo.User" >
     update user_info
     set user_name = #{userName,jdbcType=VARCHAR},
       user_password = #{userPassword,jdbcType=VARCHAR},
       user_sex = #{userSex,jdbcType=VARCHAR},
+      user_email = #{userEmail,jdbcType=VARCHAR},
       user_birth = #{userBirth,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
       user_credit = #{userCredit,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
-      and user_email = #{userEmail,jdbcType=VARCHAR}
-      and user_phone = #{userPhone,jdbcType=VARCHAR}
   </update>
 </mapper>

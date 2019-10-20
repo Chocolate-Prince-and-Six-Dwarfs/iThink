@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.choco.ithink.DAO.mapper.CreativeCapsuleMapper" >
+  <resultMap id="BaseResultMap" type="com.choco.ithink.pojo.CreativeCapsule" >
+    <id column="creative_id" property="creativeId" jdbcType="INTEGER" />
+    <result column="creative_name" property="creativeName" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="creative_content" property="creativeContent" jdbcType="VARCHAR" />
+    <result column="creative_buildTime" property="creativeBuildtime" jdbcType="TIMESTAMP" />
+    <result column="creative_uploadTime" property="creativeUploadtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    creative_id, creative_name, user_id, creative_content, creative_buildTime, creative_uploadTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.choco.ithink.pojo.CreativeCapsuleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from creative_capsule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from creative_capsule
+    where creative_id = #{creativeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from creative_capsule
+    where creative_id = #{creativeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.choco.ithink.pojo.CreativeCapsuleExample" >
+    delete from creative_capsule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.choco.ithink.pojo.CreativeCapsule" >
+    insert into creative_capsule (creative_id, creative_name, user_id, 
+      creative_content, creative_buildTime, creative_uploadTime
+      )
+    values (#{creativeId,jdbcType=INTEGER}, #{creativeName,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{creativeContent,jdbcType=VARCHAR}, #{creativeBuildtime,jdbcType=TIMESTAMP}, #{creativeUploadtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.choco.ithink.pojo.CreativeCapsule" >
+    insert into creative_capsule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="creativeId != null" >
+        creative_id,
+      </if>
+      <if test="creativeName != null" >
+        creative_name,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="creativeContent != null" >
+        creative_content,
+      </if>
+      <if test="creativeBuildtime != null" >
+        creative_buildTime,
+      </if>
+      <if test="creativeUploadtime != null" >
+        creative_uploadTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="creativeId != null" >
+        #{creativeId,jdbcType=INTEGER},
+      </if>
+      <if test="creativeName != null" >
+        #{creativeName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="creativeContent != null" >
+        #{creativeContent,jdbcType=VARCHAR},
+      </if>
+      <if test="creativeBuildtime != null" >
+        #{creativeBuildtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creativeUploadtime != null" >
+        #{creativeUploadtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.choco.ithink.pojo.CreativeCapsuleExample" resultType="java.lang.Integer" >
+    select count(*) from creative_capsule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update creative_capsule
+    <set >
+      <if test="record.creativeId != null" >
+        creative_id = #{record.creativeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.creativeName != null" >
+        creative_name = #{record.creativeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.creativeContent != null" >
+        creative_content = #{record.creativeContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creativeBuildtime != null" >
+        creative_buildTime = #{record.creativeBuildtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.creativeUploadtime != null" >
+        creative_uploadTime = #{record.creativeUploadtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update creative_capsule
+    set creative_id = #{record.creativeId,jdbcType=INTEGER},
+      creative_name = #{record.creativeName,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      creative_content = #{record.creativeContent,jdbcType=VARCHAR},
+      creative_buildTime = #{record.creativeBuildtime,jdbcType=TIMESTAMP},
+      creative_uploadTime = #{record.creativeUploadtime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.choco.ithink.pojo.CreativeCapsule" >
+    update creative_capsule
+    <set >
+      <if test="creativeName != null" >
+        creative_name = #{creativeName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="creativeContent != null" >
+        creative_content = #{creativeContent,jdbcType=VARCHAR},
+      </if>
+      <if test="creativeBuildtime != null" >
+        creative_buildTime = #{creativeBuildtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creativeUploadtime != null" >
+        creative_uploadTime = #{creativeUploadtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where creative_id = #{creativeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.choco.ithink.pojo.CreativeCapsule" >
+    update creative_capsule
+    set creative_name = #{creativeName,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      creative_content = #{creativeContent,jdbcType=VARCHAR},
+      creative_buildTime = #{creativeBuildtime,jdbcType=TIMESTAMP},
+      creative_uploadTime = #{creativeUploadtime,jdbcType=TIMESTAMP}
+    where creative_id = #{creativeId,jdbcType=INTEGER}
+  </update>
+</mapper>

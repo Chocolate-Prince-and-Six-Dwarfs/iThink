@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.choco.ithink.DAO.mapper.BbsTopicMapper" >
+  <resultMap id="BaseResultMap" type="com.choco.ithink.pojo.BbsTopic" >
+    <id column="topic_id" property="topicId" jdbcType="INTEGER" />
+    <result column="topic_publisher" property="topicPublisher" jdbcType="INTEGER" />
+    <result column="topic_title" property="topicTitle" jdbcType="VARCHAR" />
+    <result column="topic_creativeCapsule" property="topicCreativecapsule" jdbcType="INTEGER" />
+    <result column="topic_content" property="topicContent" jdbcType="VARCHAR" />
+    <result column="topic_Releasetime" property="topicReleasetime" jdbcType="TIMESTAMP" />
+    <result column="topic_achievementNum" property="topicAchievementnum" jdbcType="INTEGER" />
+    <result column="topic_collectionNum" property="topicCollectionnum" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    topic_id, topic_publisher, topic_title, topic_creativeCapsule, topic_content, topic_Releasetime, 
+    topic_achievementNum, topic_collectionNum
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.choco.ithink.pojo.BbsTopicExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bbs_topic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bbs_topic
+    where topic_id = #{topicId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bbs_topic
+    where topic_id = #{topicId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.choco.ithink.pojo.BbsTopicExample" >
+    delete from bbs_topic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.choco.ithink.pojo.BbsTopic" >
+    insert into bbs_topic (topic_id, topic_publisher, topic_title, 
+      topic_creativeCapsule, topic_content, topic_Releasetime, 
+      topic_achievementNum, topic_collectionNum
+      )
+    values (#{topicId,jdbcType=INTEGER}, #{topicPublisher,jdbcType=INTEGER}, #{topicTitle,jdbcType=VARCHAR}, 
+      #{topicCreativecapsule,jdbcType=INTEGER}, #{topicContent,jdbcType=VARCHAR}, #{topicReleasetime,jdbcType=TIMESTAMP}, 
+      #{topicAchievementnum,jdbcType=INTEGER}, #{topicCollectionnum,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.choco.ithink.pojo.BbsTopic" >
+    insert into bbs_topic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="topicId != null" >
+        topic_id,
+      </if>
+      <if test="topicPublisher != null" >
+        topic_publisher,
+      </if>
+      <if test="topicTitle != null" >
+        topic_title,
+      </if>
+      <if test="topicCreativecapsule != null" >
+        topic_creativeCapsule,
+      </if>
+      <if test="topicContent != null" >
+        topic_content,
+      </if>
+      <if test="topicReleasetime != null" >
+        topic_Releasetime,
+      </if>
+      <if test="topicAchievementnum != null" >
+        topic_achievementNum,
+      </if>
+      <if test="topicCollectionnum != null" >
+        topic_collectionNum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="topicId != null" >
+        #{topicId,jdbcType=INTEGER},
+      </if>
+      <if test="topicPublisher != null" >
+        #{topicPublisher,jdbcType=INTEGER},
+      </if>
+      <if test="topicTitle != null" >
+        #{topicTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="topicCreativecapsule != null" >
+        #{topicCreativecapsule,jdbcType=INTEGER},
+      </if>
+      <if test="topicContent != null" >
+        #{topicContent,jdbcType=VARCHAR},
+      </if>
+      <if test="topicReleasetime != null" >
+        #{topicReleasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="topicAchievementnum != null" >
+        #{topicAchievementnum,jdbcType=INTEGER},
+      </if>
+      <if test="topicCollectionnum != null" >
+        #{topicCollectionnum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.choco.ithink.pojo.BbsTopicExample" resultType="java.lang.Integer" >
+    select count(*) from bbs_topic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bbs_topic
+    <set >
+      <if test="record.topicId != null" >
+        topic_id = #{record.topicId,jdbcType=INTEGER},
+      </if>
+      <if test="record.topicPublisher != null" >
+        topic_publisher = #{record.topicPublisher,jdbcType=INTEGER},
+      </if>
+      <if test="record.topicTitle != null" >
+        topic_title = #{record.topicTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.topicCreativecapsule != null" >
+        topic_creativeCapsule = #{record.topicCreativecapsule,jdbcType=INTEGER},
+      </if>
+      <if test="record.topicContent != null" >
+        topic_content = #{record.topicContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.topicReleasetime != null" >
+        topic_Releasetime = #{record.topicReleasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.topicAchievementnum != null" >
+        topic_achievementNum = #{record.topicAchievementnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.topicCollectionnum != null" >
+        topic_collectionNum = #{record.topicCollectionnum,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bbs_topic
+    set topic_id = #{record.topicId,jdbcType=INTEGER},
+      topic_publisher = #{record.topicPublisher,jdbcType=INTEGER},
+      topic_title = #{record.topicTitle,jdbcType=VARCHAR},
+      topic_creativeCapsule = #{record.topicCreativecapsule,jdbcType=INTEGER},
+      topic_content = #{record.topicContent,jdbcType=VARCHAR},
+      topic_Releasetime = #{record.topicReleasetime,jdbcType=TIMESTAMP},
+      topic_achievementNum = #{record.topicAchievementnum,jdbcType=INTEGER},
+      topic_collectionNum = #{record.topicCollectionnum,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.choco.ithink.pojo.BbsTopic" >
+    update bbs_topic
+    <set >
+      <if test="topicPublisher != null" >
+        topic_publisher = #{topicPublisher,jdbcType=INTEGER},
+      </if>
+      <if test="topicTitle != null" >
+        topic_title = #{topicTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="topicCreativecapsule != null" >
+        topic_creativeCapsule = #{topicCreativecapsule,jdbcType=INTEGER},
+      </if>
+      <if test="topicContent != null" >
+        topic_content = #{topicContent,jdbcType=VARCHAR},
+      </if>
+      <if test="topicReleasetime != null" >
+        topic_Releasetime = #{topicReleasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="topicAchievementnum != null" >
+        topic_achievementNum = #{topicAchievementnum,jdbcType=INTEGER},
+      </if>
+      <if test="topicCollectionnum != null" >
+        topic_collectionNum = #{topicCollectionnum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where topic_id = #{topicId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.choco.ithink.pojo.BbsTopic" >
+    update bbs_topic
+    set topic_publisher = #{topicPublisher,jdbcType=INTEGER},
+      topic_title = #{topicTitle,jdbcType=VARCHAR},
+      topic_creativeCapsule = #{topicCreativecapsule,jdbcType=INTEGER},
+      topic_content = #{topicContent,jdbcType=VARCHAR},
+      topic_Releasetime = #{topicReleasetime,jdbcType=TIMESTAMP},
+      topic_achievementNum = #{topicAchievementnum,jdbcType=INTEGER},
+      topic_collectionNum = #{topicCollectionnum,jdbcType=INTEGER}
+    where topic_id = #{topicId,jdbcType=INTEGER}
+  </update>
+</mapper>

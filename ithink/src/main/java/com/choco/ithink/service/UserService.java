@@ -4,9 +4,13 @@ import com.choco.ithink.DAO.mapper.UserMapper;
 import com.choco.ithink.exception.PrimarykeyException;
 import com.choco.ithink.pojo.User;
 import com.choco.ithink.pojo.UserExample;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -85,5 +89,94 @@ public class UserService {
     public Boolean checkString(String s, String pattern)
     {
         return Pattern.matches(pattern, s);
+    }
+
+
+    // param username: 用户名称
+    // param pwd: 用户密码
+    // param sex: 性别
+    // param email: 邮箱
+    // param birthday: 生日
+    // param phone: 手机号(可选)
+    // do: 将新用户数据插入数据表
+    // return: 成功返回1, 若用户已存在则返回0, 其他错误返回-400
+    public Integer userRegister(String username, String pwd, String sex, String email, String birthday, @Nullable String phone)
+    {
+        // 查询用户是否已经存在
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andUserNameEqualTo(username);
+        // 如果结果为空(即用户不存在)
+        if(userMapper.selectByExample(userExample).isEmpty())
+        {
+            // 构造实体
+
+            // 默认参数设置
+            User user = new User();
+            Integer defaultUserCredit = 100;
+            String path = System.getProperty("user.dir");
+
+            // 设置参数
+            user.setUserName(username);
+            user.setUserPassword(pwd);
+            user.setUserSex(sex);
+            user.setUserEmail(email);
+            user.setUserBirth(birthday);
+            user.setUserCredit(defaultUserCredit);
+            if(phone!=null)
+            {
+                user.setUserPhone(phone);
+            }
+            else
+            {
+                user.setUserPhone("");
+            }
+
+            // 读入默认头像
+            File img = new File(path + "\\src\\main\\resources\\static\\img\\" + "头像.png");//指定要读取的图片
+            BufferedImage bufferedImage;
+            try {
+                // 将图片读取为块
+                bufferedImage = ImageIO.read(img);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                // 图片写入字节数组
+                ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
+                byte[] bytesImg = byteArrayOutputStream.toByteArray();
+                // 设置图片
+                user.setUserAvatar(bytesImg);
+            }
+            catch(Exception e)
+            {
+                // 发生错误
+                e.printStackTrace();
+                return -400;
+            }
+
+            // 插入数据
+            try
+            {
+                userMapper.insertSelective(user);
+            }
+            catch(Exception e)
+            {
+                // 发生错误
+                e.printStackTrace();
+                return -400;
+            }
+
+            // 检查是否成功插入数据
+            if(userMapper.selectByExample(userExample).size() != 1)
+            {
+                return -400;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+        //如果结果非空(即用户已经存在)
+        else
+        {
+            return 0;
+        }
     }
 }
