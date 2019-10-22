@@ -25,10 +25,16 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
     // count: 2 （查找到的数据条数）
     // data:
     //  [
-    //      id: 0
-    //      title: "创意名称",
-    //      content: "创意内容",
-    //      like: 收藏数 （待定）
+    //      {
+    //          id: 0,
+    //          title: "创意名称",
+    //          content: "创意内容",
+    //          like: 收藏数
+    //      },
+    //      {
+    //          同上
+    //      },
+    //      ......
     //  ]
     // }
     @RequestMapping("/search")

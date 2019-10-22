@@ -51,9 +51,7 @@
         <table tableName="bbs_reply" domainObjectName="BbsReply"/>
         <table tableName="bbs_group" domainObjectName="BbsGroup"/>
         <table tableName="group_namelist" domainObjectName="GroupNamelist"/>
-        <table tableName="user_creativeinfo" domainObjectName="UserCreativeinfo"/>
         <table tableName="followers_namelist" domainObjectName="FollowersNamelist"/>
-        <table tableName="fans_namelist" domainObjectName="FansNamelist"/>
         <!-- 不生成example类的写法
         <table tableName="" domainObjectName="" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"

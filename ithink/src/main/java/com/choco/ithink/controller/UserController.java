@@ -1,8 +1,11 @@
 package com.choco.ithink.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import com.choco.ithink.interfaces.UserInterface;
+import com.choco.ithink.service.AchievementService;
+import com.choco.ithink.service.CreativeIdeaService;
 import com.choco.ithink.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
@@ -14,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController implements UserInterface {
     @Autowired
     UserService userService;
+    @Autowired
+    CreativeIdeaService creativeIdeaService;
+    @Autowired
+    AchievementService achievementService;
 
     // 请求地址： userInfo/isMatch
     // param email: 登录键(邮箱)
@@ -123,5 +130,109 @@ public class UserController implements UserInterface {
 
         // 返回结果
         return result;
+    }
+
+
+    // 请求地址： userInfo/getInfoById
+    // param id: 用户id
+    // param opinion: 选项 ("topic"|"comment"|"follow")
+    // do: 查找用户的相关数据
+    // return: 根据选项返回以下内容
+    //  topic
+    //  {
+    //      userId: 1,
+    //      opinion: "topic",
+    //      count: 2 （查找到的数据条数）,
+    //      data:
+    //      [
+    //          {
+    //              id: 0
+    //              title: "创意名称",
+    //              content: "创意内容",
+    //              like: 收藏数
+    //          },
+    //          {
+    //              同上
+    //          },
+    //          ......
+    //      ]
+    //  }
+    //  achievement
+    //  {
+    //      userId: 1,
+    //      opinion: "achievement",
+    //      count: 2 （查找到的数据条数）,
+    //      data:
+    //      [
+    //          {
+    //              id: 1 (创意实现id),
+    //              userId: 1 (创意实现发布者id),
+    //              topicName: "创意实现对应的主题名",
+    //              topicId: 1 (创意实现对应的主题id),
+    //              content: "创意实现内容",
+    //              time: "创意实现时间",
+    //              good: 20 (创意实现点赞数),
+    //              bad: 2 (创意实现的点灭数),
+    //              reply: 3 （创意实现的回复数）
+    //          },
+    //          {
+    //              同上
+    //          },
+    //          ......
+    //      ]
+    //  }
+    //  fans
+    //  {
+    //      userId: 1,
+    //      opinion: "fans",
+    //      count: 2 （查找到的数据条数）,
+    //      data:
+    //      [
+    //          {
+    //              id: 1
+    //              head: 头像,
+    //              name: "用户名"
+    //          },
+    //          {
+    //              同上
+    //          },
+    //          ......
+    //      ]
+    //  }
+    @RequestMapping("/getInfoByUserId")
+    @ResponseJSONP
+    public JSONObject getInfoByUserId(Integer id, String opinion)
+    {
+        // 初始化
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("userId", id);
+        jsonObject.put("opinion", opinion);
+        Integer count = 0;
+        JSONArray data = new JSONArray();
+
+        // 根据选项获取数据
+        switch(opinion)
+        {
+            case "topic":
+                data = creativeIdeaService.getByUserID(id);
+                count = data.size();
+                break;
+            case "achievement":
+                data = achievementService.getByUserId(id);
+                count = data.size();
+                break;
+            case "fans":
+                data = userService.getFansById(id);
+                count = data.size();
+                break;
+            default:
+                count = 0;
+                data = null;
+        }
+
+        // 拼接JSON
+        jsonObject.put("count", count);
+        jsonObject.put("data", data);
+        return jsonObject;
     }
 }

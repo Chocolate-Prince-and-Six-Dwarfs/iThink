@@ -1,7 +1,12 @@
 package com.choco.ithink.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.choco.ithink.DAO.mapper.FollowersNamelistMapper;
 import com.choco.ithink.DAO.mapper.UserMapper;
 import com.choco.ithink.exception.PrimarykeyException;
+import com.choco.ithink.pojo.FollowersNamelist;
+import com.choco.ithink.pojo.FollowersNamelistExample;
 import com.choco.ithink.pojo.User;
 import com.choco.ithink.pojo.UserExample;
 import org.springframework.lang.Nullable;
@@ -11,6 +16,7 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -19,6 +25,9 @@ public class UserService {
     // 用于数据库查询的mapper接口
     @Resource
     private UserMapper userMapper;
+    // 用于查询粉丝列表
+    @Resource
+    private FollowersNamelistMapper followersNamelistMapper;
 
     // 邮箱的正则表达式
     private String emailPattern = "^[\\w]{0,}@[\\w]{0,}\\.[\\w]{0,}$";
@@ -198,5 +207,33 @@ public class UserService {
         }
 
         return user;
+    }
+
+    // param userId: 用户id
+    // do: 查找用户的关注列表
+    // return: 用户列表
+    public JSONArray getFansById(Integer userId)
+    {
+        // 查找关系表
+        FollowersNamelistExample followersNamelistExample = new FollowersNamelistExample();
+        followersNamelistExample.createCriteria().andFollowIdEqualTo(userId);
+        List<FollowersNamelist> followersNamelists =  followersNamelistMapper.selectByExample(followersNamelistExample);
+
+        // 根据关系表中找到的id查找用户列表
+        JSONArray jsonArray = new JSONArray();
+        for(int i=0; i<followersNamelists.size(); ++i)
+        {
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andUserIdEqualTo(followersNamelists.get(i).getUserId());
+            User user = userMapper.selectByExampleWithBLOBs(userExample).get(0);
+
+            // 拼接json
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", user.getUserId());
+            jsonObject.put("head", user.getUserAvatar());
+            jsonObject.put("name", user.getUserName());
+            jsonArray.add(jsonObject);
+        }
+        return jsonArray;
     }
 }

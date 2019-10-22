@@ -90,24 +90,36 @@ public class CreativeIdeaService {
     }
 
 
-    // param resultList: jest搜索得到的列表
+    // param resultList: 实体列表
     // do： 将列表构建为JSON数组对象
     // return: 构建的json数组对象
-    public JSONArray list2JSON(List<BbsTopic> resultList)
+    public JSONArray list2JSON(List<BbsTopic> bbsTopicList)
     {
         JSONArray jsonArray = new JSONArray();
 
         // 循环处理实体
-        for(int i=0; i<resultList.size(); ++i)
+        for(int i=0; i<bbsTopicList.size(); ++i)
         {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("id", resultList.get(i).getTopicId());
-            jsonObject.put("tittle", resultList.get(i).getTopicTitle());
-            jsonObject.put("content", resultList.get(i).getTopicContent());
-            jsonObject.put("like", resultList.get(i).getTopicCollectionnum());
+            jsonObject.put("id", bbsTopicList.get(i).getTopicId());
+            jsonObject.put("tittle", bbsTopicList.get(i).getTopicTitle());
+            jsonObject.put("content", bbsTopicList.get(i).getTopicContent());
+            jsonObject.put("like", bbsTopicList.get(i).getTopicCollectionnum());
             jsonArray.add(jsonObject);
         }
 
         return jsonArray;
+    }
+
+    // param userId: 用户id
+    // do: 查找用户发布的创意主题
+    // return: 创意主题JSONArray数组
+    public JSONArray getByUserID(Integer userId)
+    {
+        // 查找数据库
+        BbsTopicExample bbsTopicExample = new BbsTopicExample();
+        bbsTopicExample.createCriteria().andUserIdEqualTo(userId);
+        List<BbsTopic> bbsTopicList = bbsTopicMapper.selectByExample(bbsTopicExample);
+        return list2JSON(bbsTopicList);
     }
 }
