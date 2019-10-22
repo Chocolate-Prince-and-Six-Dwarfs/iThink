@@ -1,5 +1,7 @@
 package com.choco.ithink.pojo;
 
+import io.searchbox.annotations.JestId;
+import io.searchbox.annotations.JestVersion;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -17,7 +19,7 @@ public class BbsTopic implements Serializable {
 
     public static final String ID = "bbs_topic-id";
 
-    @Id
+    @JestId
     private Integer topicId;
 
     private Integer topicPublisher;

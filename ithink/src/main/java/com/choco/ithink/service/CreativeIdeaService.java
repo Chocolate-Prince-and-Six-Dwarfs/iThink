@@ -11,13 +11,11 @@ import io.searchbox.client.JestResult;
 import io.searchbox.core.Bulk;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
+import org.elasticsearch.index.mapper.ParseContext;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.histogram.HistogramAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.cardinality.CardinalityAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.collapse.CollapseBuilder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,7 +41,7 @@ public class CreativeIdeaService {
         // 构建保存器
         Bulk.Builder bulk = new Bulk.Builder();
         for(BbsTopic bbsTopic : bbsTopicList) {
-            Index index = new Index.Builder(bbsTopic).index(BbsTopic.INDEX).type(BbsTopic.TYPE).id(bbsTopic.getTopicId().toString()).build();
+            Index index = new Index.Builder(bbsTopic).index(BbsTopic.INDEX).type(BbsTopic.TYPE).refresh(true).build();
             bulk.addAction(index);
         }
         try {
@@ -96,7 +94,7 @@ public class CreativeIdeaService {
     }
 
 
-    // param resultListr: jest搜索得到的迭代器
+    // param resultList: jest搜索得到的列表
     // do： 将列表构建为JSON数组对象
     // return: 构建的json数组对象
     public JSONArray list2JSON(List<BbsTopic> resultList)
