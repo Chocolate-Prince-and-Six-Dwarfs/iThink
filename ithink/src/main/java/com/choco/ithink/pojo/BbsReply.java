@@ -1,11 +1,15 @@
 package com.choco.ithink.pojo;
 
+import java.util.Date;
+
 public class BbsReply {
     private Integer replyId;
 
     private Integer commentId;
 
     private String replyContent;
+
+    private Date replyBuildtime;
 
     private Integer replyLikenum;
 
@@ -35,6 +39,14 @@ public class BbsReply {
 
     public void setReplyContent(String replyContent) {
         this.replyContent = replyContent == null ? null : replyContent.trim();
+    }
+
+    public Date getReplyBuildtime() {
+        return replyBuildtime;
+    }
+
+    public void setReplyBuildtime(Date replyBuildtime) {
+        this.replyBuildtime = replyBuildtime;
     }
 
     public Integer getReplyLikenum() {

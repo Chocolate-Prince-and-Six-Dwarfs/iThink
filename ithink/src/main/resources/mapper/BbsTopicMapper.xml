@@ -3,11 +3,11 @@
 <mapper namespace="com.choco.ithink.DAO.mapper.BbsTopicMapper" >
   <resultMap id="BaseResultMap" type="com.choco.ithink.pojo.BbsTopic" >
     <id column="topic_id" property="topicId" jdbcType="INTEGER" />
-    <result column="topic_publisher" property="topicPublisher" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="topic_title" property="topicTitle" jdbcType="VARCHAR" />
     <result column="topic_creativeCapsule" property="topicCreativecapsule" jdbcType="INTEGER" />
     <result column="topic_content" property="topicContent" jdbcType="VARCHAR" />
-    <result column="topic_Releasetime" property="topicReleasetime" jdbcType="TIMESTAMP" />
+    <result column="topic_buildTime" property="topicBuildtime" jdbcType="TIMESTAMP" />
     <result column="topic_achievementNum" property="topicAchievementnum" jdbcType="INTEGER" />
     <result column="topic_collectionNum" property="topicCollectionnum" jdbcType="INTEGER" />
   </resultMap>
@@ -70,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    topic_id, topic_publisher, topic_title, topic_creativeCapsule, topic_content, topic_Releasetime, 
+    topic_id, user_id, topic_title, topic_creativeCapsule, topic_content, topic_buildTime, 
     topic_achievementNum, topic_collectionNum
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.choco.ithink.pojo.BbsTopicExample" >
@@ -104,12 +104,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.choco.ithink.pojo.BbsTopic" >
-    insert into bbs_topic (topic_id, topic_publisher, topic_title, 
-      topic_creativeCapsule, topic_content, topic_Releasetime, 
+    insert into bbs_topic (topic_id, user_id, topic_title, 
+      topic_creativeCapsule, topic_content, topic_buildTime, 
       topic_achievementNum, topic_collectionNum
       )
-    values (#{topicId,jdbcType=INTEGER}, #{topicPublisher,jdbcType=INTEGER}, #{topicTitle,jdbcType=VARCHAR}, 
-      #{topicCreativecapsule,jdbcType=INTEGER}, #{topicContent,jdbcType=VARCHAR}, #{topicReleasetime,jdbcType=TIMESTAMP}, 
+    values (#{topicId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{topicTitle,jdbcType=VARCHAR}, 
+      #{topicCreativecapsule,jdbcType=INTEGER}, #{topicContent,jdbcType=VARCHAR}, #{topicBuildtime,jdbcType=TIMESTAMP}, 
       #{topicAchievementnum,jdbcType=INTEGER}, #{topicCollectionnum,jdbcType=INTEGER}
       )
   </insert>
@@ -119,8 +119,8 @@
       <if test="topicId != null" >
         topic_id,
       </if>
-      <if test="topicPublisher != null" >
-        topic_publisher,
+      <if test="userId != null" >
+        user_id,
       </if>
       <if test="topicTitle != null" >
         topic_title,
@@ -131,8 +131,8 @@
       <if test="topicContent != null" >
         topic_content,
       </if>
-      <if test="topicReleasetime != null" >
-        topic_Releasetime,
+      <if test="topicBuildtime != null" >
+        topic_buildTime,
       </if>
       <if test="topicAchievementnum != null" >
         topic_achievementNum,
@@ -145,8 +145,8 @@
       <if test="topicId != null" >
         #{topicId,jdbcType=INTEGER},
       </if>
-      <if test="topicPublisher != null" >
-        #{topicPublisher,jdbcType=INTEGER},
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
       </if>
       <if test="topicTitle != null" >
         #{topicTitle,jdbcType=VARCHAR},
@@ -157,8 +157,8 @@
       <if test="topicContent != null" >
         #{topicContent,jdbcType=VARCHAR},
       </if>
-      <if test="topicReleasetime != null" >
-        #{topicReleasetime,jdbcType=TIMESTAMP},
+      <if test="topicBuildtime != null" >
+        #{topicBuildtime,jdbcType=TIMESTAMP},
       </if>
       <if test="topicAchievementnum != null" >
         #{topicAchievementnum,jdbcType=INTEGER},
@@ -180,8 +180,8 @@
       <if test="record.topicId != null" >
         topic_id = #{record.topicId,jdbcType=INTEGER},
       </if>
-      <if test="record.topicPublisher != null" >
-        topic_publisher = #{record.topicPublisher,jdbcType=INTEGER},
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
       </if>
       <if test="record.topicTitle != null" >
         topic_title = #{record.topicTitle,jdbcType=VARCHAR},
@@ -192,8 +192,8 @@
       <if test="record.topicContent != null" >
         topic_content = #{record.topicContent,jdbcType=VARCHAR},
       </if>
-      <if test="record.topicReleasetime != null" >
-        topic_Releasetime = #{record.topicReleasetime,jdbcType=TIMESTAMP},
+      <if test="record.topicBuildtime != null" >
+        topic_buildTime = #{record.topicBuildtime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.topicAchievementnum != null" >
         topic_achievementNum = #{record.topicAchievementnum,jdbcType=INTEGER},
@@ -209,11 +209,11 @@
   <update id="updateByExample" parameterType="map" >
     update bbs_topic
     set topic_id = #{record.topicId,jdbcType=INTEGER},
-      topic_publisher = #{record.topicPublisher,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
       topic_title = #{record.topicTitle,jdbcType=VARCHAR},
       topic_creativeCapsule = #{record.topicCreativecapsule,jdbcType=INTEGER},
       topic_content = #{record.topicContent,jdbcType=VARCHAR},
-      topic_Releasetime = #{record.topicReleasetime,jdbcType=TIMESTAMP},
+      topic_buildTime = #{record.topicBuildtime,jdbcType=TIMESTAMP},
       topic_achievementNum = #{record.topicAchievementnum,jdbcType=INTEGER},
       topic_collectionNum = #{record.topicCollectionnum,jdbcType=INTEGER}
     <if test="_parameter != null" >
@@ -223,8 +223,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.choco.ithink.pojo.BbsTopic" >
     update bbs_topic
     <set >
-      <if test="topicPublisher != null" >
-        topic_publisher = #{topicPublisher,jdbcType=INTEGER},
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
       </if>
       <if test="topicTitle != null" >
         topic_title = #{topicTitle,jdbcType=VARCHAR},
@@ -235,8 +235,8 @@
       <if test="topicContent != null" >
         topic_content = #{topicContent,jdbcType=VARCHAR},
       </if>
-      <if test="topicReleasetime != null" >
-        topic_Releasetime = #{topicReleasetime,jdbcType=TIMESTAMP},
+      <if test="topicBuildtime != null" >
+        topic_buildTime = #{topicBuildtime,jdbcType=TIMESTAMP},
       </if>
       <if test="topicAchievementnum != null" >
         topic_achievementNum = #{topicAchievementnum,jdbcType=INTEGER},
@@ -249,11 +249,11 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.choco.ithink.pojo.BbsTopic" >
     update bbs_topic
-    set topic_publisher = #{topicPublisher,jdbcType=INTEGER},
+    set user_id = #{userId,jdbcType=INTEGER},
       topic_title = #{topicTitle,jdbcType=VARCHAR},
       topic_creativeCapsule = #{topicCreativecapsule,jdbcType=INTEGER},
       topic_content = #{topicContent,jdbcType=VARCHAR},
-      topic_Releasetime = #{topicReleasetime,jdbcType=TIMESTAMP},
+      topic_buildTime = #{topicBuildtime,jdbcType=TIMESTAMP},
       topic_achievementNum = #{topicAchievementnum,jdbcType=INTEGER},
       topic_collectionNum = #{topicCollectionnum,jdbcType=INTEGER}
     where topic_id = #{topicId,jdbcType=INTEGER}

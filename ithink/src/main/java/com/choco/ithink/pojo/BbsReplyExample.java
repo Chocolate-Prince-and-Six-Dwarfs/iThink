@@ -1,6 +1,7 @@
 package com.choco.ithink.pojo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BbsReplyExample {
@@ -291,6 +292,66 @@ public class BbsReplyExample {
 
         public Criteria andReplyContentNotBetween(String value1, String value2) {
             addCriterion("reply_content not between", value1, value2, "replyContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyBuildtimeIsNull() {
+            addCriterion("reply_buildTime is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyBuildtimeIsNotNull() {
+            addCriterion("reply_buildTime is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyBuildtimeEqualTo(Date value) {
+            addCriterion("reply_buildTime =", value, "replyBuildtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyBuildtimeNotEqualTo(Date value) {
+            addCriterion("reply_buildTime <>", value, "replyBuildtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyBuildtimeGreaterThan(Date value) {
+            addCriterion("reply_buildTime >", value, "replyBuildtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyBuildtimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("reply_buildTime >=", value, "replyBuildtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyBuildtimeLessThan(Date value) {
+            addCriterion("reply_buildTime <", value, "replyBuildtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyBuildtimeLessThanOrEqualTo(Date value) {
+            addCriterion("reply_buildTime <=", value, "replyBuildtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyBuildtimeIn(List<Date> values) {
+            addCriterion("reply_buildTime in", values, "replyBuildtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyBuildtimeNotIn(List<Date> values) {
+            addCriterion("reply_buildTime not in", values, "replyBuildtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyBuildtimeBetween(Date value1, Date value2) {
+            addCriterion("reply_buildTime between", value1, value2, "replyBuildtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyBuildtimeNotBetween(Date value1, Date value2) {
+            addCriterion("reply_buildTime not between", value1, value2, "replyBuildtime");
             return (Criteria) this;
         }
 

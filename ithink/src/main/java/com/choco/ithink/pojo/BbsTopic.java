@@ -1,28 +1,23 @@
 package com.choco.ithink.pojo;
 
 import io.searchbox.annotations.JestId;
-import io.searchbox.annotations.JestVersion;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serializable;
 import java.util.Date;
 
-@Document(indexName = BbsTopic.INDEX, type = BbsTopic.TYPE)
+@Document(indexName = com.choco.ithink.pojo.BbsTopic.INDEX, type = com.choco.ithink.pojo.BbsTopic.TYPE)
 public class BbsTopic implements Serializable {
     //建立索引 必须小写
     public static final String INDEX = "bbs_topic-index";
+
     //类型
     public static final String TYPE = "bbs_topic-type";
-
-    public static final String ID = "bbs_topic-id";
 
     @JestId
     private Integer topicId;
 
-    private Integer topicPublisher;
+    private Integer userId;
 
     //@Field(type = FieldType.Text, searchAnalyzer = "ik", analyzer = "ik")
     private String topicTitle;
@@ -31,7 +26,7 @@ public class BbsTopic implements Serializable {
 
     private String topicContent;
 
-    private Date topicReleasetime;
+    private Date topicBuildtime;
 
     private Integer topicAchievementnum;
 
@@ -45,12 +40,12 @@ public class BbsTopic implements Serializable {
         this.topicId = topicId;
     }
 
-    public Integer getTopicPublisher() {
-        return topicPublisher;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setTopicPublisher(Integer topicPublisher) {
-        this.topicPublisher = topicPublisher;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getTopicTitle() {
@@ -77,12 +72,12 @@ public class BbsTopic implements Serializable {
         this.topicContent = topicContent == null ? null : topicContent.trim();
     }
 
-    public Date getTopicReleasetime() {
-        return topicReleasetime;
+    public Date getTopicBuildtime() {
+        return topicBuildtime;
     }
 
-    public void setTopicReleasetime(Date topicReleasetime) {
-        this.topicReleasetime = topicReleasetime;
+    public void setTopicBuildtime(Date topicBuildtime) {
+        this.topicBuildtime = topicBuildtime;
     }
 
     public Integer getTopicAchievementnum() {

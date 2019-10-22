@@ -165,63 +165,63 @@ public class BbsTopicExample {
             return (Criteria) this;
         }
 
-        public Criteria andTopicPublisherIsNull() {
-            addCriterion("topic_publisher is null");
+        public Criteria andUserIdIsNull() {
+            addCriterion("user_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andTopicPublisherIsNotNull() {
-            addCriterion("topic_publisher is not null");
+        public Criteria andUserIdIsNotNull() {
+            addCriterion("user_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTopicPublisherEqualTo(Integer value) {
-            addCriterion("topic_publisher =", value, "topicPublisher");
+        public Criteria andUserIdEqualTo(Integer value) {
+            addCriterion("user_id =", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andTopicPublisherNotEqualTo(Integer value) {
-            addCriterion("topic_publisher <>", value, "topicPublisher");
+        public Criteria andUserIdNotEqualTo(Integer value) {
+            addCriterion("user_id <>", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andTopicPublisherGreaterThan(Integer value) {
-            addCriterion("topic_publisher >", value, "topicPublisher");
+        public Criteria andUserIdGreaterThan(Integer value) {
+            addCriterion("user_id >", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andTopicPublisherGreaterThanOrEqualTo(Integer value) {
-            addCriterion("topic_publisher >=", value, "topicPublisher");
+        public Criteria andUserIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("user_id >=", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andTopicPublisherLessThan(Integer value) {
-            addCriterion("topic_publisher <", value, "topicPublisher");
+        public Criteria andUserIdLessThan(Integer value) {
+            addCriterion("user_id <", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andTopicPublisherLessThanOrEqualTo(Integer value) {
-            addCriterion("topic_publisher <=", value, "topicPublisher");
+        public Criteria andUserIdLessThanOrEqualTo(Integer value) {
+            addCriterion("user_id <=", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andTopicPublisherIn(List<Integer> values) {
-            addCriterion("topic_publisher in", values, "topicPublisher");
+        public Criteria andUserIdIn(List<Integer> values) {
+            addCriterion("user_id in", values, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andTopicPublisherNotIn(List<Integer> values) {
-            addCriterion("topic_publisher not in", values, "topicPublisher");
+        public Criteria andUserIdNotIn(List<Integer> values) {
+            addCriterion("user_id not in", values, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andTopicPublisherBetween(Integer value1, Integer value2) {
-            addCriterion("topic_publisher between", value1, value2, "topicPublisher");
+        public Criteria andUserIdBetween(Integer value1, Integer value2) {
+            addCriterion("user_id between", value1, value2, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andTopicPublisherNotBetween(Integer value1, Integer value2) {
-            addCriterion("topic_publisher not between", value1, value2, "topicPublisher");
+        public Criteria andUserIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("user_id not between", value1, value2, "userId");
             return (Criteria) this;
         }
 
@@ -425,63 +425,63 @@ public class BbsTopicExample {
             return (Criteria) this;
         }
 
-        public Criteria andTopicReleasetimeIsNull() {
-            addCriterion("topic_Releasetime is null");
+        public Criteria andTopicBuildtimeIsNull() {
+            addCriterion("topic_buildTime is null");
             return (Criteria) this;
         }
 
-        public Criteria andTopicReleasetimeIsNotNull() {
-            addCriterion("topic_Releasetime is not null");
+        public Criteria andTopicBuildtimeIsNotNull() {
+            addCriterion("topic_buildTime is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTopicReleasetimeEqualTo(Date value) {
-            addCriterion("topic_Releasetime =", value, "topicReleasetime");
+        public Criteria andTopicBuildtimeEqualTo(Date value) {
+            addCriterion("topic_buildTime =", value, "topicBuildtime");
             return (Criteria) this;
         }
 
-        public Criteria andTopicReleasetimeNotEqualTo(Date value) {
-            addCriterion("topic_Releasetime <>", value, "topicReleasetime");
+        public Criteria andTopicBuildtimeNotEqualTo(Date value) {
+            addCriterion("topic_buildTime <>", value, "topicBuildtime");
             return (Criteria) this;
         }
 
-        public Criteria andTopicReleasetimeGreaterThan(Date value) {
-            addCriterion("topic_Releasetime >", value, "topicReleasetime");
+        public Criteria andTopicBuildtimeGreaterThan(Date value) {
+            addCriterion("topic_buildTime >", value, "topicBuildtime");
             return (Criteria) this;
         }
 
-        public Criteria andTopicReleasetimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("topic_Releasetime >=", value, "topicReleasetime");
+        public Criteria andTopicBuildtimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("topic_buildTime >=", value, "topicBuildtime");
             return (Criteria) this;
         }
 
-        public Criteria andTopicReleasetimeLessThan(Date value) {
-            addCriterion("topic_Releasetime <", value, "topicReleasetime");
+        public Criteria andTopicBuildtimeLessThan(Date value) {
+            addCriterion("topic_buildTime <", value, "topicBuildtime");
             return (Criteria) this;
         }
 
-        public Criteria andTopicReleasetimeLessThanOrEqualTo(Date value) {
-            addCriterion("topic_Releasetime <=", value, "topicReleasetime");
+        public Criteria andTopicBuildtimeLessThanOrEqualTo(Date value) {
+            addCriterion("topic_buildTime <=", value, "topicBuildtime");
             return (Criteria) this;
         }
 
-        public Criteria andTopicReleasetimeIn(List<Date> values) {
-            addCriterion("topic_Releasetime in", values, "topicReleasetime");
+        public Criteria andTopicBuildtimeIn(List<Date> values) {
+            addCriterion("topic_buildTime in", values, "topicBuildtime");
             return (Criteria) this;
         }
 
-        public Criteria andTopicReleasetimeNotIn(List<Date> values) {
-            addCriterion("topic_Releasetime not in", values, "topicReleasetime");
+        public Criteria andTopicBuildtimeNotIn(List<Date> values) {
+            addCriterion("topic_buildTime not in", values, "topicBuildtime");
             return (Criteria) this;
         }
 
-        public Criteria andTopicReleasetimeBetween(Date value1, Date value2) {
-            addCriterion("topic_Releasetime between", value1, value2, "topicReleasetime");
+        public Criteria andTopicBuildtimeBetween(Date value1, Date value2) {
+            addCriterion("topic_buildTime between", value1, value2, "topicBuildtime");
             return (Criteria) this;
         }
 
-        public Criteria andTopicReleasetimeNotBetween(Date value1, Date value2) {
-            addCriterion("topic_Releasetime not between", value1, value2, "topicReleasetime");
+        public Criteria andTopicBuildtimeNotBetween(Date value1, Date value2) {
+            addCriterion("topic_buildTime not between", value1, value2, "topicBuildtime");
             return (Criteria) this;
         }
 
