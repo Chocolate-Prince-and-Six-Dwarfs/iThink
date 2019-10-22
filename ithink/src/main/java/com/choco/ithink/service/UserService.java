@@ -40,7 +40,7 @@ public class UserService {
     // param pwd: 用户密码
     // do: 检查用户名是否匹配
     // return: 匹配返回1, 若不匹配但用户已存在则返回0, 若用户不存在则返回-1
-    public Integer checMatching(String loginKey, String pwd)
+    public Integer checkMatching(String loginKey, String pwd)
     {
         // 根据用户名查询数据库
         UserExample userExample = new UserExample();
@@ -109,45 +109,9 @@ public class UserService {
         if(userMapper.selectByExample(userExample).isEmpty())
         {
             // 构造实体
-
-            // 默认参数设置
-            User user = new User();
-            Integer defaultUserCredit = 100;
-            String path = System.getProperty("user.dir");
-
-            // 设置参数
-            user.setUserName(username);
-            user.setUserPassword(pwd);
-            user.setUserSex(sex);
-            user.setUserEmail(email);
-            user.setUserBirth(birthday);
-            user.setUserCredit(defaultUserCredit);
-            if(phone!=null)
+            User user = constructNewUser(username, pwd, sex, email, birthday, phone);
+            if(user == null)
             {
-                user.setUserPhone(phone);
-            }
-            else
-            {
-                user.setUserPhone("");
-            }
-
-            // 读入默认头像
-            File img = new File(path + "\\src\\main\\resources\\static\\img\\" + "头像.png");//指定要读取的图片
-            BufferedImage bufferedImage;
-            try {
-                // 将图片读取为块
-                bufferedImage = ImageIO.read(img);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                // 图片写入字节数组
-                ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
-                byte[] bytesImg = byteArrayOutputStream.toByteArray();
-                // 设置图片
-                user.setUserAvatar(bytesImg);
-            }
-            catch(Exception e)
-            {
-                // 发生错误
-                e.printStackTrace();
                 return -400;
             }
 
@@ -178,5 +142,61 @@ public class UserService {
         {
             return 0;
         }
+    }
+
+
+    // param username: 用户名称
+    // param pwd: 用户密码
+    // param sex: 性别
+    // param email: 邮箱
+    // param birthday: 生日
+    // param phone: 手机号(可选)
+    // do: 构建新用户
+    // return: 构建成功返回对象, 否则返回null
+    private User constructNewUser(String username, String pwd, String sex, String email, String birthday, @Nullable String phone)
+    {
+        // 默认参数设置
+        User user = new User();
+        Integer defaultUserCredit = 100;
+        String defaultPhone = "";
+        String path = System.getProperty("user.dir");
+
+        // 设置参数
+        user.setUserName(username);
+        user.setUserPassword(pwd);
+        user.setUserSex(sex);
+        user.setUserEmail(email);
+        user.setUserBirth(birthday);
+        user.setUserCredit(defaultUserCredit);
+        if(phone!=null)
+        {
+            user.setUserPhone(phone);
+        }
+        else
+        {
+            user.setUserPhone(defaultPhone);
+        }
+
+        // 读入默认头像
+        File img = new File(path + "\\src\\main\\resources\\static\\img\\" + "头像.png");//指定要读取的图片
+        BufferedImage bufferedImage;
+        try {
+            // 将图片读取为块
+            bufferedImage = ImageIO.read(img);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            // 图片写入字节数组
+            ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
+            byte[] bytesImg = byteArrayOutputStream.toByteArray();
+            // 设置图片
+            user.setUserAvatar(bytesImg);
+        }
+        catch(Exception e)
+        {
+            // 发生错误
+            e.printStackTrace();
+            return null;
+        }
+
+        return user;
     }
 }

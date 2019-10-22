@@ -38,7 +38,7 @@ public class UserController implements UserInterface {
                 // 如果符合规范
 
                 // 检查匹配
-                status = userService.checMatching(email, pwd);
+                status = userService.checkMatching(email, pwd);
             } else {
                 // 如果不符合规范
                 status = -2;

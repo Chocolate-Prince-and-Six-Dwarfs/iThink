@@ -1,12 +1,28 @@
 package com.choco.ithink.pojo;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class BbsTopic {
+@Document(indexName = BbsTopic.INDEX, type = BbsTopic.TYPE)
+public class BbsTopic implements Serializable {
+    //建立索引 必须小写
+    public static final String INDEX = "bbs_topic-index";
+    //类型
+    public static final String TYPE = "bbs_topic-type";
+
+    public static final String ID = "bbs_topic-id";
+
+    @Id
     private Integer topicId;
 
     private Integer topicPublisher;
 
+    //@Field(type = FieldType.Text, searchAnalyzer = "ik", analyzer = "ik")
     private String topicTitle;
 
     private Integer topicCreativecapsule;
