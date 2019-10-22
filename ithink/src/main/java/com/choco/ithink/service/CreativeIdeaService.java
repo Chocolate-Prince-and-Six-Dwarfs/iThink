@@ -1,6 +1,5 @@
 package com.choco.ithink.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.BbsTopicMapper;
@@ -11,7 +10,6 @@ import io.searchbox.client.JestResult;
 import io.searchbox.core.Bulk;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
-import org.elasticsearch.index.mapper.ParseContext;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.metrics.cardinality.CardinalityAggregationBuilder;
@@ -20,8 +18,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 
@@ -108,6 +104,7 @@ public class CreativeIdeaService {
             jsonObject.put("id", resultList.get(i).getTopicId());
             jsonObject.put("tittle", resultList.get(i).getTopicTitle());
             jsonObject.put("content", resultList.get(i).getTopicContent());
+            jsonObject.put("like", resultList.get(i).getTopicCollectionnum());
             jsonArray.add(jsonObject);
         }
 

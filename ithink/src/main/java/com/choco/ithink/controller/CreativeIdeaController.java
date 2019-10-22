@@ -28,8 +28,6 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
     //      id: 0
     //      title: "创意名称",
     //      content: "创意内容",
-    //      good: 点赞数, (待定)
-    //      comment: 评论数, （待定）
     //      like: 收藏数 （待定）
     //  ]
     // }

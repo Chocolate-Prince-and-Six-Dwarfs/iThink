@@ -44,4 +44,4 @@ function sortLikenumInt(data) {
 }
 $(document).ready(function () {
     loadIdea();
-})
+});
