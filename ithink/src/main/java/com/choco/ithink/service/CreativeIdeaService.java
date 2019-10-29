@@ -3,8 +3,11 @@ package com.choco.ithink.service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.BbsTopicMapper;
+import com.choco.ithink.DAO.mapper.UserMapper;
 import com.choco.ithink.pojo.BbsTopic;
 import com.choco.ithink.pojo.BbsTopicExample;
+import com.choco.ithink.pojo.User;
+import com.choco.ithink.pojo.UserExample;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Bulk;
@@ -14,6 +17,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.metrics.cardinality.CardinalityAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,6 +30,8 @@ public class CreativeIdeaService {
     // mapper类，用于数据库查询
     @Resource
     private BbsTopicMapper bbsTopicMapper;
+    @Resource
+    private UserMapper userMapper;
     // 用于搜索的jest客户端
     @Resource
     private JestClient jestClient;
@@ -100,10 +106,23 @@ public class CreativeIdeaService {
         // 循环处理实体
         for(int i=0; i<bbsTopicList.size(); ++i)
         {
+            // 获取publisher昵称
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andUserIdEqualTo(bbsTopicList.get(i).getUserId());
+            List<User> userList = userMapper.selectByExample(userExample);
+            String publisher = "";
+            if(userList.size()==1)
+            {
+                publisher = userList.get(0).getUserName();
+            }
+
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", bbsTopicList.get(i).getTopicId());
-            jsonObject.put("tittle", bbsTopicList.get(i).getTopicTitle());
+            jsonObject.put("title", bbsTopicList.get(i).getTopicTitle());
             jsonObject.put("content", bbsTopicList.get(i).getTopicContent());
+            jsonObject.put("time", bbsTopicList.get(i).getTopicBuildtime());
+            jsonObject.put("publisherId", bbsTopicList.get(i).getUserId());
+            jsonObject.put("publisher", publisher);
             jsonObject.put("like", bbsTopicList.get(i).getTopicCollectionnum());
             jsonArray.add(jsonObject);
         }
@@ -121,5 +140,49 @@ public class CreativeIdeaService {
         bbsTopicExample.createCriteria().andUserIdEqualTo(userId);
         List<BbsTopic> bbsTopicList = bbsTopicMapper.selectByExample(bbsTopicExample);
         return list2JSON(bbsTopicList);
+    }
+
+
+    // param n: 数量（可选，默认为10）
+    // do: 返回指定数量的创意主题
+    // return: 创意主题，格式如下
+    //  [
+    //      {
+    //          id: 0,
+    //          title: "创意名称",
+    //          content: "创意内容",
+    //          time: "时间",
+    //          publisher: "发布者",
+    //          like: 收藏数
+    //      },
+    //      {
+    //          同上
+    //      },
+    //      ......
+    //  ]
+    public JSONArray loadN(@Nullable Integer n)
+    {
+        Integer number = 0;
+        if(n==null)
+        {
+            number = 10;
+        }
+        else
+        {
+            number = n;
+        }
+        BbsTopicExample bbsTopicExample = new BbsTopicExample();
+        bbsTopicExample.setOrderByClause("Rand()");
+        List<BbsTopic> bbsTopicList = bbsTopicMapper.selectByExample(bbsTopicExample);
+
+        if(bbsTopicList.size()>=number)
+        {
+            return list2JSON(bbsTopicList.subList(0, number));
+        }
+        else
+        {
+            return list2JSON(bbsTopicList);
+        }
+
     }
 }

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
     <title>Welcome to iThink </title>
-    <link rel="stylesheet" href="css/index.css">
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/loadIdeasAjax.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+
+
 </head>
 <body>
 <div class="container">
@@ -15,78 +15,49 @@
             <img src="img/商标.png" alt="">
         </div>
         <div class="navbarContent">
-            <div class="divSpan">
-                <span>首页</span>
-                <span>发现</span>
-                <span>合作</span>
-            </div>
+
+            <ul>
+                <li>首页</li>
+                <li>发现</li>
+                <li>合作</li>
+            </ul>
+
             <div class="divInput">
                 <label>
-                    <input type="text" placeholder="搜索内容"/>
+                    <input type="text" id="search-input" placeholder="输入搜索内容" />
                 </label>
-                <img src="img/搜索.png" alt="">
-
+                <img id="search" src="img/搜索.png" alt="">
             </div>
+
             <div class="divIcon">
-                <button class="find">寻找点子</button>
+                <button class="find" style="outline:none">寻找点子</button>
                 <img src="img/think.png" alt="">
-                <img src="img/头像.png" alt="">
+                <img src="img/头像.png" id="user" alt="">
+                <a id="out" style="
+                display: inline;
+                font-size: 15px;
+            " href="/user/logout">退出</a>
             </div>
         </div>
 
     </div>
     <div class="content" id="ideaContent">
         <div class="left" id="ideaList">
-            <!--<div>
-                <h3>标题</h3>
-                <p>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
-                <div class="more">
-                    <span><img src="img/支持.png" alt="">&nbsp支持</span>
-                    <span><img src="img/评论.png" alt="">&nbsp评论</span>
-                    <span><img src="img/收藏.png" alt="">&nbsp收藏</span>
-                </div>
-            </div>
-            <div>
-                <h3>标题</h3>
-                <p>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
-                <div class="more">
-                    <span><img src="img/支持.png" alt="">&nbsp支持</span>
-                    <span><img src="img/评论.png" alt="">&nbsp评论</span>
-                    <span><img src="img/收藏.png" alt="">&nbsp收藏</span>
-                </div>
-            </div>
-            <div>
-                <h3>标题</h3>
-                <p>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
-                <div class="more">
-                    <span><img src="img/支持.png" alt="">&nbsp支持</span>
-                    <span><img src="img/评论.png" alt="">&nbsp评论</span>
-                    <span><img src="img/收藏.png" alt="">&nbsp收藏</span>
-                </div>
-            </div>
-            <div>
-                <h3>标题</h3>
-                <p>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
-                <div class="more">
-                    <span><img src="img/支持.png" alt="">&nbsp支持</span>
-                    <span><img src="img/评论.png" alt="">&nbsp评论</span>
-                    <span><img src="img/收藏.png" alt="">&nbsp收藏</span>
-                </div>
-            </div>-->
+
         </div>
         <div class="right">
             <div class="R-top">
                 <div>
-                    <img src="img/胶囊.png" alt="">
+                    <img src="img/胶囊.png" id="idea" alt="">
                     <p>&nbsp&nbsp创意</p>
                 </div>
                 <div>
                     <img src="img/论坛.png" alt="">
-                    <p>&nbsp&nbsp&nbsp&nbsp&nbsp论坛</p>
+                    <p>&nbsp&nbsp论坛</p>
                 </div>
                 <div>
                     <img src="img/微赫房间.png" alt="">
-                    <p>&nbsp我的房间</p>
+                    <p>我的房间</p>
                 </div>
             </div>
             <div class="R-down"></div>
@@ -94,4 +65,7 @@
     </div>
 </div>
 </body>
+<script src="js/jquery-2.2.4.min.js"></script>
+<script type="text/javascript" src="js/loadIdeasAjax.js"></script>
+<script src="js/main.js"></script>
 </html>

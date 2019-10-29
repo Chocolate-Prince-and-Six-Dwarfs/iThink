@@ -1,0 +1,136 @@
+.word {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-size: 20px;
+    text-align: center;
+    color: #f2f2f2;
+    margin: 0;
+    padding: 10px 0 0 0;
+}
+.main {
+    width: 100%;
+}
+div.navigation {
+    width: 100%;
+    height: 96px;
+    background-color: #015478;
+}
+
+.navigationTitleDiv {
+    /*width: 300px;*/
+    height: 96px;
+    float: left;
+    margin: 0 0 0 300px;
+}
+
+.navigationTitleP {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-size: 60px;
+    text-align: center;
+    background-image: -webkit-linear-gradient(bottom, #80ffff, #008080);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    padding: 5px 0 0 0;
+}
+
+.navigationWordDiv {
+    width: 500px;
+    height: 96px;
+    float: left;
+    margin: 0 0 0 80px;
+}
+
+.navigationBtnD {
+    background-color: #015478;
+    border: none;
+    color: #95f204;
+    text-align: center;
+    font-size: 18px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    float: right;
+    margin-top: 35px;
+}
+
+.navigationBtnZ {
+    background-color: #015478;
+    border: none;
+    color: #95f204;
+    text-align: center;
+    font-size: 18px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    float: right;
+    margin-top: 35px;
+}
+
+.navigationWordDivB_1 {
+    width: 200px;
+    height: 76px;
+    float: left;
+    margin: 20px 0 0 550px;
+}
+
+.navigationWordDivB_2 {
+    width: 200px;
+    height: 76px;
+    float: left;
+    margin: 20px 0 0 100px;
+}
+
+.navigationWordDivB_3 {
+    width: 200px;
+    height: 76px;
+    float: left;
+    margin: 20px 0 0 100px;
+}
+
+div.background {
+    width: 100%;
+    height: 560px;
+    background-image: url("../img/background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.backgroundDivL {
+    width: 400px;
+    height: 500px;
+    float: left;
+    margin: 50px 0 0 200px;
+}
+
+.backgroundDivR {
+    width: 400px;
+    height: 500px;
+    float: right;
+    margin: 50px 200px 0 0;
+}
+
+.backgroundDivB {
+    width: 500px;
+    float: right;
+    margin: -150px 25px 0px 0px;
+}
+
+.backgroundWord_1 {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-size: 25px;
+    text-align: center;
+    color: #000000;
+    margin: 0;
+    padding: 60px 0 0 0;
+}
+
+.backgroundWord_2 {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-size: 25px;
+    text-align: center;
+    color: #000000;
+    margin: 0;
+    padding: 20px 0 0 0;
+}
+
+.end-word {
+    color: #000;
+    margin: 40px 0 0 -80px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
