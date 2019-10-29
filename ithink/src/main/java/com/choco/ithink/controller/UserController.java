@@ -235,7 +235,7 @@ public class UserController implements UserInterface {
         switch(opinion)
         {
             case "topic":
-                data = creativeIdeaService.getByUserID(id);
+                data = creativeIdeaService.getByUserId(id);
                 count = data.size();
                 break;
             case "achievement":

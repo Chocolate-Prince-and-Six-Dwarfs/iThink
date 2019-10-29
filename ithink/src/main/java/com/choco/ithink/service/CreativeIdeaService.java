@@ -96,7 +96,7 @@ public class CreativeIdeaService {
     }
 
 
-    // param resultList: 实体列表
+    // param bbsReplyList: 实体列表
     // do： 将列表构建为JSON数组对象
     // return: 构建的json数组对象
     public JSONArray list2JSON(List<BbsTopic> bbsTopicList)
@@ -133,13 +133,32 @@ public class CreativeIdeaService {
     // param userId: 用户id
     // do: 查找用户发布的创意主题
     // return: 创意主题JSONArray数组
-    public JSONArray getByUserID(Integer userId)
+    public JSONArray getByUserId(Integer userId)
     {
         // 查找数据库
         BbsTopicExample bbsTopicExample = new BbsTopicExample();
         bbsTopicExample.createCriteria().andUserIdEqualTo(userId);
         List<BbsTopic> bbsTopicList = bbsTopicMapper.selectByExample(bbsTopicExample);
         return list2JSON(bbsTopicList);
+    }
+
+
+    // param id: 创意主题id
+    // do: 查找对应的创意主题
+    // return: 创意主题
+    public JSONObject getById(Integer userId)
+    {
+        // 查找数据库
+        BbsTopicExample bbsTopicExample = new BbsTopicExample();
+        bbsTopicExample.createCriteria().andUserIdEqualTo(userId);
+        List<BbsTopic> bbsTopicList = bbsTopicMapper.selectByExample(bbsTopicExample);
+
+        if(bbsTopicList.size()!=1)
+        {
+            return null;
+        }
+
+        return list2JSON(bbsTopicList).getJSONObject(0);
     }
 
 

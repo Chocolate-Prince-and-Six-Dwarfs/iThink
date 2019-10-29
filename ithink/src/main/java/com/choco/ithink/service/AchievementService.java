@@ -74,11 +74,29 @@ public class AchievementService {
     // param id: 创意id
     // do: 查找指定的创意实现
     // return: 指定的创意实现
-    public JSONArray getById(Integer id)
+    public JSONObject getById(Integer id)
     {
         // 查找数据库创意实现
         BbsAchievementExample bbsAchievementExample = new BbsAchievementExample();
         bbsAchievementExample.createCriteria().andAchievementIdEqualTo(id);
+        List<BbsAchievement> bbsAchievementList = bbsAchievementMapper.selectByExample(bbsAchievementExample);
+
+        if(bbsAchievementList.size()!=1)
+        {
+            return null;
+        }
+
+        return list2JSON(bbsAchievementList).getJSONObject(0);
+    }
+
+    // param topicId: 创意主题id
+    // do: 查找指定创意主题的所有的创意实现
+    // return: 创意实现Json数组
+    public JSONArray getByTopicId(Integer topicId)
+    {
+        // 查找数据库创意实现
+        BbsAchievementExample bbsAchievementExample = new BbsAchievementExample();
+        bbsAchievementExample.createCriteria().andTopicIdEqualTo(topicId);
         List<BbsAchievement> bbsAchievementList = bbsAchievementMapper.selectByExample(bbsAchievementExample);
 
         return list2JSON(bbsAchievementList);
