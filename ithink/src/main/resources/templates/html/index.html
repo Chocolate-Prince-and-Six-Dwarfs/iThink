@@ -1,0 +1,128 @@
+<!--<%&#45;&#45;-->
+  <!--Created by IntelliJ IDEA.-->
+  <!--User: charm-->
+  <!--Date: 2019/10/16-->
+  <!--Time: 17:36-->
+  <!--To change this template use File | Settings | File Templates.-->
+<!--&#45;&#45;%>-->
+<!--<%@ page contentType="text/html;charset=UTF-8" language="java" %>-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>介绍</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/introduction.css" media="all">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="amazeui/assets/css/amazeui.css">
+    <link rel="stylesheet" href="amazeui/assets/css/amazeui.datetimepicker.css">
+  </head>
+  <body>
+  <div class="main">
+    <form class="am-form am-animation-scale-up" id="form1" action="#" method="post" align="center">
+      <fieldset>
+        <legend >欢迎登录
+          <button id="close1" class="am-close btn"
+                  style="background: dodgerblue;width: 50px;margin-left: 400px;margin-right: -20px"
+          >&times;</button>
+        </legend>
+        <div class="am-form-group">
+          <label>邮箱</label>
+          <input type="email" id="login-email" placeholder="输入邮箱">
+        </div>
+        <div class="am-form-group">
+          <label>密码</label>
+          <input type="password" id="login-pdw" placeholder="输入密码吧">
+        </div>
+        <p><button type="button" class="am-btn am-btn-default am-round" id="login">提交</button></p>
+      </fieldset>
+    </form>
+
+    <form class="am-form am-animation-scale-up" id="form2">
+      <fieldset>
+        <legend>欢迎注册
+          <button id="close2" class="am-close btn" style="background: dodgerblue;width: 50px;margin-left: 400px;margin-right: -20px">&times;</button>
+        </legend>
+        <div class="am-form-group">
+          <label>昵称</label>
+          <input type="text"  id="username" placeholder="输入昵称">
+        </div>
+        <div class="am-form-group">
+          <label >邮箱</label>
+          <input type="email" id="resign-email" placeholder="输入邮箱">
+        </div>
+        <div class="am-form-group">
+          <label>密码</label>
+          <input type="password" id="resign-pwd" placeholder="设置个密码吧">
+        </div>
+        <label>生日</label>
+        <div class="am-input-group date" id="datetimepicker" data-date="2019-12-12" data-date-format="yyyy-mm-dd">
+          <input size="16" type="text" placeholder="出生日期" id="birth" class="am-form-field" readonly>
+          <span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+        </div>
+        <div class="am-form-group">
+          <label>电话</label>
+          <input type="password" id="tel" placeholder="留个联系方式吧" >
+        </div>
+        <div class="am-form-group">
+          <span>性别:</span>
+          <label class="am-radio-inline">
+            <input type="radio"  name="docInlineRadio" value="男" checked="checked"> 男
+          </label>
+          <label class="am-radio-inline">
+            <input type="radio" value="女" name="docInlineRadio"> 女
+          </label>
+        </div>
+
+
+        <button type="button" id="resign" class="am-btn am-btn-default am-round">提交</button>
+      </fieldset>
+    </form>
+
+    <div class="navigation">
+      <div class="navigationTitleDiv">
+        <p class="navigationTitleP">iThink</p>
+      </div>
+      <div class="navigationWordDiv">
+        <p class="word"><b>欢迎来到iThink</b></p>
+        <p class="word"><b>不要我觉得 我要你觉得</b></p>
+      </div>
+      <button type="button" id="btn1" class="navigationBtnD">登录</button>
+      <button type="button" id="btn2" class="navigationBtnZ">注册</button>
+    </div>
+
+    <div class="background" >
+      <div class="backgroundDivL">
+        <p class="backgroundWord_1">你是否经常有好的想法点子</p>
+        <p class="backgroundWord_1">却因为没有办法实现而苦恼</p>
+        <p class="backgroundWord_1">来iThink将你的想法变成现实</p>
+      </div>
+      <div class="backgroundDivR">
+        <p class="backgroundWord_1">你是否有能力并且想做点什么</p>
+        <p class="backgroundWord_1">却因为没有好的想法而作罢</p>
+        <p class="backgroundWord_1">来iThink寻找你想要的想法</p>
+      </div>
+      <div class="backgroundDivB">
+        <p class="backgroundWord_2">————这里是iThink</p>
+        <p class="backgroundWord_2">一个致力于创意分享和投资交流的平台</p>
+      </div>
+    </div>
+
+    <div class="navigation">
+      <div class="navigationWordDivB_1">
+        <p class="end-word">加入我们</p>
+      </div>
+      <div class="navigationWordDivB_2">
+        <p class="end-word">联系我们</p>
+      </div>
+      <div class="navigationWordDivB_3">
+        <p class="end-word">法律信息</p>
+      </div>
+    </div>
+  </div>
+
+  </body>
+  <script src="js/jquery-2.2.4.min.js"></script>
+  <script src="amazeui/assets/js/amazeui.datetimepicker.js"></script>
+  <script src="js/login.js"></script>
+  <!--<script src="../../static/amazeui/assets/js/amazeui.js"></script>-->
+</html>

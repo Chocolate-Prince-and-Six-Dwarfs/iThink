@@ -6,14 +6,17 @@ import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import com.choco.ithink.interfaces.UserInterface;
 import com.choco.ithink.service.AchievementService;
 import com.choco.ithink.service.CreativeIdeaService;
+import com.choco.ithink.service.SessionService;
 import com.choco.ithink.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
-@RequestMapping("/userInfo")
+@RequestMapping("/user")
 public class UserController implements UserInterface {
     @Autowired
     UserService userService;
@@ -21,15 +24,17 @@ public class UserController implements UserInterface {
     CreativeIdeaService creativeIdeaService;
     @Autowired
     AchievementService achievementService;
+    @Autowired
+    SessionService sessionService;
 
-    // 请求地址： userInfo/isMatch
+    // 请求地址： user/login
     // param email: 登录键(邮箱)
     // param pwd: 用户密码
     // do: 检查邮箱和密码是否匹配
     // return: 匹配返回json格式{status: 1}, 若不匹配但用户已存在则返回{status: 0}, 若用户不存在则返回{status: -1}, 输入不符合规范返回{status: -2}, 未知错误返回{status: -400}
-    @RequestMapping("/isMatch")
+    @RequestMapping("/login")
     @ResponseJSONP
-    public JSONObject isMatch(String email, String pwd)
+    public JSONObject login(String email, String pwd, HttpServletRequest request)
     {
         // 检查有效性
         Boolean emailAvailability = checkEmail(email);
@@ -60,12 +65,28 @@ public class UserController implements UserInterface {
         JSONObject result = new JSONObject();
         result.put(keyName, status);
 
+        // 设置session
+        if(status == 1)
+        {
+            sessionService.setLoginUser(request.getSession(), email);
+        }
+
         // 返回结果
         return result;
     }
 
 
-    // 请求地址： userInfo/checkEmail
+    // 请求地址： user/logout
+    // do: 退出登录
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request)
+    {
+        sessionService.logout(request.getSession());
+        return "redirect:/";
+    }
+
+
+    // 请求地址： user/checkEmail
     // param email: 登录键(邮箱)
     // do: 检查邮箱是否符合规范
     // return: 符合返回true, 不符合返回false
@@ -76,7 +97,7 @@ public class UserController implements UserInterface {
     }
 
 
-    // 请求地址： userInfo/checkPwd
+    // 请求地址： user/checkPwd
     // param pwd: 密码
     // do: 检查密码是否符合规范
     // return: 符合返回true, 不符合返回false
@@ -86,7 +107,7 @@ public class UserController implements UserInterface {
         return userService.checkString(pwd, userService.getPwdPattern());
     }
 
-    // 请求地址： userInfo/register
+    // 请求地址： user/register
     // param username: 用户名称
     // param pwd: 用户密码
     // param sex: 性别
@@ -133,7 +154,7 @@ public class UserController implements UserInterface {
     }
 
 
-    // 请求地址： userInfo/getInfoById
+    // 请求地址： user/getInfoById
     // param id: 用户id
     // param opinion: 选项 ("topic"|"comment"|"follow")
     // do: 查找用户的相关数据
@@ -235,4 +256,6 @@ public class UserController implements UserInterface {
         jsonObject.put("data", data);
         return jsonObject;
     }
+
+
 }

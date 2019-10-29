@@ -7,7 +7,9 @@ import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import com.choco.ithink.interfaces.CreativeIdeaInterface;
 import com.choco.ithink.service.CreativeIdeaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -39,12 +41,53 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
     // }
     @RequestMapping("/search")
     @ResponseJSONP
-    public JSONObject search(String keyword)
+    public JSONObject search(@RequestBody String keyword)
     {
         JSONObject jsonObject = new JSONObject();
 
         // 搜索与统计
         JSONArray data = creativeIdeaService.search(keyword);
+        Integer count = data.size();
+
+
+        // 拼接字符串
+        jsonObject.put("count", count);
+        jsonObject.put("data", data);
+        return jsonObject;
+    }
+
+
+    // 请求地址 idea/load
+    // param number: 数量（可选，默认为10）
+    // do: 返回指定数量的创意主题
+    // return: 创意主题，格式如下
+    // {
+    // count: 10 （实际返回的条数）
+    // data:
+    //  [
+    //      {
+    //          id: 0,
+    //          title: "创意名称",
+    //          content: "创意内容",
+    //          time: "时间",
+    //          publisherId: 0,（发布者id）
+    //          publisher: "发布者",
+    //          like: 收藏数
+    //      },
+    //      {
+    //          同上
+    //      },
+    //      ......
+    //  ]
+    // }
+    @RequestMapping("/load")
+    @ResponseJSONP
+    public JSONObject load(@Nullable Integer number)
+    {
+        JSONObject jsonObject = new JSONObject();
+
+        // 搜索与统计
+        JSONArray data = creativeIdeaService.loadN(number);
         Integer count = data.size();
 
 

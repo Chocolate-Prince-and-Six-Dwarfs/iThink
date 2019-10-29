@@ -70,4 +70,17 @@ public class AchievementService {
 
         return jsonArray;
     }
+
+    // param id: 创意id
+    // do: 查找指定的创意实现
+    // return: 指定的创意实现
+    public JSONArray getById(Integer id)
+    {
+        // 查找数据库创意实现
+        BbsAchievementExample bbsAchievementExample = new BbsAchievementExample();
+        bbsAchievementExample.createCriteria().andAchievementIdEqualTo(id);
+        List<BbsAchievement> bbsAchievementList = bbsAchievementMapper.selectByExample(bbsAchievementExample);
+
+        return list2JSON(bbsAchievementList);
+    }
 }
