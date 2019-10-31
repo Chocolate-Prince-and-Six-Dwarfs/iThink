@@ -146,11 +146,11 @@ public class CreativeIdeaService {
     // param id: 创意主题id
     // do: 查找对应的创意主题
     // return: 创意主题
-    public JSONObject getById(Integer userId)
+    public JSONObject getById(Integer id)
     {
         // 查找数据库
         BbsTopicExample bbsTopicExample = new BbsTopicExample();
-        bbsTopicExample.createCriteria().andUserIdEqualTo(userId);
+        bbsTopicExample.createCriteria().andTopicIdEqualTo(id);
         List<BbsTopic> bbsTopicList = bbsTopicMapper.selectByExample(bbsTopicExample);
 
         if(bbsTopicList.size()!=1)
