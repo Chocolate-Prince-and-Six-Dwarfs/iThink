@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -257,5 +258,35 @@ public class UserController implements UserInterface {
         return jsonObject;
     }
 
+    // 请求地址: user/updateInfo
+    // param id: 用户id
+    // param head: 头像（可选）
+    // param name: 用户昵称（可选）
+    // param sex: 用户性别（可选）
+    // param birthday: 出生日期（可选）
+    // param phone: 手机号（可选）
+    // param address: 居住地（可选）
+    // param industry: 行业（可选）
+    // param school: 学校（可选）
+    // param introduction: 介绍（可选）
+    // do: 更新用户信息
+    // return: 成功返回{id:用户id, status:1}, 失败返回{id:用户id, status:0}
+    @RequestMapping("updateInfo")
+    @ResponseJSONP
+    public JSONObject updateInfo(Integer id, @Nullable MultipartFile head, @Nullable String name, @Nullable String sex,
+                          @Nullable String birthday, @Nullable String phone, @Nullable String address, @Nullable String industry,
+                          @Nullable String school, @Nullable String introduction)
+    {
+        JSONObject jsonObject = new JSONObject();
+        Integer status = 0;
 
+        // 更新
+        status = userService.updateInfoById(id, head, name, sex, birthday, phone,
+                address, industry, school, introduction);
+
+        // 拼接字符串
+        jsonObject.put("id", id);
+        jsonObject.put("status", status);
+        return jsonObject;
+    }
 }

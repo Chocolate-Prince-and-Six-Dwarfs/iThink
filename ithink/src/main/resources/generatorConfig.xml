@@ -43,15 +43,16 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
         <!-- 要生成那些表 tableName：数据库中预先建立好的表名 domainObjectName：要生产的实体类名称-->
-        <table tableName="user_info" domainObjectName="User"/>
-        <table tableName="creative_capsule" domainObjectName="CreativeCapsule"/>
-        <table tableName="bbs_topic" domainObjectName="BbsTopic"/>
-        <table tableName="bbs_achievement" domainObjectName="BbsAchievement"/>
-        <table tableName="bbs_comment" domainObjectName="BbsComment"/>
-        <table tableName="bbs_reply" domainObjectName="BbsReply"/>
-        <table tableName="bbs_group" domainObjectName="BbsGroup"/>
-        <table tableName="group_namelist" domainObjectName="GroupNamelist"/>
-        <table tableName="followers_namelist" domainObjectName="FollowersNamelist"/>
+<!--        <table tableName="user_info" domainObjectName="User"/>-->
+<!--        <table tableName="creative_capsule" domainObjectName="CreativeCapsule"/>-->
+<!--        <table tableName="bbs_topic" domainObjectName="BbsTopic"/>-->
+<!--        <table tableName="bbs_achievement" domainObjectName="BbsAchievement"/>-->
+<!--        <table tableName="bbs_comment" domainObjectName="BbsComment"/>-->
+<!--        <table tableName="bbs_reply" domainObjectName="BbsReply"/>-->
+<!--        <table tableName="bbs_group" domainObjectName="BbsGroup"/>-->
+<!--        <table tableName="group_namelist" domainObjectName="GroupNamelist"/>-->
+<!--        <table tableName="followers_namelist" domainObjectName="FollowersNamelist"/>-->
+        <table tableName="user_otherinfo" domainObjectName="UserOtherInfo" />
         <!-- 不生成example类的写法
         <table tableName="" domainObjectName="" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"

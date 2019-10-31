@@ -4,13 +4,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.FollowersNamelistMapper;
 import com.choco.ithink.DAO.mapper.UserMapper;
+import com.choco.ithink.DAO.mapper.UserOtherInfoMapper;
 import com.choco.ithink.exception.PrimarykeyException;
-import com.choco.ithink.pojo.FollowersNamelist;
-import com.choco.ithink.pojo.FollowersNamelistExample;
-import com.choco.ithink.pojo.User;
-import com.choco.ithink.pojo.UserExample;
+import com.choco.ithink.pojo.*;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -28,6 +27,8 @@ public class UserService {
     // 用于查询粉丝列表
     @Resource
     private FollowersNamelistMapper followersNamelistMapper;
+    @Resource
+    private UserOtherInfoMapper userOtherInfoMapper;
 
     // 邮箱的正则表达式
     private String emailPattern = "^[\\w]{0,}@[\\w]{0,}\\.[\\w]{0,}$";
@@ -127,7 +128,8 @@ public class UserService {
             // 插入数据
             try
             {
-                userMapper.insertSelective(user);
+                 userMapper.insertSelective(user);
+
             }
             catch(Exception e)
             {
@@ -137,12 +139,18 @@ public class UserService {
             }
 
             // 检查是否成功插入数据
-            if(userMapper.selectByExample(userExample).size() != 1)
+            List<User> userList = userMapper.selectByExample(userExample);
+            if(userList.size() != 1)
             {
                 return -400;
             }
             else
             {
+                Integer id = userList.get(0).getUserId();
+                // 创建其他用户数据字段
+                UserOtherInfo userOtherInfo = new UserOtherInfo();
+                userOtherInfo.setUserId(id);
+                userOtherInfoMapper.insertSelective(userOtherInfo);
                 return 1;
             }
         }
@@ -235,5 +243,86 @@ public class UserService {
             jsonArray.add(jsonObject);
         }
         return jsonArray;
+    }
+
+
+    // param id: 用户id
+    // param head: 头像（可选）
+    // param name: 用户昵称（可选）
+    // param sex: 用户性别（可选）
+    // param birthday: 出生日期（可选）
+    // param phone: 手机号（可选）
+    // param address: 居住地（可选）
+    // param industry: 行业（可选）
+    // param school: 学校（可选）
+    // param introduction: 介绍（可选）
+    // do: 更新用户信息
+    // return: 成功返回1, 失败返回0
+    public Integer updateInfoById(Integer id, @Nullable MultipartFile head, @Nullable String name, @Nullable String sex,
+               @Nullable String birthday, @Nullable String phone, @Nullable String address, @Nullable String industry,
+               @Nullable String school, @Nullable String introduction)
+    {
+//        // 获取原本的用户基础数据
+//        UserExample oldUserExample = new UserExample();
+//        oldUserExample.createCriteria().andUserIdEqualTo(id);
+//        User user = null;
+//        try
+//        {
+//            user = userMapper.selectByExampleWithBLOBs(user);
+//        }
+//        catch(Exception e)
+//        {
+//            e.printStackTrace();
+//            return 0;
+//        }
+        // 预定义状态
+        Integer status = 0;
+
+        // 实体
+        User user = new User();
+        UserOtherInfo userOtherInfo = new UserOtherInfo();
+        // example类
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andUserIdEqualTo(id);
+        UserOtherInfoExample userOtherInfoExample = new UserOtherInfoExample();
+        userOtherInfoExample.createCriteria().andUserIdEqualTo(id);
+
+        try
+        {
+            // 构建新的用户基础信息
+            if(head!=null)
+            {
+                user.setUserAvatar(head.getBytes());
+            }
+            user.setUserName(name);
+            user.setUserSex(sex);
+            user.setUserBirth(birthday);
+            user.setUserPhone(phone);
+            // 更新用户基础信息
+            if(name!=null || sex!=null || birthday!=null || phone!=null)
+            {
+                userMapper.updateByExampleSelective(user, userExample);
+            }
+
+            // 构建新的用户补充信息
+            userOtherInfo.setUserAddress(address);
+            userOtherInfo.setUserIndustry(industry);
+            userOtherInfo.setUserSchool(school);
+            userOtherInfo.setUserSelfintroduction(introduction);
+            // 更新用户补充信息
+            if(address!=null || industry!=null || school!=null || introduction!=null)
+            {
+                userOtherInfoMapper.updateByExampleSelective(userOtherInfo, userOtherInfoExample);
+            }
+
+            status = 1;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            status = 0;
+        }
+
+        return status;
     }
 }
