@@ -4,18 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
     <title>Welcome to iThink </title>
-    <!--<link rel="stylesheet" href="/css/index.css">-->
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-    <!--<script type="text/javascript" src="/js/loadIdeasAjax.js"></script>-->
     <link rel="stylesheet"  href="/layui/css/layui.css">
     <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/js/search.js"></script>
+    <!--<script type="text/javascript" src="/js/search.js"></script>-->
+    <style>
+        .layui-layout-body{
+            min-width: 800px;
+            min-height: 300px;
+        }
+    </style>
 </head>
 <body class="layui-layout-body">
 
 <div class="layui-layout layui-layout-admin" style="width: 125%;margin: auto">
-    <div class="layui-header">
-        <ul class="layui-nav" style="background-color: #6CA6CD">
+    <div class="layui-header" style="background-color: #6CA6CD">
+        <ul class="layui-nav">
             <li class="layui-nav-item">
                 <img src="/img/商标small.png" alt="">
             </li>
@@ -53,14 +57,12 @@
 
     <div class="layui-side" style="background-color: #A4D3EE">
         <div class="layui-side-scroll">
-            <!-- 左侧导航区域 -->
+            <!--左侧导航区域-->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test"  style="background-color: #A4D3EE">
                 <li class="layui-nav-item"><a href="">发布创意</a></li>
                 <li class="layui-nav-item"><a href="">我的创意</a></li>
-                <li class="layui-nav-item"><a href="">发布创意</a></li>
-                <li class="layui-nav-item"><a href="">发布创意</a></li>
-                <li class="layui-nav-item"><a href="">发布创意</a></li>
-                <li class="layui-nav-item"><a href="">发布创意</a></li>
+                <li class="layui-nav-item"><a href="">创意胶囊</a></li>
+                <li class="layui-nav-item"><a href="">我的团组</a></li>
             </ul>
         </div>
     </div>
@@ -77,9 +79,24 @@
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
-                    <div id="ideaList"><div style="padding: 15px;">
-
-                    </div></div>
+                    <div id="ideaList">
+                        <div style="padding: 15px;">
+                        </div>
+                    </div>
+                    <div id="viewIdea">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                            <legend>创意详情</legend>
+                        </fieldset>
+                        <div class="layui-col-md12">
+                            <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id=\"ret\"><i class="layui-icon">&#xe65c;返回</i></button>
+                            <div class="layui-card">
+                                <div class="layui-card-header">创意标题</div>
+                                <div class="layui-card-body">
+                                    创意内容，你值得拥有！
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div id="cutPage"></div>
                 </div>
                 <div class="layui-tab-item">
