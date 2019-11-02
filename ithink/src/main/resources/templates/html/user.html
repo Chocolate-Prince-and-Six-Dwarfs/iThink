@@ -2,12 +2,108 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>用户</title>
-    <script type="text/javascript" src="js/jquery-2.2.4.min.js" ></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+    <title>用户界面</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet"  href="/layui/css/layui.css">
+    <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
+    <!--<script type="text/javascript" src="/js/search.js"></script>-->
+    <style>
+        .layui-layout-body{
+            min-width: 800px;
+            min-height: 300px;
+        }
+    </style>
 </head>
-<body>
-<div>
-    用户界面
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin" style="width: 125%;margin: auto">
+    <div class="layui-header" style="background-color: #1C1C1C">
+        <ul class="layui-nav">
+            <li class="layui-nav-item">
+                <img src="/img/商标small.png" alt="">
+            </li>
+
+            <li class="layui-nav-item">
+                <a href="/main">首页</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="">发现</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="">合作</a>
+            </li>
+            <li class="layui-nav-item" style="margin-left: 10px;">
+                <label>
+                    <input type="text" placeholder="搜索内容" class="layui-input" id="search-input"/>
+                </label>
+            </li>
+            <li class="layui-nav-item" style="margin-left: 3px;">
+                <a href="#" class="layui-icon" style="font-size: 25px;" id="search">&#xe615;</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side" style="background-color: #696969">
+        <div class="layui-side-scroll">
+            <!--左侧导航区域-->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="operation"  style="background-color: #696969">
+                <li class="layui-nav-item"><a class="user-site-active" data-type="tabUserInfo">个人信息</a></li>
+                <li class="layui-nav-item"><a class="user-site-active" data-type="tabUserNotice">我的通知</a></li>
+                <li class="layui-nav-item"><a href="">发布创意</a></li>
+                <li class="layui-nav-item"><a href="">我的创意</a></li>
+                <li class="layui-nav-item"><a href="">创意胶囊</a></li>
+                <li class="layui-nav-item"><a href="">我的团组</a></li>
+                <li class="layui-nav-item"><a href="">我的收藏</a></li>
+                <li class="layui-nav-item"><a href="">我的参与</a></li>
+                <li class="layui-nav-item"><a href="">获利项目</a></li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body" style="background-color: #FFFFF0">
+        <!-- 内容主体区域 -->
+        <div class="layui-tab" lay-filter="userDemo" lay-allowclose="true">
+            <ul class="layui-tab-title">
+                <li class="layui-this" lay-id="userInfo">个人信息</li>
+                <!--<li lay-id="userNotice">我的通知</li>
+                <li lay-id="userCollection">我的收藏</li>
+                <li lay-id="userParticipate">我的参与</li>
+                <li lay-id="">获利项目</li>
+                <li lay-id="">发布创意</li>
+                <li lay-id="">我的创意</li>
+                <li lay-id="">创意胶囊</li>
+                <li lay-id="">我的团组</li>-->
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="userInfoContent">
+                        <img src="/img/头像.png" alt="">
+                    </div>
+                </div>
+                <!--<div class="layui-tab-item">内容2</div>
+                <div class="layui-tab-item">内容3</div>
+                <div class="layui-tab-item">内容4</div>
+                <div class="layui-tab-item">内容5</div>
+                <div class="layui-tab-item">内容6</div>
+                <div class="layui-tab-item">内容7</div>
+                <div class="layui-tab-item">内容8</div>
+                <div class="layui-tab-item">内容9</div>
+                <div class="layui-tab-item">内容10</div>-->
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        @iThink独家享有。。。
+    </div>
 </div>
+
+<script>
+    layui.config({
+        base: '/layuiJs/' //你存放新模块的目录，注意，不是layui的模块目录
+    }).use('user'); //加载入口
+</script>
 </body>
 </html>

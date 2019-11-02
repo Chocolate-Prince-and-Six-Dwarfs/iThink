@@ -106,7 +106,8 @@ function getIdeaInfo(id){
 }
 
 function subStringContent(ideaContent){ //截取部分创意内容
-
+    var ic=ideaContent.substring(0,13);
+    return ic;
 }
 
 function cutPage(laypage,pageSize) {

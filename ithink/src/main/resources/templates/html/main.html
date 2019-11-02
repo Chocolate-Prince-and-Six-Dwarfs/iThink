@@ -18,14 +18,14 @@
 <body class="layui-layout-body">
 
 <div class="layui-layout layui-layout-admin" style="width: 125%;margin: auto">
-    <div class="layui-header" style="background-color: #6CA6CD">
+    <div class="layui-header" style="background-color: #1C1C1C">
         <ul class="layui-nav">
             <li class="layui-nav-item">
                 <img src="/img/商标small.png" alt="">
             </li>
 
             <li class="layui-nav-item">
-                <a href="">首页</a>
+                <a href="/main">首页</a>
             </li>
             <li class="layui-nav-item">
                 <a href="">发现</a>
@@ -39,26 +39,26 @@
                 </label>
             </li>
             <li class="layui-nav-item" style="margin-left: 3px;">
-                <a href="#" class="layui-icon" style="font-size: 25px;" id="search">&#xe615;</a>
+                <a href="#" class="layui-icon" style="font-size: 23px;" id="search">&#xe615;</a>
             </li>
             <li class="layui-nav-item">
-                <a href="#" class="layui-icon" style="font-size: 25px; " >&#xe667;</a>
+                <a href="#" class="layui-icon" style="font-size: 23px; " >&#xe667;</a>
             </li>
             <li class="layui-nav-item">
                 <a href="#"><img src="/img/头像small.png" class="layui-nav-img" alt="">我</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="#">个人中心</a></dd>
-                    <dd><a href="#">修改信息</a></dd>
+                    <dd><a href="/user#userDemo=userInfo">个人中心</a></dd>
+                    <dd><a href="/user#userDemo=userNotice">我的通知</a></dd>
                     <dd><a href="/user/logout">退出</a></dd>
                 </dl>
             </li>
         </ul>
     </div>
 
-    <div class="layui-side" style="background-color: #A4D3EE">
+    <div class="layui-side" style="background-color: #696969">
         <div class="layui-side-scroll">
             <!--左侧导航区域-->
-            <ul class="layui-nav layui-nav-tree"  lay-filter="test"  style="background-color: #A4D3EE">
+            <ul class="layui-nav layui-nav-tree"  lay-filter="operation"  style="background-color: #696969">
                 <li class="layui-nav-item"><a href="">发布创意</a></li>
                 <li class="layui-nav-item"><a href="">我的创意</a></li>
                 <li class="layui-nav-item"><a href="">创意胶囊</a></li>
@@ -67,15 +67,12 @@
         </div>
     </div>
 
-    <div class="layui-body">
+    <div class="layui-body" style="background-color: #FFFFF0">
         <!-- 内容主体区域 -->
         <div class="layui-tab">
             <ul class="layui-tab-title">
                 <li class="layui-this">创意推荐</li>
                 <li>热搜榜</li>
-                <li>我的收藏</li>
-                <li>其他</li>
-                <li>其他</li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
@@ -84,10 +81,11 @@
                         </div>
                     </div>
                     <div id="viewIdea">
-                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                        <!--<fieldset class="layui-elem-field layui。。-field-title" style="margin-top: 30px;">
                             <legend>创意详情</legend>
                         </fieldset>
                         <div class="layui-col-md12">
+                            模板，后面删除
                             <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id=\"ret\"><i class="layui-icon">&#xe65c;返回</i></button>
                             <div class="layui-card">
                                 <div class="layui-card-header">创意标题</div>
@@ -95,21 +93,12 @@
                                     创意内容，你值得拥有！
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                     <div id="cutPage"></div>
                 </div>
                 <div class="layui-tab-item">
                     热搜榜来啦
-                </div>
-                <div class="layui-tab-item">
-                    我的存货，别看
-                </div>
-                <div class="layui-tab-item">
-                    其他
-                </div>
-                <div class="layui-tab-item">
-                    其他
                 </div>
             </div>
         </div>
@@ -126,6 +115,5 @@
         base: '/layuiJs/' //你存放新模块的目录，注意，不是layui的模块目录
     }).use('index'); //加载入口
 </script>
-
 </body>
 </html>
