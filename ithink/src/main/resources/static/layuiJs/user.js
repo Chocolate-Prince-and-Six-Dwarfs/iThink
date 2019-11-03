@@ -32,7 +32,12 @@ layui.use(['element','jquery'],function () {
             }else{
                 element.tabAdd('userDemo',{
                     title: "个人信息"
-                    ,content: "<div class=\"userInfoContent\"><img src=\"/img/头像.png\" alt=\"\"></div>"
+                    ,content: "<div class=\"userInfoContent\">" +
+                        "<fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 30px;\">\n" +
+                        "<legend>个人信息</legend>\n" +
+                        "</fieldset>" +
+                        "<img src=\"/img/头像.png\" alt=\"\">" +
+                        "</div>"
                     ,id: "userInfo"
                 });
                 element.tabChange('userDemo','userInfo');
@@ -56,6 +61,39 @@ layui.use(['element','jquery'],function () {
     });
 
 });
+
+layui.use('upload',function () {//图片上传
+    var $=layui.jquery
+        ,upload=layui.upload;
+    var uploadImg=upload.render({
+        elem:"#uploadImg"
+        ,url:"upload"
+        ,size: 100
+        ,accept:"images"
+        ,before:function (obj) {
+            obj.preview(function (index,file,result) {
+                $("#userImg").attr('src',result);//图片链接（base64）
+            });
+        }
+        ,done:function (res) {
+            //如果上传失败
+            if(res.code>0){
+                return layer.msg('上传图片失败');
+            }else{
+                return layer.msg('上传成功');
+            }
+        }
+        ,error:function () {
+            //演示失败状态，并实现重传
+            var demoText = $('#demoText');
+            demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+            demoText.find('.demo-reload').on('click', function(){
+                uploadImg.upload();
+            });
+        }
+    });
+});
+
 
 function callUserNotice(element){
     if($(".layui-tab-title li[lay-id='userNotice']").length>0){
