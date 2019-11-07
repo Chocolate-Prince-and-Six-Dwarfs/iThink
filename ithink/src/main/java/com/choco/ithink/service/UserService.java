@@ -7,6 +7,7 @@ import com.choco.ithink.DAO.mapper.UserMapper;
 import com.choco.ithink.DAO.mapper.UserOtherInfoMapper;
 import com.choco.ithink.exception.PrimarykeyException;
 import com.choco.ithink.pojo.*;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -176,7 +177,7 @@ public class UserService {
         User user = new User();
         Integer defaultUserCredit = 100;
         String defaultPhone = "";
-        String path = System.getProperty("user.dir");
+        //String path = System.getProperty("user.dir");
 
         // 设置参数
         user.setUserName(username);
@@ -195,7 +196,8 @@ public class UserService {
         }
 
         // 读入默认头像
-        File img = new File(path + "\\src\\main\\resources\\static\\img\\" + "头像.png");//指定要读取的图片
+        String imgName = "头像.png";
+        InputStream img = getClass().getClassLoader().getResourceAsStream("static/img/" + imgName);//指定要读取的图片
         BufferedImage bufferedImage;
         try {
             // 将图片读取为块
