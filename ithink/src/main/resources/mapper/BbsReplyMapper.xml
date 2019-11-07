@@ -102,19 +102,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.choco.ithink.pojo.BbsReply" >
-    insert into bbs_reply (reply_id, comment_id, reply_content, 
-      reply_buildTime, reply_likeNum, from_uid, 
-      to_uid)
-    values (#{replyId,jdbcType=INTEGER}, #{commentId,jdbcType=INTEGER}, #{replyContent,jdbcType=VARCHAR}, 
-      #{replyBuildtime,jdbcType=TIMESTAMP}, #{replyLikenum,jdbcType=INTEGER}, #{fromUid,jdbcType=INTEGER}, 
-      #{toUid,jdbcType=INTEGER})
+    <selectKey resultType="java.lang.Integer" keyProperty="replyId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bbs_reply (comment_id, reply_content, reply_buildTime, 
+      reply_likeNum, from_uid, to_uid
+      )
+    values (#{commentId,jdbcType=INTEGER}, #{replyContent,jdbcType=VARCHAR}, #{replyBuildtime,jdbcType=TIMESTAMP}, 
+      #{replyLikenum,jdbcType=INTEGER}, #{fromUid,jdbcType=INTEGER}, #{toUid,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.choco.ithink.pojo.BbsReply" >
+    <selectKey resultType="java.lang.Integer" keyProperty="replyId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into bbs_reply
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="replyId != null" >
-        reply_id,
-      </if>
       <if test="commentId != null" >
         comment_id,
       </if>
@@ -135,9 +138,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="replyId != null" >
-        #{replyId,jdbcType=INTEGER},
-      </if>
       <if test="commentId != null" >
         #{commentId,jdbcType=INTEGER},
       </if>

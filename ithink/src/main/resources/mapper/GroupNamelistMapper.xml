@@ -98,17 +98,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.choco.ithink.pojo.GroupNamelist" >
-    insert into group_namelist (id, group_id, user_id
-      )
-    values (#{id,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}
-      )
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into group_namelist (group_id, user_id)
+    values (#{groupId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.choco.ithink.pojo.GroupNamelist" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into group_namelist
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="groupId != null" >
         group_id,
       </if>
@@ -117,9 +118,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="groupId != null" >
         #{groupId,jdbcType=INTEGER},
       </if>

@@ -104,21 +104,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.choco.ithink.pojo.BbsTopic" >
-    insert into bbs_topic (topic_id, user_id, topic_title, 
-      topic_creativeCapsule, topic_content, topic_buildTime, 
-      topic_achievementNum, topic_collectionNum
-      )
-    values (#{topicId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{topicTitle,jdbcType=VARCHAR}, 
-      #{topicCreativecapsule,jdbcType=INTEGER}, #{topicContent,jdbcType=VARCHAR}, #{topicBuildtime,jdbcType=TIMESTAMP}, 
-      #{topicAchievementnum,jdbcType=INTEGER}, #{topicCollectionnum,jdbcType=INTEGER}
-      )
+    <selectKey resultType="java.lang.Integer" keyProperty="topicId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bbs_topic (user_id, topic_title, topic_creativeCapsule, 
+      topic_content, topic_buildTime, topic_achievementNum, 
+      topic_collectionNum)
+    values (#{userId,jdbcType=INTEGER}, #{topicTitle,jdbcType=VARCHAR}, #{topicCreativecapsule,jdbcType=INTEGER}, 
+      #{topicContent,jdbcType=VARCHAR}, #{topicBuildtime,jdbcType=TIMESTAMP}, #{topicAchievementnum,jdbcType=INTEGER}, 
+      #{topicCollectionnum,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.choco.ithink.pojo.BbsTopic" >
+    <selectKey resultType="java.lang.Integer" keyProperty="topicId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into bbs_topic
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="topicId != null" >
-        topic_id,
-      </if>
       <if test="userId != null" >
         user_id,
       </if>
@@ -142,9 +143,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="topicId != null" >
-        #{topicId,jdbcType=INTEGER},
-      </if>
       <if test="userId != null" >
         #{userId,jdbcType=INTEGER},
       </if>

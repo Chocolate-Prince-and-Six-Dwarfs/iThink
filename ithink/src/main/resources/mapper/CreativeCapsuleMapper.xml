@@ -101,19 +101,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.choco.ithink.pojo.CreativeCapsule" >
-    insert into creative_capsule (creative_id, creative_name, user_id, 
-      creative_content, creative_buildTime, creative_uploadTime
+    <selectKey resultType="java.lang.Integer" keyProperty="creativeId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into creative_capsule (creative_name, user_id, creative_content, 
+      creative_buildTime, creative_uploadTime
       )
-    values (#{creativeId,jdbcType=INTEGER}, #{creativeName,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
-      #{creativeContent,jdbcType=VARCHAR}, #{creativeBuildtime,jdbcType=TIMESTAMP}, #{creativeUploadtime,jdbcType=TIMESTAMP}
+    values (#{creativeName,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{creativeContent,jdbcType=VARCHAR}, 
+      #{creativeBuildtime,jdbcType=TIMESTAMP}, #{creativeUploadtime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.choco.ithink.pojo.CreativeCapsule" >
+    <selectKey resultType="java.lang.Integer" keyProperty="creativeId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into creative_capsule
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="creativeId != null" >
-        creative_id,
-      </if>
       <if test="creativeName != null" >
         creative_name,
       </if>
@@ -131,9 +134,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="creativeId != null" >
-        #{creativeId,jdbcType=INTEGER},
-      </if>
       <if test="creativeName != null" >
         #{creativeName,jdbcType=VARCHAR},
       </if>

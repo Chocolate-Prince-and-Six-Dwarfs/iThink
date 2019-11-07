@@ -104,19 +104,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.choco.ithink.pojo.BbsComment" >
-    insert into bbs_comment (comment_id, achievement_id, comment_content, 
-      comment_buildTime, comment_likeNum, comment_replyNum, 
-      from_uid, to_uid)
-    values (#{commentId,jdbcType=INTEGER}, #{achievementId,jdbcType=INTEGER}, #{commentContent,jdbcType=VARCHAR}, 
-      #{commentBuildtime,jdbcType=TIMESTAMP}, #{commentLikenum,jdbcType=INTEGER}, #{commentReplynum,jdbcType=INTEGER}, 
-      #{fromUid,jdbcType=INTEGER}, #{toUid,jdbcType=INTEGER})
+    <selectKey resultType="java.lang.Integer" keyProperty="commentId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bbs_comment (achievement_id, comment_content, comment_buildTime, 
+      comment_likeNum, comment_replyNum, from_uid, 
+      to_uid)
+    values (#{achievementId,jdbcType=INTEGER}, #{commentContent,jdbcType=VARCHAR}, #{commentBuildtime,jdbcType=TIMESTAMP}, 
+      #{commentLikenum,jdbcType=INTEGER}, #{commentReplynum,jdbcType=INTEGER}, #{fromUid,jdbcType=INTEGER}, 
+      #{toUid,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.choco.ithink.pojo.BbsComment" >
+    <selectKey resultType="java.lang.Integer" keyProperty="commentId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into bbs_comment
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="commentId != null" >
-        comment_id,
-      </if>
       <if test="achievementId != null" >
         achievement_id,
       </if>
@@ -140,9 +143,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="commentId != null" >
-        #{commentId,jdbcType=INTEGER},
-      </if>
       <if test="achievementId != null" >
         #{achievementId,jdbcType=INTEGER},
       </if>

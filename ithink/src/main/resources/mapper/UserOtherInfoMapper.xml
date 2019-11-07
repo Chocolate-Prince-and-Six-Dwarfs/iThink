@@ -101,19 +101,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.choco.ithink.pojo.UserOtherInfo" >
-    insert into user_otherinfo (id, user_id, user_address, 
-      user_industry, user_school, user_selfIntroduction
-      )
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userAddress,jdbcType=VARCHAR}, 
-      #{userIndustry,jdbcType=VARCHAR}, #{userSchool,jdbcType=VARCHAR}, #{userSelfintroduction,jdbcType=VARCHAR}
-      )
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user_otherinfo (user_id, user_address, user_industry, 
+      user_school, user_selfIntroduction)
+    values (#{userId,jdbcType=INTEGER}, #{userAddress,jdbcType=VARCHAR}, #{userIndustry,jdbcType=VARCHAR}, 
+      #{userSchool,jdbcType=VARCHAR}, #{userSelfintroduction,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.choco.ithink.pojo.UserOtherInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into user_otherinfo
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="userId != null" >
         user_id,
       </if>
@@ -131,9 +132,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="userId != null" >
         #{userId,jdbcType=INTEGER},
       </if>

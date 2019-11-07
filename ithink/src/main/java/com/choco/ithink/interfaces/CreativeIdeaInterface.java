@@ -83,18 +83,40 @@ public interface CreativeIdeaInterface {
     //                  good: 20 (创意实现点赞数),
     //                  bad: 2 (创意实现的点灭数)
     //              },
-    //              replyCount: 8, (回复条数)
-    //              reply:
+    //              commentCount: 8, (评论条数)
+    //              comments:
     //              [
     //                  {
-    //                      replyId: 0,(回复id)
-    //                      achievementId: 0,(创意实现id)
-    //                      content: "回复内容",
-    //                      time: "回复时间",
-    //                      fromId: 0,(回复者id)
-    //                      fromName: "回复者昵称"
-    //                      toId: 0,(被回复者id)
-    //                      toName: "被回复者昵称"
+    //                      comment:
+    //                      {
+    //                          commentId: 评论id,
+    //                          achievementId: 创意实现id,
+    //                          content: "评论内容",
+    //                          time: 评论时间,
+    //                          fromId: 评论者id,
+    //                          fromName: 评论者昵称,
+    //                          toId: 被评论者id,
+    //                          toName: 被评论者昵称
+    //                          like: 点赞数
+    //                      }
+    //                      replyCount: 8, (回复条数)
+    //                      replies:
+    //                      [
+    //                          {
+    //                              replyId: 0,(回复id)
+    //                              commentId: 0,(创意实现id)
+    //                              content: "回复内容",
+    //                              time: "回复时间",
+    //                              fromId: 0,(回复者id)
+    //                              fromName: "回复者昵称"
+    //                              toId: 0,(被回复者id)
+    //                              toName: "被回复者昵称"
+    //                          },
+    //                          {
+    //                              同上
+    //                          },
+    //                          ......
+    //                      ]
     //                  },
     //                  {
     //                      同上

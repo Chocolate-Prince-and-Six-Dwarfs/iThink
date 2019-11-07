@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import com.choco.ithink.interfaces.CreativeIdeaInterface;
 import com.choco.ithink.service.AchievementService;
+import com.choco.ithink.service.CommentService;
 import com.choco.ithink.service.CreativeIdeaService;
 import com.choco.ithink.service.ReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
     private AchievementService achievementService;
     @Autowired
     private ReplyService replyService;
+    @Autowired
+    private CommentService commentService;
 
 
     // 请求地址 idea/search
@@ -134,18 +137,40 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
     //                  good: 20 (创意实现点赞数),
     //                  bad: 2 (创意实现的点灭数)
     //              },
-    //              replyCount: 8, (回复条数)
-    //              reply:
+    //              commentCount: 8, (评论条数)
+    //              comments:
     //              [
     //                  {
-    //                      replyId: 0,(回复id)
-    //                      achievementId: 0,(创意实现id)
-    //                      content: "回复内容",
-    //                      time: "回复时间",
-    //                      fromId: 0,(回复者id)
-    //                      fromName: "回复者昵称"
-    //                      toId: 0,(被回复者id)
-    //                      toName: "被回复者昵称"
+    //                      comment:
+    //                      {
+    //                          commentId: 评论id,
+    //                          achievementId: 创意实现id,
+    //                          content: "评论内容",
+    //                          time: 评论时间,
+    //                          fromId: 评论者id,
+    //                          fromName: 评论者昵称,
+    //                          toId: 被评论者id,
+    //                          toName: 被评论者昵称
+    //                          like: 点赞数
+    //                      }
+    //                      replyCount: 8, (回复条数)
+    //                      replies:
+    //                      [
+    //                          {
+    //                              replyId: 0,(回复id)
+    //                              commentId: 0,(创意实现id)
+    //                              content: "回复内容",
+    //                              time: "回复时间",
+    //                              fromId: 0,(回复者id)
+    //                              fromName: "回复者昵称"
+    //                              toId: 0,(被回复者id)
+    //                              toName: "被回复者昵称"
+    //                          },
+    //                          {
+    //                              同上
+    //                          },
+    //                          ......
+    //                      ]
     //                  },
     //                  {
     //                      同上
@@ -167,19 +192,37 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
 
         // 搜索与统计
         JSONObject topic = creativeIdeaService.getById(id);
-        JSONArray achievementArrary = achievementService.getByTopicId(topic.getInteger("id"));
+        JSONArray achievementArray = achievementService.getByTopicId(topic.getInteger("id"));
         JSONArray achievements = new JSONArray();
-        Integer achievementCount = achievementArrary.size();
+        Integer achievementCount = achievementArray.size();
+
+        // 遍历创意实现
         for(int i=0; i<achievementCount; ++i)
         {
-            JSONObject tmp = new JSONObject();
-            tmp.put("achievement", achievementArrary.getJSONObject(i));
-            JSONArray reply = replyService.getByAchievementId(achievementArrary.getJSONObject(i).getInteger("id"));
-            Integer replyCount = reply.size();
-            tmp.put("replyCount", replyCount);
-            tmp.put("reply", reply);
+            JSONObject tmpAchievement = new JSONObject();
+            tmpAchievement.put("achievement", achievementArray.getJSONObject(i));
+            JSONArray commentArray = commentService.getByAchievementId(achievementArray.getJSONObject(i).getInteger("id"));
+            JSONArray comments = new JSONArray();
+            Integer commentCount = commentArray.size();
+            tmpAchievement.put("commentCount", commentCount);
 
-            achievements.add(tmp);
+            // 遍历评论
+            for(int j=0; j<commentCount; ++j)
+            {
+                JSONObject tmpComment = new JSONObject();
+                tmpComment.put("comment", commentArray.getJSONObject(j));
+                JSONArray replies = replyService.getByCommentId(commentArray.getJSONObject(j).getInteger("commentId"));
+                Integer replyCount =replies.size();
+
+                tmpComment.put("replyCount", replyCount);
+                tmpComment.put("replies", replies);
+
+                comments.add(tmpComment);
+            }
+
+            tmpAchievement.put("comments", comments);
+
+            achievements.add(tmpAchievement);
         }
 
 

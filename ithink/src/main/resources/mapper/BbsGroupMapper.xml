@@ -101,19 +101,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.choco.ithink.pojo.BbsGroup" >
-    insert into bbs_group (group_id, topic_id, group_name, 
-      group_buildTime, group_ownerID, group_number
-      )
-    values (#{groupId,jdbcType=INTEGER}, #{topicId,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, 
-      #{groupBuildtime,jdbcType=TIMESTAMP}, #{groupOwnerid,jdbcType=INTEGER}, #{groupNumber,jdbcType=INTEGER}
-      )
+    <selectKey resultType="java.lang.Integer" keyProperty="groupId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bbs_group (topic_id, group_name, group_buildTime, 
+      group_ownerID, group_number)
+    values (#{topicId,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, #{groupBuildtime,jdbcType=TIMESTAMP}, 
+      #{groupOwnerid,jdbcType=INTEGER}, #{groupNumber,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.choco.ithink.pojo.BbsGroup" >
+    <selectKey resultType="java.lang.Integer" keyProperty="groupId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into bbs_group
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="groupId != null" >
-        group_id,
-      </if>
       <if test="topicId != null" >
         topic_id,
       </if>
@@ -131,9 +132,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="groupId != null" >
-        #{groupId,jdbcType=INTEGER},
-      </if>
       <if test="topicId != null" >
         #{topicId,jdbcType=INTEGER},
       </if>

@@ -104,21 +104,24 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.choco.ithink.pojo.BbsAchievement" >
-    insert into bbs_achievement (achievement_id, topic_id, achievement_content, 
-      user_id, achievement_likeNum, achievement_unlikeNum, 
+    <selectKey resultType="java.lang.Integer" keyProperty="achievementId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bbs_achievement (topic_id, achievement_content, user_id, 
+      achievement_likeNum, achievement_unlikeNum, 
       achievement_bulidTime, achievement_commentNum
       )
-    values (#{achievementId,jdbcType=INTEGER}, #{topicId,jdbcType=INTEGER}, #{achievementContent,jdbcType=VARCHAR}, 
-      #{userId,jdbcType=INTEGER}, #{achievementLikenum,jdbcType=INTEGER}, #{achievementUnlikenum,jdbcType=INTEGER}, 
+    values (#{topicId,jdbcType=INTEGER}, #{achievementContent,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{achievementLikenum,jdbcType=INTEGER}, #{achievementUnlikenum,jdbcType=INTEGER}, 
       #{achievementBulidtime,jdbcType=TIMESTAMP}, #{achievementCommentnum,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.choco.ithink.pojo.BbsAchievement" >
+    <selectKey resultType="java.lang.Integer" keyProperty="achievementId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into bbs_achievement
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="achievementId != null" >
-        achievement_id,
-      </if>
       <if test="topicId != null" >
         topic_id,
       </if>
@@ -142,9 +145,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="achievementId != null" >
-        #{achievementId,jdbcType=INTEGER},
-      </if>
       <if test="topicId != null" >
         #{topicId,jdbcType=INTEGER},
       </if>
