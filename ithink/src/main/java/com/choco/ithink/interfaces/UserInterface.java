@@ -132,10 +132,38 @@ public interface UserInterface {
     // 请求地址: user/getById
     // param id: 用户id
     // do: 获取用户除了密码以外的信息
+    // return:
+    // 成功:
+    // {
+    //  id: ,
+    //  name: ,
+    //  sex: ,
+    //  email: ,
+    //  birthday: ,
+    //  phone: ,
+    //  credit: 信誉积分,
+    //  head: 头像
+    //  address: ,
+    //  industry: 职业,
+    //  school: ,
+    //  introduction
+    // }
     JSONObject getById(Integer id);
 
     // 请求地址: user/getLoginId
     // do: 获取当前登录用户的id
     // return: 用户id
     Integer getLoginId(HttpServletRequest request);
+
+
+    // 请求地址: user/getCollectById
+    // param id: 用户id
+    // do: 获取用户的创意主题和创意实现收藏列表(只返回id)
+    // return:
+    // {
+    //      id: ,
+    //      topic:  [0, 1, 3, 5]
+    //      achievement: [0, 3, 8]
+    // }
+    JSONObject getCollectById(Integer id);
 }

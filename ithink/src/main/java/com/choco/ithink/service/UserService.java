@@ -2,9 +2,7 @@ package com.choco.ithink.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.choco.ithink.DAO.mapper.FollowersNamelistMapper;
-import com.choco.ithink.DAO.mapper.UserMapper;
-import com.choco.ithink.DAO.mapper.UserOtherInfoMapper;
+import com.choco.ithink.DAO.mapper.*;
 import com.choco.ithink.exception.PrimarykeyException;
 import com.choco.ithink.pojo.*;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -30,6 +28,10 @@ public class UserService {
     private FollowersNamelistMapper followersNamelistMapper;
     @Resource
     private UserOtherInfoMapper userOtherInfoMapper;
+    @Resource
+    private TopicCollectionMapper topicCollectionMapper;
+    @Resource
+    private AchievementCollectionMapper achievementCollectionMapper;
 
     // 邮箱的正则表达式
     private String emailPattern = "^[\\w]{0,}@[\\w]{0,}\\.[\\w]{0,}$";
@@ -387,6 +389,50 @@ public class UserService {
             jsonObject.put("school", school);
             jsonObject.put("introduction", introduction);
             jsonArray.add(jsonObject);
+        }
+
+        return jsonArray;
+    }
+
+
+    // param id: 用户id
+    // do: 获取用户的创意主题和创意实现收藏列表(只返回id)
+    // return:[0, 1, 3, 5]
+    public JSONArray getCollectTopicById(Integer id)
+    {
+        JSONArray jsonArray = new JSONArray();
+
+        // 收藏的主题列表
+        JSONArray topic = new JSONArray();
+        TopicCollectionExample topicCollectionExample = new TopicCollectionExample();
+        topicCollectionExample.createCriteria().andUserIdEqualTo(id);
+        List<TopicCollectionKey> topicCollectionKeyList = topicCollectionMapper.selectByExample(topicCollectionExample);
+
+        for(int i=0; i<topicCollectionKeyList.size(); ++i)
+        {
+            jsonArray.add(topicCollectionKeyList.get(i).getTopicId());
+        }
+
+        return jsonArray;
+    }
+
+
+    // param id: 用户id
+    // do: 获取用户的创意主题和创意实现收藏列表(只返回id)
+    // return:[0, 1, 3, 5]
+    public JSONArray getCollectAchievementById(Integer id)
+    {
+        JSONArray jsonArray = new JSONArray();
+
+        // 收藏的主题列表
+        JSONArray achievement = new JSONArray();
+        AchievementCollectionExample achievementCollectionExample = new AchievementCollectionExample();
+        achievementCollectionExample.createCriteria().andUserIdEqualTo(id);
+        List<AchievementCollectionKey> achievementCollectionKeyList = achievementCollectionMapper.selectByExample(achievementCollectionExample);
+
+        for(int i=0; i<achievementCollectionKeyList.size(); ++i)
+        {
+            jsonArray.add(achievementCollectionKeyList.get(i).getAchievementId());
         }
 
         return jsonArray;

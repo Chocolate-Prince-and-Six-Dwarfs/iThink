@@ -334,4 +334,31 @@ public class UserController implements UserInterface {
             return null;
         }
     }
+
+
+    // 请求地址: user/getCollectById
+    // param id: 用户id
+    // do: 获取用户的创意主题和创意实现收藏列表(只返回id)
+    // return:
+    // {
+    //      id: ,
+    //      topic:  [0, 1, 3, 5]
+    //      achievement: [0, 3, 8]
+    // }
+    @RequestMapping("/getCollectById")
+    @ResponseJSONP
+    public JSONObject getCollectById(Integer id)
+    {
+        JSONObject jsonObject = new JSONObject();
+
+        // 搜索与统计
+        JSONArray topic = userService.getCollectTopicById(id);
+        JSONArray achievement = userService.getCollectAchievementById(id);
+
+        // 拼接字符串
+        jsonObject.put("id", id);
+        jsonObject.put("topic", topic);
+        jsonObject.put("achievement", achievement);
+        return jsonObject;
+    }
 }

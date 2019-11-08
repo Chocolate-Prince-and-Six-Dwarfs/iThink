@@ -130,4 +130,28 @@ public class AchievementController implements AchievementInterface {
         jsonObject.put("data", data);
         return jsonObject;
     }
+
+
+    // 请求地址: /ach/getById
+    // param id: 创意实现id
+    // do: 获取指定创意实现的数据
+    // return:
+    // {
+    //    id: 1 (创意实现id),
+    //    userId: 1 (创意实现发布者id),
+    //    topicName: "创意实现对应的主题名",
+    //    topicId: 1 (创意实现对应的主题id),
+    //    content: "创意实现内容",
+    //    time: "创意实现时间",
+    //    like: 20 (创意实现点赞数),
+    //    dislike: 2 (创意实现的点踩数),
+    //    collect: 2 （收藏数）,
+    //    comment: 3（评论数）
+    // }
+    @RequestMapping("/getById")
+    @ResponseJSONP
+    public JSONObject getById(Integer id)
+    {
+        return achievementService.getById(id);
+    }
 }
