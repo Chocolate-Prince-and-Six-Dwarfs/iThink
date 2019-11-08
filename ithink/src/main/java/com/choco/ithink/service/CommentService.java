@@ -3,14 +3,10 @@ package com.choco.ithink.service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.BbsCommentMapper;
+import com.choco.ithink.DAO.mapper.BbsReplyMapper;
 import com.choco.ithink.DAO.mapper.CommentLikeMapper;
 import com.choco.ithink.DAO.mapper.UserMapper;
-import com.choco.ithink.pojo.BbsComment;
-import com.choco.ithink.pojo.BbsCommentExample;
-import com.choco.ithink.pojo.CommentLike;
-import com.choco.ithink.pojo.CommentLikeExample;
-import com.choco.ithink.pojo.UserExample;
-import com.choco.ithink.pojo.User;
+import com.choco.ithink.pojo.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,6 +21,8 @@ public class CommentService {
     private UserMapper userMapper;
     @Resource
     private CommentLikeMapper commentLikeMapper;
+    @Resource
+    private BbsReplyMapper bbsReplyMapper;
 
     // param achievementId: 创意实现id
     // do: 查找指定创意实现的评论
@@ -69,6 +67,21 @@ public class CommentService {
                 toName = toList.get(0).getUserName();
             }
 
+            Integer commentId = bbsCommentList.get(i).getCommentId();
+
+            // 统计点赞点踩数量
+            CommentLikeExample commentLikeExample = new CommentLikeExample();
+            commentLikeExample.createCriteria().andCommentIdEqualTo(commentId).andTypeEqualTo(true);
+            Integer like = commentLikeMapper.countByExample(commentLikeExample);
+            commentLikeExample.clear();
+            commentLikeExample.createCriteria().andCommentIdEqualTo(commentId).andTypeEqualTo(false);
+            Integer dislike = commentLikeMapper.countByExample(commentLikeExample);
+
+            // 统计回复数量
+            BbsReplyExample bbsReplyExample = new BbsReplyExample();
+            bbsReplyExample.createCriteria().andCommentIdEqualTo(commentId);
+            Integer reply = bbsReplyMapper.countByExample(bbsReplyExample);
+
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("commentId", bbsCommentList.get(i).getCommentId());
             jsonObject.put("achievementId", bbsCommentList.get(i).getAchievementId());
@@ -78,7 +91,9 @@ public class CommentService {
             jsonObject.put("fromName", fromName);
             jsonObject.put("toUid", bbsCommentList.get(i).getToUid());
             jsonObject.put("toName", toName);
-            jsonObject.put("like", bbsCommentList.get(i).getCommentLikenum());
+            jsonObject.put("like", like);
+            jsonObject.put("dislike", dislike);
+            jsonObject.put("reply", reply);
             jsonArray.add(jsonObject);
         }
 
@@ -142,6 +157,7 @@ public class CommentService {
     //      toId: 被评论者id,
     //      toName: 被评论者昵称
     //      like: 点赞数
+    //      dislike: 点踩数
     // }
     // 失败: null
     public JSONObject getById(Integer id)

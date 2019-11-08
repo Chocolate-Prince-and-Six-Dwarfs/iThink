@@ -2,10 +2,7 @@ package com.choco.ithink.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.choco.ithink.DAO.mapper.AchievementCollectionMapper;
-import com.choco.ithink.DAO.mapper.AchievementLikeMapper;
-import com.choco.ithink.DAO.mapper.BbsAchievementMapper;
-import com.choco.ithink.DAO.mapper.BbsTopicMapper;
+import com.choco.ithink.DAO.mapper.*;
 import com.choco.ithink.pojo.*;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +21,8 @@ public class AchievementService {
     private AchievementLikeMapper achievementLikeMapper;
     @Resource
     private AchievementCollectionMapper achievementCollectionMapper;
+    @Resource
+    private BbsCommentMapper bbsCommentMapper;
 
 
     // param userId: 用户id
@@ -60,6 +59,26 @@ public class AchievementService {
             bbsTopicExample.createCriteria().andTopicIdEqualTo(bbsAchievementList.get(i).getTopicId());
             String topicName = bbsTopicMapper.selectByExample(bbsTopicExample).get(0).getTopicTitle();
 
+            Integer achievementId = bbsAchievementList.get(i).getAchievementId();
+
+            // 统计点赞点踩数量
+            AchievementLikeExample achievementLikeExample = new AchievementLikeExample();
+            achievementLikeExample.createCriteria().andAchievementIdEqualTo(achievementId).andTypeEqualTo(true);
+            Integer like = achievementLikeMapper.countByExample(achievementLikeExample);
+            achievementLikeExample.clear();
+            achievementLikeExample.createCriteria().andAchievementIdEqualTo(achievementId).andTypeEqualTo(false);
+            Integer dislike = achievementLikeMapper.countByExample(achievementLikeExample);
+
+            // 统计收藏数量
+            AchievementCollectionExample achievementCollectionExample = new AchievementCollectionExample();
+            achievementCollectionExample.createCriteria().andAchievementIdEqualTo(achievementId);
+            Integer collect = achievementCollectionMapper.countByExample(achievementCollectionExample);
+
+            // 统计评论数量
+            BbsCommentExample bbsCommentExample = new BbsCommentExample();
+            bbsCommentExample.createCriteria().andAchievementIdEqualTo(achievementId);
+            Integer comment = bbsCommentMapper.countByExample(bbsCommentExample);
+
             // 拼接Json
             jsonObject.put("id", bbsAchievementList.get(i).getTopicId());
             jsonObject.put("userId", bbsAchievementList.get(i).getUserId());
@@ -67,9 +86,10 @@ public class AchievementService {
             jsonObject.put("topicId", bbsAchievementList.get(i).getTopicId());
             jsonObject.put("content", bbsAchievementList.get(i).getAchievementContent());
             jsonObject.put("time", bbsAchievementList.get(i).getAchievementBulidtime());
-            jsonObject.put("good", bbsAchievementList.get(i).getAchievementLikenum());
-            jsonObject.put("bad", bbsAchievementList.get(i).getAchievementUnlikenum());
-            jsonObject.put("reply", bbsAchievementList.get(i).getAchievementCommentnum());
+            jsonObject.put("like", like);
+            jsonObject.put("dislike", dislike);
+            jsonObject.put("collect", collect);
+            jsonObject.put("comment", comment);
             jsonArray.add(jsonObject);
         }
 
@@ -127,7 +147,6 @@ public class AchievementService {
         AchievementLikeExample achievementLikeExample = new AchievementLikeExample();
         achievementLikeExample.createCriteria().andAchievementIdEqualTo(id).andUserIdEqualTo(userId);
         List<AchievementLike> achievementLikeList = achievementLikeMapper.selectByExample(achievementLikeExample);
-
 
         AchievementLike achievementLike = new AchievementLike();
 

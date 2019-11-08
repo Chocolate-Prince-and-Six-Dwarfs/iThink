@@ -2,10 +2,7 @@ package com.choco.ithink.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.choco.ithink.DAO.mapper.BbsTopicMapper;
-import com.choco.ithink.DAO.mapper.TopicCollectionMapper;
-import com.choco.ithink.DAO.mapper.TopicLikeMapper;
-import com.choco.ithink.DAO.mapper.UserMapper;
+import com.choco.ithink.DAO.mapper.*;
 import com.choco.ithink.pojo.*;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
@@ -38,6 +35,8 @@ public class CreativeIdeaService {
     private TopicLikeMapper topicLikeMapper;
     @Resource
     private TopicCollectionMapper topicCollectionMapper;
+    @Resource
+    private BbsAchievementMapper bbsAchievementMapper;
 
 
     // param bbsTopicList: mybatis查询数据库得到的实体列表
@@ -119,6 +118,26 @@ public class CreativeIdeaService {
                 publisher = userList.get(0).getUserName();
             }
 
+            Integer topicId = bbsTopicList.get(i).getTopicId();
+
+            // 统计点赞点踩数量
+            TopicLikeExample topicLikeExample = new TopicLikeExample();
+            topicLikeExample.createCriteria().andTopicIdEqualTo(topicId).andTypeEqualTo(true);
+            Integer like = topicLikeMapper.countByExample(topicLikeExample);
+            topicLikeExample.clear();
+            topicLikeExample.createCriteria().andTopicIdEqualTo(topicId).andTypeEqualTo(false);
+            Integer dislike = topicLikeMapper.countByExample(topicLikeExample);
+
+            // 统计收藏数量
+            TopicCollectionExample topicCollectionExample = new TopicCollectionExample();
+            topicCollectionExample.createCriteria().andTopicIdEqualTo(topicId);
+            Integer collect = topicCollectionMapper.countByExample(topicCollectionExample);
+
+            // 统计实现数量
+            BbsAchievementExample bbsAchievementExample = new BbsAchievementExample();
+            bbsAchievementExample.createCriteria().andTopicIdEqualTo(topicId);
+            Integer achievement = bbsAchievementMapper.countByExample(bbsAchievementExample);
+
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", bbsTopicList.get(i).getTopicId());
             jsonObject.put("title", bbsTopicList.get(i).getTopicTitle());
@@ -126,7 +145,10 @@ public class CreativeIdeaService {
             jsonObject.put("time", bbsTopicList.get(i).getTopicBuildtime());
             jsonObject.put("publisherId", bbsTopicList.get(i).getUserId());
             jsonObject.put("publisher", publisher);
-            jsonObject.put("like", bbsTopicList.get(i).getTopicCollectionnum());
+            jsonObject.put("like", like);
+            jsonObject.put("dislike", dislike);
+            jsonObject.put("collect", collect);
+            jsonObject.put("achievement", achievement);
             jsonArray.add(jsonObject);
         }
 

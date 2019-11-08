@@ -120,7 +120,10 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
     //      time: "时间",
     //      publisherId: 0,（发布者id）
     //      publisher: "发布者",
-    //      like: 收藏数
+    //      like: 点赞数,
+    //      dislike: 点踩数,
+    //      collect: 收藏数,
+    //      achievement: 实现数
     //  },
     //  achievementCount: 10, (创意实现条数)
     //  achievements:
@@ -134,8 +137,10 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
     //                  topicId: 1 (创意实现对应的主题id),
     //                  content: "创意实现内容",
     //                  time: "创意实现时间",
-    //                  good: 20 (创意实现点赞数),
-    //                  bad: 2 (创意实现的点灭数)
+    //                  like: 20 (创意实现点赞数),
+    //                  dislike: 2 (创意实现的点踩数),
+    //                  collect: 2 （收藏数）,
+    //                  comment: 3（评论数）
     //              },
     //              commentCount: 8, (评论条数)
     //              comments:
@@ -151,7 +156,9 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
     //                          fromName: 评论者昵称,
     //                          toId: 被评论者id,
     //                          toName: 被评论者昵称
-    //                          like: 点赞数
+    //                          like: 点赞数,
+    //                          dislike: 点踩数,
+    //                          reply: 回复数
     //                      }
     //                      replyCount: 8, (回复条数)
     //                      replies:
