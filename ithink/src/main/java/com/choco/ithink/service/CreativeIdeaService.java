@@ -3,11 +3,14 @@ package com.choco.ithink.service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.BbsTopicMapper;
+import com.choco.ithink.DAO.mapper.TopicLikeMapper;
 import com.choco.ithink.DAO.mapper.UserMapper;
 import com.choco.ithink.pojo.BbsTopic;
 import com.choco.ithink.pojo.BbsTopicExample;
 import com.choco.ithink.pojo.User;
 import com.choco.ithink.pojo.UserExample;
+import com.choco.ithink.pojo.TopicLikeExample;
+import com.choco.ithink.pojo.TopicLike;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Bulk;
@@ -35,6 +38,8 @@ public class CreativeIdeaService {
     // 用于搜索的jest客户端
     @Resource
     private JestClient jestClient;
+    @Resource
+    private TopicLikeMapper topicLikeMapper;
 
 
     // param bbsTopicList: mybatis查询数据库得到的实体列表
@@ -203,5 +208,145 @@ public class CreativeIdeaService {
             return list2JSON(bbsTopicList);
         }
 
+    }
+
+
+    // param id: 创意实现id
+    // param userId：用户id
+    // param type: false|true 踩|赞
+    // do: 点赞或点踩（重复请求会取消点赞或点踩）
+    // return:
+    //  {
+    //      like:xxx（点赞数量）, dislike:xxx(点踩数量), status:-1|0|1|-400 用户点赞/点踩状态 没赞没踩|踩|赞|发生错误
+    //  }
+    public JSONObject like(Integer id, Integer userId, Boolean type)
+    {
+        JSONObject jsonObject = new JSONObject();
+        Integer status = -1;
+        Integer like = 0;
+        Integer dislike = -400;
+
+        // 查询是否已经点赞或者点踩
+        TopicLikeExample topicLikeExample = new TopicLikeExample();
+        topicLikeExample.createCriteria().andTopicIdEqualTo(id).andUserIdEqualTo(userId);
+        List<TopicLike> topicLikeList = topicLikeMapper.selectByExample(topicLikeExample);
+
+
+        TopicLike topicLike = new TopicLike();
+
+        try
+        {
+            switch (topicLikeList.size()) {
+                case 0:
+                    // 构造关系
+                    topicLike.setType(type);
+                    topicLike.setTopicId(id);
+                    topicLike.setUserId(userId);
+
+                    // 插入关系
+                    if (topicLikeMapper.insertSelective(topicLike) == 1) {
+                        status = type==true ? 1 : 0;
+                    } else {
+                        status = -400;
+                    }
+                    break;
+                case 1:
+                    // 根据请求类型和已有关系进行操作
+                    // 若请求的是已有关系则删除关系
+                    if (topicLikeList.get(0).getType() == type) {
+                        topicLikeMapper.deleteByExample(topicLikeExample);
+                        status = -1;
+                    }
+                    // 相反关系则更新关系
+                    else {
+                        topicLike.setType(type);
+                        topicLikeMapper.updateByExampleSelective(topicLike, topicLikeExample);
+                        status = type==true ? 1 : 0;
+                    }
+                    break;
+                default:
+                    status = -400;
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            status = -400;
+        }
+        finally
+        {
+            topicLikeExample.clear();
+            topicLikeExample.createCriteria().andTopicIdEqualTo(id).andTypeEqualTo(true);
+            like = topicLikeMapper.countByExample(topicLikeExample);
+
+            topicLikeExample.clear();
+            topicLikeExample.createCriteria().andTopicIdEqualTo(id).andTypeEqualTo(false);
+            dislike = topicLikeMapper.countByExample(topicLikeExample);
+        }
+
+        // 拼接json
+        jsonObject.put("like", like);
+        jsonObject.put("dislike", dislike);
+        jsonObject.put("status", status);
+
+        return jsonObject;
+    }
+
+
+    // param id: 创意主题id
+    // param userId：用户id
+    // do: 获取点赞数据和点赞状态
+    // return:
+    // {
+    //      like:xxx（点赞数量）, dislike:xxx(点踩数量), status:-1|0|1|-400 用户点赞/点踩状态 没赞没踩|踩|赞|发生错误
+    // }
+    public JSONObject getLike(Integer id, Integer userId)
+    {
+        JSONObject jsonObject = new JSONObject();
+        Integer status = -1;
+        Integer like = 0;
+        Integer dislike = -400;
+
+        // 查询是否已经点赞或者点踩
+        TopicLikeExample topicLikeExample = new TopicLikeExample();
+        topicLikeExample.createCriteria().andTopicIdEqualTo(id).andUserIdEqualTo(userId);
+        List<TopicLike> topicLikeList = topicLikeMapper.selectByExample(topicLikeExample);
+
+        try
+        {
+            switch (topicLikeList.size()) {
+                case 0:
+                    status = -1;
+                    break;
+                case 1:
+                    // 根据请求类型和已有关系进行操作
+                    status = topicLikeList.get(0).getType() == true ? 1 : 0;
+                    break;
+                default:
+                    status = -400;
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            status = -400;
+        }
+        finally
+        {
+            topicLikeExample.clear();
+            topicLikeExample.createCriteria().andTopicIdEqualTo(id).andTypeEqualTo(true);
+            like = topicLikeMapper.countByExample(topicLikeExample);
+
+            topicLikeExample.clear();
+            topicLikeExample.createCriteria().andTopicIdEqualTo(id).andTypeEqualTo(false);
+            dislike = topicLikeMapper.countByExample(topicLikeExample);
+        }
+
+        // 拼接json
+        jsonObject.put("like", like);
+        jsonObject.put("dislike", dislike);
+        jsonObject.put("status", status);
+
+        return jsonObject;
     }
 }
