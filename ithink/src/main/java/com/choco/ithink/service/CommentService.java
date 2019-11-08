@@ -173,7 +173,7 @@ public class CommentService {
         JSONObject jsonObject = new JSONObject();
         Integer status = -400;
         Integer like = 0;
-        Integer dislike = -400;
+        Integer dislike = 0;
 
         // 查询是否已经点赞或者点踩
         CommentLikeExample commentLikeExample = new CommentLikeExample();
@@ -251,9 +251,9 @@ public class CommentService {
     public JSONObject getLike(Integer id, Integer userId)
     {
         JSONObject jsonObject = new JSONObject();
-        Integer status = -1;
+        Integer status = -400;
         Integer like = 0;
-        Integer dislike = -400;
+        Integer dislike = 0;
 
         // 查询是否已经点赞或者点踩
         CommentLikeExample commentLikeExample = new CommentLikeExample();

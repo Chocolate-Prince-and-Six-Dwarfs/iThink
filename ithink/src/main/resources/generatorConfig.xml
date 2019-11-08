@@ -73,16 +73,11 @@
         <table tableName="user_otherinfo" domainObjectName="UserOtherInfo" >
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="topic_like" domainObjectName="TopicLike" >
-        </table>
-        <table tableName="topic_collection" domainObjectName="TopicCollection" >
-        </table>
-        <table tableName="achievement_like" domainObjectName="AchievementLike" >
-        </table>
-        <table tableName="achievement_collection" domainObjectName="AchievementCollection" >
-        </table>
-        <table tableName="comment_like" domainObjectName="CommentLike" >
-        </table>
+        <table tableName="topic_like" domainObjectName="TopicLike" />
+        <table tableName="topic_collection" domainObjectName="TopicCollection" />
+        <table tableName="achievement_like" domainObjectName="AchievementLike" />
+        <table tableName="achievement_collection" domainObjectName="AchievementCollection" />
+        <table tableName="comment_like" domainObjectName="CommentLike" />
         <!-- 不生成example类的写法
         <table tableName="" domainObjectName="" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"

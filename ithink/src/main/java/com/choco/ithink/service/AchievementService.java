@@ -2,14 +2,11 @@ package com.choco.ithink.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.choco.ithink.DAO.mapper.AchievementCollectionMapper;
 import com.choco.ithink.DAO.mapper.AchievementLikeMapper;
 import com.choco.ithink.DAO.mapper.BbsAchievementMapper;
 import com.choco.ithink.DAO.mapper.BbsTopicMapper;
-import com.choco.ithink.pojo.AchievementLikeExample;
-import com.choco.ithink.pojo.BbsAchievement;
-import com.choco.ithink.pojo.BbsAchievementExample;
-import com.choco.ithink.pojo.BbsTopicExample;
-import com.choco.ithink.pojo.AchievementLike;
+import com.choco.ithink.pojo.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,6 +22,8 @@ public class AchievementService {
     private BbsTopicMapper bbsTopicMapper;
     @Resource
     private AchievementLikeMapper achievementLikeMapper;
+    @Resource
+    private AchievementCollectionMapper achievementCollectionMapper;
 
 
     // param userId: 用户id
@@ -120,9 +119,9 @@ public class AchievementService {
     public JSONObject like(Integer id, Integer userId, Boolean type)
     {
         JSONObject jsonObject = new JSONObject();
-        Integer status = -1;
+        Integer status = -400;
         Integer like = 0;
-        Integer dislike = -400;
+        Integer dislike = 0;
 
         // 查询是否已经点赞或者点踩
         AchievementLikeExample achievementLikeExample = new AchievementLikeExample();
@@ -201,9 +200,9 @@ public class AchievementService {
     public JSONObject getLike(Integer id, Integer userId)
     {
         JSONObject jsonObject = new JSONObject();
-        Integer status = -1;
+        Integer status = -400;
         Integer like = 0;
-        Integer dislike = -400;
+        Integer dislike = 0;
 
         // 查询是否已经点赞或者点踩
         AchievementLikeExample achievementLikeExample = new AchievementLikeExample();
@@ -243,6 +242,123 @@ public class AchievementService {
         // 拼接json
         jsonObject.put("like", like);
         jsonObject.put("dislike", dislike);
+        jsonObject.put("status", status);
+
+        return jsonObject;
+    }
+
+
+    // param id: 创意实现id
+    // param userId：用户id
+    // do: 收藏（重复请求会取消收藏）
+    // return:
+    // {
+    //      collect:xxx（收藏数量）, status:0|1|-400 用户收藏状态 未收藏|已收藏|发生错误
+    // }
+    public JSONObject collect(Integer id, Integer userId)
+    {
+        JSONObject jsonObject = new JSONObject();
+        Integer status = -400;
+        Integer collect = 0;
+
+        // 查询是否已经收藏
+        AchievementCollectionExample achievementCollectionExample = new AchievementCollectionExample();
+        achievementCollectionExample.createCriteria().andAchievementIdEqualTo(id).andUserIdEqualTo(userId);
+        List<AchievementCollectionKey> achievementCollectionKeyList = achievementCollectionMapper.selectByExample(achievementCollectionExample);
+
+        AchievementCollectionKey achievementCollectionKey = new AchievementCollectionKey();
+
+        try
+        {
+            switch (achievementCollectionKeyList.size()) {
+                case 0:
+                    // 构造关系
+                    achievementCollectionKey.setAchievementId(id);
+                    achievementCollectionKey.setUserId(userId);
+
+                    // 插入关系
+                    if (achievementCollectionMapper.insertSelective(achievementCollectionKey) == 1) {
+                        status = 1;
+                    } else {
+                        status = -400;
+                    }
+                    break;
+                case 1:
+                    // 若请求的是已有关系则删除关系
+                    achievementCollectionMapper.deleteByExample(achievementCollectionExample);
+                    status = 0;
+                    break;
+                default:
+                    status = -400;
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            status = -400;
+        }
+        finally
+        {
+            achievementCollectionExample.clear();
+            achievementCollectionExample.createCriteria().andAchievementIdEqualTo(id);
+            collect = achievementCollectionMapper.countByExample(achievementCollectionExample);
+        }
+
+        // 拼接json
+        jsonObject.put("collect", collect);
+        jsonObject.put("status", status);
+
+        return jsonObject;
+    }
+
+
+    // param id: 创意实现id
+    // param userId：用户id
+    // do: 获取收藏数据及收藏状态
+    // return:
+    // {
+    //      collect:xxx（收藏数量）, status:0|1|-400 用户收藏状态 未收藏|已收藏|发生错误
+    // }
+    public JSONObject getCollect(Integer id, Integer userId)
+    {
+        JSONObject jsonObject = new JSONObject();
+        Integer status = -400;
+        Integer collect = 0;
+
+        // 查询是否已经收藏
+        AchievementCollectionExample achievementCollectionExample = new AchievementCollectionExample();
+        achievementCollectionExample.createCriteria().andAchievementIdEqualTo(id).andUserIdEqualTo(userId);
+        List<AchievementCollectionKey> achievementCollectionKeyList = achievementCollectionMapper.selectByExample(achievementCollectionExample);
+
+        AchievementCollectionKey achievementCollectionKey = new AchievementCollectionKey();
+
+        try
+        {
+            switch (achievementCollectionKeyList.size()) {
+                case 0:
+                    status = 0;
+                    break;
+                case 1:
+                    status = 1;
+                    break;
+                default:
+                    status = -400;
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            status = -400;
+        }
+        finally
+        {
+            achievementCollectionExample.clear();
+            achievementCollectionExample.createCriteria().andAchievementIdEqualTo(id);
+            collect = achievementCollectionMapper.countByExample(achievementCollectionExample);
+        }
+
+        // 拼接json
+        jsonObject.put("collect", collect);
         jsonObject.put("status", status);
 
         return jsonObject;

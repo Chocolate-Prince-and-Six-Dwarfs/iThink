@@ -3,14 +3,10 @@ package com.choco.ithink.service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.BbsTopicMapper;
+import com.choco.ithink.DAO.mapper.TopicCollectionMapper;
 import com.choco.ithink.DAO.mapper.TopicLikeMapper;
 import com.choco.ithink.DAO.mapper.UserMapper;
-import com.choco.ithink.pojo.BbsTopic;
-import com.choco.ithink.pojo.BbsTopicExample;
-import com.choco.ithink.pojo.User;
-import com.choco.ithink.pojo.UserExample;
-import com.choco.ithink.pojo.TopicLikeExample;
-import com.choco.ithink.pojo.TopicLike;
+import com.choco.ithink.pojo.*;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Bulk;
@@ -40,6 +36,8 @@ public class CreativeIdeaService {
     private JestClient jestClient;
     @Resource
     private TopicLikeMapper topicLikeMapper;
+    @Resource
+    private TopicCollectionMapper topicCollectionMapper;
 
 
     // param bbsTopicList: mybatis查询数据库得到的实体列表
@@ -222,9 +220,9 @@ public class CreativeIdeaService {
     public JSONObject like(Integer id, Integer userId, Boolean type)
     {
         JSONObject jsonObject = new JSONObject();
-        Integer status = -1;
+        Integer status = -400;
         Integer like = 0;
-        Integer dislike = -400;
+        Integer dislike = 0;
 
         // 查询是否已经点赞或者点踩
         TopicLikeExample topicLikeExample = new TopicLikeExample();
@@ -303,9 +301,9 @@ public class CreativeIdeaService {
     public JSONObject getLike(Integer id, Integer userId)
     {
         JSONObject jsonObject = new JSONObject();
-        Integer status = -1;
+        Integer status = -400;
         Integer like = 0;
-        Integer dislike = -400;
+        Integer dislike = 0;
 
         // 查询是否已经点赞或者点踩
         TopicLikeExample topicLikeExample = new TopicLikeExample();
@@ -345,6 +343,122 @@ public class CreativeIdeaService {
         // 拼接json
         jsonObject.put("like", like);
         jsonObject.put("dislike", dislike);
+        jsonObject.put("status", status);
+
+        return jsonObject;
+    }
+
+
+    // param id: 创意实现id
+    // param userId：用户id
+    // do: 收藏（重复请求会取消收藏）
+    // return:
+    // {
+    //      collect:xxx（收藏数量）, status:0|1|-400 用户收藏状态 未收藏|已收藏|发生错误
+    // }
+    public JSONObject collect(Integer id, Integer userId)
+    {
+        JSONObject jsonObject = new JSONObject();
+        Integer status = -400;
+        Integer collect = 0;
+
+        // 查询是否已经收藏
+        TopicCollectionExample topicCollectionExample = new TopicCollectionExample();
+        topicCollectionExample.createCriteria().andTopicIdEqualTo(id).andUserIdEqualTo(userId);
+        List<TopicCollectionKey> topicCollectionKeyList = topicCollectionMapper.selectByExample(topicCollectionExample);
+
+        TopicCollectionKey topicCollectionKey = new TopicCollectionKey();
+
+        try
+        {
+            switch (topicCollectionKeyList.size()) {
+                case 0:
+                    // 构造关系
+                    topicCollectionKey.setTopicId(id);
+                    topicCollectionKey.setUserId(userId);
+
+                    // 插入关系
+                    if (topicCollectionMapper.insertSelective(topicCollectionKey) == 1) {
+                        status = 1;
+                    } else {
+                        status = -400;
+                    }
+                    break;
+                case 1:
+                    // 若请求的是已有关系则删除关系
+                    topicCollectionMapper.deleteByExample(topicCollectionExample);
+                    status = 0;
+                    break;
+                default:
+                    status = -400;
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            status = -400;
+        }
+        finally
+        {
+            topicCollectionExample.clear();
+            topicCollectionExample.createCriteria().andTopicIdEqualTo(id);
+            collect = topicCollectionMapper.countByExample(topicCollectionExample);
+        }
+
+        // 拼接json
+        jsonObject.put("collect", collect);
+        jsonObject.put("status", status);
+
+        return jsonObject;
+    }
+
+    // param id: 创意主题id
+    // param userId：用户id
+    // do: 获取收藏数据及收藏状态
+    // return:
+    // {
+    //      collect:xxx（收藏数量）, status:0|1|-400 用户收藏状态 未收藏|已收藏|发生错误
+    // }
+    public JSONObject getCollect(Integer id, Integer userId)
+    {
+        JSONObject jsonObject = new JSONObject();
+        Integer status = -400;
+        Integer collect = 0;
+
+        // 查询是否已经收藏
+        TopicCollectionExample topicCollectionExample = new TopicCollectionExample();
+        topicCollectionExample.createCriteria().andTopicIdEqualTo(id).andUserIdEqualTo(userId);
+        List<TopicCollectionKey> topicCollectionKeyList = topicCollectionMapper.selectByExample(topicCollectionExample);
+
+        TopicCollectionKey topicCollectionKey = new TopicCollectionKey();
+
+        try
+        {
+            switch (topicCollectionKeyList.size()) {
+                case 0:
+                    status = 0;
+                    break;
+                case 1:
+                    status = 1;
+                    break;
+                default:
+                    status = -400;
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            status = -400;
+        }
+        finally
+        {
+            topicCollectionExample.clear();
+            topicCollectionExample.createCriteria().andTopicIdEqualTo(id);
+            collect = topicCollectionMapper.countByExample(topicCollectionExample);
+        }
+
+        // 拼接json
+        jsonObject.put("collect", collect);
         jsonObject.put("status", status);
 
         return jsonObject;

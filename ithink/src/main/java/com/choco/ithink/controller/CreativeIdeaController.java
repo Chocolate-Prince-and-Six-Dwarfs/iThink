@@ -290,4 +290,62 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
         jsonObject.put("data", data);
         return jsonObject;
     }
+
+
+    // 请求地址: /idea/collect
+    // param id: 创意主题id
+    // param userId：用户id
+    // do: 收藏（重复请求会取消收藏）
+    // return:
+    // {
+    // id:xxx,
+    // data:
+    //  {
+    //      collect:xxx（收藏数量）, status:0|1|-400 用户收藏状态 未收藏|已收藏|发生错误
+    //  }
+    // }
+    @RequestMapping("/collect")
+    @ResponseJSONP
+    public JSONObject collect(Integer id, Integer userId)
+    {
+        JSONObject jsonObject = new JSONObject();
+
+        // 搜索与统计
+        JSONObject data = creativeIdeaService.collect(id, userId);
+
+
+        // 拼接字符串
+        jsonObject.put("id", id);
+        jsonObject.put("data", data);
+        return jsonObject;
+    }
+
+
+    // 请求地址: /idea/getCollect
+    // param id: 创意主题id
+    // param userId：用户id
+    // do: 获取收藏数据及收藏状态
+    // return:
+    // {
+    // id:xxx,
+    // data:
+    //  {
+    //      collect:xxx（收藏数量）, status:0|1|-400 用户收藏状态 未收藏|已收藏|发生错误
+    //  }
+    // }
+    @RequestMapping("/getCollect")
+    @ResponseJSONP
+    public JSONObject getCollect(Integer id, Integer userId)
+    {
+        JSONObject jsonObject = new JSONObject();
+
+        // 搜索与统计
+        JSONObject data = creativeIdeaService.getCollect(id, userId);
+
+
+        // 拼接字符串
+        jsonObject.put("id", id);
+        jsonObject.put("data", data);
+        return jsonObject;
+    }
 }
