@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -271,7 +272,7 @@ public class UserController implements UserInterface {
     // param introduction: 介绍（可选）
     // do: 更新用户信息
     // return: 成功返回{id:用户id, status:1}, 失败返回{id:用户id, status:0}
-    @RequestMapping("updateInfo")
+    @RequestMapping("/updateInfo")
     @ResponseJSONP
     public JSONObject updateInfo(Integer id, @Nullable MultipartFile head, @Nullable String name, @Nullable String sex,
                           @Nullable String birthday, @Nullable String phone, @Nullable String address, @Nullable String industry,
@@ -288,5 +289,49 @@ public class UserController implements UserInterface {
         jsonObject.put("id", id);
         jsonObject.put("status", status);
         return jsonObject;
+    }
+
+    // 请求地址: user/getById
+    // param id: 用户id
+    // do: 获取用户除了密码以外的信息
+    // return:
+    // 成功:
+    // {
+    //  id: ,
+    //  name: ,
+    //  sex: ,
+    //  email: ,
+    //  birthday: ,
+    //  phone: ,
+    //  credit: 信誉积分,
+    //  head: 头像
+    //  address: ,
+    //  industry: 职业,
+    //  school: ,
+    //  introduction
+    // }
+    @RequestMapping("/getById")
+    @ResponseJSONP
+    public JSONObject getById(Integer id)
+    {
+        return userService.getById(id);
+    }
+
+
+    // 请求地址: user/getLoginId
+    // do: 获取当前登录用户的id
+    // return: 用户id
+    @RequestMapping("/getLoginId")
+    @ResponseBody
+    public Integer getLoginId(HttpServletRequest request)
+    {
+        if(sessionService.isLogin(request.getSession()))
+        {
+            return sessionService.getLoginId(request.getSession());
+        }
+        else
+        {
+            return null;
+        }
     }
 }

@@ -80,9 +80,9 @@ public interface UserInterface {
     //              topicId: 1 (创意实现对应的主题id),
     //              content: "创意实现内容",
     //              time: "创意实现时间",
-    //              good: 20 (创意实现点赞数),
-    //              bad: 2 (创意实现的点灭数),
-    //              reply: 3 （创意实现的回复数）
+    //              like: 20 (创意实现点赞数),
+    //              dislike: 2 (创意实现的点灭数),
+    //              comment: 3 （创意实现的评论数）
     //          },
     //          {
     //              同上
@@ -127,4 +127,15 @@ public interface UserInterface {
     JSONObject updateInfo(Integer id, @Nullable MultipartFile head, @Nullable String name, @Nullable String sex,
                           @Nullable String birthday, @Nullable String phone, @Nullable String address, @Nullable String industry,
                           @Nullable String school, @Nullable String introduction);
+
+
+    // 请求地址: user/getById
+    // param id: 用户id
+    // do: 获取用户除了密码以外的信息
+    JSONObject getById(Integer id);
+
+    // 请求地址: user/getLoginId
+    // do: 获取当前登录用户的id
+    // return: 用户id
+    Integer getLoginId(HttpServletRequest request);
 }

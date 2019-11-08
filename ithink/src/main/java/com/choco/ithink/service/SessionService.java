@@ -1,12 +1,19 @@
 package com.choco.ithink.service;
 
+import com.choco.ithink.DAO.mapper.UserMapper;
+import com.choco.ithink.pojo.User;
+import com.choco.ithink.pojo.UserExample;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Service
 public class SessionService {
+    @Resource
+    private UserMapper userMapper;
 
     // param session: session类
     // param attr: 字段名
@@ -58,6 +65,26 @@ public class SessionService {
         else
         {
             return true;
+        }
+    }
+
+    // param session: session类
+    // do: 获取用户id
+    // return: 获取用户id
+    public Integer getLoginId(HttpSession session)
+    {
+        String userName = (String)getAttr(session, "userEmail");
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andUserNameEqualTo(userName);
+        List<User> userList = userMapper.selectByExample(userExample);
+
+        if(userList.size()!=1)
+        {
+            return null;
+        }
+        else
+        {
+            return userList.get(0).getUserId();
         }
     }
 }

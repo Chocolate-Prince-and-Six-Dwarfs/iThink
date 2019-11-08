@@ -73,7 +73,6 @@ public class ReplyService {
             jsonObject.put("fromName", fromName);
             jsonObject.put("toUid", bbsReplyList.get(i).getToUid());
             jsonObject.put("toName", toName);
-            jsonObject.put("like", bbsReplyList.get(i).getReplyLikenum());
             jsonArray.add(jsonObject);
         }
 

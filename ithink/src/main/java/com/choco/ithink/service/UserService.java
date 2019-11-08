@@ -327,4 +327,68 @@ public class UserService {
 
         return status;
     }
+
+
+    // param id: 用户id
+    // do: 获取用户除了密码以外的信息
+    // return: 用户数据
+    public JSONObject getById(Integer id)
+    {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andUserIdEqualTo(id);
+        List<User> userList = userMapper.selectByExampleWithBLOBs(userExample);
+
+        if(userList.size()!=1)
+        {
+            return null;
+        }
+        else
+        {
+            return list2JSON(userList).getJSONObject(0);
+        }
+    }
+
+
+    // param userList: 实体列表
+    // do： 将列表构建为JSON数组对象
+    // return: 构建的json数组对象
+    public JSONArray list2JSON(List<User> userList)
+    {
+        JSONArray jsonArray = new JSONArray();
+
+        // 循环处理实体
+        for(int i=0; i<userList.size(); ++i)
+        {
+            // 获取其余信息
+            UserOtherInfoExample userOtherInfoExample = new UserOtherInfoExample();
+            userOtherInfoExample.createCriteria().andUserIdEqualTo(userList.get(i).getUserId());
+            List<UserOtherInfo> userOtherInfoList = userOtherInfoMapper.selectByExample(userOtherInfoExample);
+            if(userOtherInfoList.size()!=1)
+            {
+                continue;
+            }
+            UserOtherInfo userOtherInfo = userOtherInfoList.get(0);
+            String address = userOtherInfo.getUserAddress();
+            String industry = userOtherInfo.getUserIndustry();
+            String school = userOtherInfo.getUserSchool();
+            String introduction = userOtherInfo.getUserSelfintroduction();
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", userList.get(i).getUserId());
+            jsonObject.put("name", userList.get(i).getUserName());
+            jsonObject.put("sex", userList.get(i).getUserSex());
+            jsonObject.put("email", userList.get(i).getUserEmail());
+            jsonObject.put("birthday", userList.get(i).getUserBirth());
+            jsonObject.put("phone", userList.get(i).getUserPhone());
+            jsonObject.put("credit", userList.get(i).getUserCredit());
+            jsonObject.put("head", userList.get(i).getUserAvatar());
+            jsonObject.put("address", address);
+            jsonObject.put("industry", industry);
+            jsonObject.put("school", school);
+            jsonObject.put("introduction", introduction);
+            jsonArray.add(jsonObject);
+        }
+
+        return jsonArray;
+    }
 }
