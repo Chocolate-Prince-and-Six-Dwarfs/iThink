@@ -1,5 +1,7 @@
 window.onload=function () {
-    loadTitle();
+    var keyword=getOption();
+    console.log(keyword);
+    loadTitle(keyword);
 };
 function getQueryString(name){
     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -13,17 +15,15 @@ function getOption() {
     return keyword;
 }
 
-function loadTitle(){
-    var keyword=getOption();
-    console.log(keyword);
-    // $(".line").html('');
-
+function loadTitle(keyword){
     $.ajax({
         url:"idea/search",
         type:"post",
         contentType:"application/json",
         dataType:"json",
-        data: keyword,
+        data: {
+            keyword:keyword,
+        },
         //把用户搜索的keyword发送给后台
 
         //后台需要返回给我,针对于关键字的相关信息
@@ -73,6 +73,9 @@ function loadTitle(){
                 //     $(".line img").attr("src",url);
                 // }
             }
+        },
+        error:function () {
+            console.log("搜索出错。");
         }
     })
 }
