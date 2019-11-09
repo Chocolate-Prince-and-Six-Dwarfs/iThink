@@ -22,11 +22,28 @@ public class NotifyController implements NotifyInterface {
     // param id: 用户id
     // do: sse推送用户通知
     // return:
+    //  （以下时间都是时间戳的形式(即一个长整型数字)）
     // {
     //      id: ,
+    //      topicLike:
+    //      [
+    //          {topicId: , time: , type: , userId: }
+    //      ]
+    //      achievementLike:
+    //      [
+    //          {achievementId: , time: , type: , userId: }
+    //      ]
     //      commentLike:
     //      [
     //          {commentId: , time: , type: , userId: }
+    //      ]
+    //      topicCollect:
+    //      [
+    //          {topicId: , time: ,  userId: }
+    //      ]
+    //      achievementCollect:
+    //      [
+    //          {achievementId: , time: ,  userId: }
     //      ]
     // }
     @RequestMapping(value = "/notify", produces = "text/event-stream;charset=UTF-8")
