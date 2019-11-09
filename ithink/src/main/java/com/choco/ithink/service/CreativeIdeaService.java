@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 
@@ -484,5 +485,33 @@ public class CreativeIdeaService {
         jsonObject.put("status", status);
 
         return jsonObject;
+    }
+
+
+    // param topicTitle: 对应的创意主题id
+    // param userId: 用户id
+    // param content: 创意主题内容
+    // do: 发布创意主题
+    // return: 创意主题id, 失败返回null
+    public Integer publish(String topicTitle, Integer userId, String content)
+    {
+        // 构建实体
+        BbsTopic bbsTopic = new BbsTopic();
+        bbsTopic.setTopicTitle(topicTitle);
+        bbsTopic.setUserId(userId);
+        bbsTopic.setTopicContent(content);
+        // 待修改
+        bbsTopic.setTopicCreativecapsule(1);
+        bbsTopic.setTopicBuildtime(new Date());
+
+        // 插入数据库
+        if(bbsTopicMapper.insertSelective(bbsTopic) == 1)
+        {
+            return bbsTopic.getTopicId();
+        }
+        else
+        {
+            return null;
+        }
     }
 }

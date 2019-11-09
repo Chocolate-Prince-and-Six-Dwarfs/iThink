@@ -166,4 +166,30 @@ public interface UserInterface {
     //      achievement: [0, 3, 8]
     // }
     JSONObject getCollectById(Integer id);
+
+
+    // 请求地址: /user/getCapsuleById
+    // param id: 用户id
+    // do: 获取胶囊
+    // return:
+    // {
+    // id: xxx,
+    // data:
+    // [
+    //  {
+    //  id: ,
+    //  name: ,
+    //  content: ,
+    //  userId: ,
+    //  userName: ,
+    //  buildTime: ,
+    //  uploadTime: 上传时间/最后一次更新时间
+    //  },
+    //  {
+    //      同上
+    //  },
+    //  ......
+    // ]
+    // }
+    JSONObject getCapsuleById(Integer id);
 }
