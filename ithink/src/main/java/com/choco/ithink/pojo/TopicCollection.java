@@ -2,18 +2,8 @@ package com.choco.ithink.pojo;
 
 import java.util.Date;
 
-public class TopicLike extends TopicLikeKey {
-    private Boolean type;
-
+public class TopicCollection extends TopicCollectionKey {
     private Date time;
-
-    public Boolean getType() {
-        return type;
-    }
-
-    public void setType(Boolean type) {
-        this.type = type;
-    }
 
     public Date getTime() {
         return time;

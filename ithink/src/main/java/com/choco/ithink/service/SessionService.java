@@ -73,9 +73,9 @@ public class SessionService {
     // return: 获取用户id
     public Integer getLoginId(HttpSession session)
     {
-        String userName = (String)getAttr(session, "userEmail");
+        String userEmail = (String)getAttr(session, "userEmail");
         UserExample userExample = new UserExample();
-        userExample.createCriteria().andUserNameEqualTo(userName);
+        userExample.createCriteria().andUserEmailEqualTo(userEmail);
         List<User> userList = userMapper.selectByExample(userExample);
 
         if(userList.size()!=1)

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<body>
+<div id="result"></div>
+<script type="text/javascript">
+    //需要判断浏览器支不支持，可以去w3c进行查看
+
+    var source = new EventSource('/notify?id=1');
+    source.onmessage = function (event) {
+        console.info(event.data);
+        var node = document.createTextNode(event.data);
+        var ele = document.createElement("div");
+        ele.append(node);
+        document.getElementById('result').append(ele);
+    };
+
+</script>
+</body>
+</html>

@@ -43,41 +43,42 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
         <!-- 要生成那些表 tableName：数据库中预先建立好的表名 domainObjectName：要生产的实体类名称-->
-        <table tableName="user_info" domainObjectName="User">
-            <generatedKey column="user_id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="creative_capsule" domainObjectName="CreativeCapsule">
-            <generatedKey column="creative_id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="bbs_topic" domainObjectName="BbsTopic">
-            <generatedKey column="topic_id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="bbs_achievement" domainObjectName="BbsAchievement">
-            <generatedKey column="achievement_id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="bbs_comment" domainObjectName="BbsComment">
-            <generatedKey column="comment_id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="bbs_reply" domainObjectName="BbsReply">
-            <generatedKey column="reply_id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="bbs_group" domainObjectName="BbsGroup">
-            <generatedKey column="group_id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="group_namelist" domainObjectName="GroupNamelist">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="followers_namelist" domainObjectName="FollowersNamelist">
-            <generatedKey column="follow_id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="user_otherinfo" domainObjectName="UserOtherInfo" >
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="topic_like" domainObjectName="TopicLike" />
-        <table tableName="topic_collection" domainObjectName="TopicCollection" />
-        <table tableName="achievement_like" domainObjectName="AchievementLike" />
-        <table tableName="achievement_collection" domainObjectName="AchievementCollection" />
-        <table tableName="comment_like" domainObjectName="CommentLike" />
+<!--        <table tableName="user_info" domainObjectName="User">-->
+<!--            <generatedKey column="user_id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="creative_capsule" domainObjectName="CreativeCapsule">-->
+<!--            <generatedKey column="creative_id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="bbs_topic" domainObjectName="BbsTopic">-->
+<!--            <generatedKey column="topic_id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="bbs_achievement" domainObjectName="BbsAchievement">-->
+<!--            <generatedKey column="achievement_id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="bbs_comment" domainObjectName="BbsComment">-->
+<!--            <generatedKey column="comment_id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="bbs_reply" domainObjectName="BbsReply">-->
+<!--            <generatedKey column="reply_id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="bbs_group" domainObjectName="BbsGroup">-->
+<!--            <generatedKey column="group_id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="group_namelist" domainObjectName="GroupNamelist">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="followers_namelist" domainObjectName="FollowersNamelist">-->
+<!--            <generatedKey column="follow_id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="user_otherinfo" domainObjectName="UserOtherInfo" >-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="topic_like" domainObjectName="TopicLike" />-->
+<!--        <table tableName="topic_collection" domainObjectName="TopicCollection" />-->
+<!--        <table tableName="achievement_like" domainObjectName="AchievementLike" />-->
+<!--        <table tableName="achievement_collection" domainObjectName="AchievementCollection" />-->
+<!--        <table tableName="comment_like" domainObjectName="CommentLike" />-->
+<!--        <table tableName="updatetime" domainObjectName="UpdateTime" />-->
         <!-- 不生成example类的写法
         <table tableName="" domainObjectName="" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"

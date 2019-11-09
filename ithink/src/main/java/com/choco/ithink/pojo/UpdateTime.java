@@ -2,17 +2,17 @@ package com.choco.ithink.pojo;
 
 import java.util.Date;
 
-public class CommentLike extends CommentLikeKey {
-    private Boolean type;
+public class UpdateTime {
+    private Integer userId;
 
     private Date time;
 
-    public Boolean getType() {
-        return type;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setType(Boolean type) {
-        this.type = type;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Date getTime() {
