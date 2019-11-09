@@ -38,18 +38,32 @@ public class NotifyController implements NotifyInterface {
         Date lastUpdateTIme = notifyService.lastUpdateTime(id);
 
         // 休眠一秒防止重复获取消息
-        TimeUnit.SECONDS.sleep(1);
+        //TimeUnit.SECONDS.sleep(2);
 
         // 获取数据
-        JSONArray commentLike = null;
+
+        JSONArray topicLike = new JSONArray();
+        JSONArray achievementLike = new JSONArray();
+        JSONArray commentLike = new JSONArray();
+        JSONArray topicCollect = new JSONArray();
+        JSONArray achievementCollect = new JSONArray();
         do
         {
+            topicLike = notifyService.getTopicLikeAfter(id, lastUpdateTIme);
+            achievementLike = notifyService.getAchievementLikeAfter(id, lastUpdateTIme);
             commentLike = notifyService.getCommentLikeAfter(id, lastUpdateTIme);
-        }while (commentLike.size()==0);
+
+            topicCollect = notifyService.getTopicCollectAfter(id, lastUpdateTIme);
+            achievementCollect = notifyService.getAchievementCollectAfter(id, lastUpdateTIme);
+        }while (topicLike.size()==0 && achievementLike.size()==0 && commentLike.size()==0 && topicCollect.size()==0 && achievementCollect.size()==0);
 
         // 拼接json
         jsonObject.put("id", id);
+        jsonObject.put("topicLike", topicLike);
+        jsonObject.put("achievementLike", achievementLike);
         jsonObject.put("commentLike", commentLike);
+        jsonObject.put("topicCollect", topicCollect);
+        jsonObject.put("achievementCollect", achievementCollect);
 
         // 刷新时间
         notifyService.flushUpdateTime(id);
