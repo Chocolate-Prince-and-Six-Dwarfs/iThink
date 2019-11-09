@@ -355,4 +355,18 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
         jsonObject.put("data", data);
         return jsonObject;
     }
+
+
+    // 请求地址: /idea/publish
+    // param topicTitle: 对应的创意主题id
+    // param userId: 用户id
+    // param content: 创意主题内容
+    // do: 发布创意主题
+    // return: 创意主题id, 失败返回null
+    @RequestMapping("/publish")
+    @ResponseJSONP
+    public Integer publish(String topicTitle, Integer userId, String content)
+    {
+        return creativeIdeaService.publish(topicTitle, userId, content);
+    }
 }

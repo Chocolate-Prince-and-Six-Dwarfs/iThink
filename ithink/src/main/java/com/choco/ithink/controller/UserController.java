@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import com.choco.ithink.interfaces.UserInterface;
-import com.choco.ithink.service.AchievementService;
-import com.choco.ithink.service.CreativeIdeaService;
-import com.choco.ithink.service.SessionService;
-import com.choco.ithink.service.UserService;
+import com.choco.ithink.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
@@ -21,13 +18,15 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/user")
 public class UserController implements UserInterface {
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    CreativeIdeaService creativeIdeaService;
+    private CreativeIdeaService creativeIdeaService;
     @Autowired
-    AchievementService achievementService;
+    private AchievementService achievementService;
     @Autowired
-    SessionService sessionService;
+    private SessionService sessionService;
+    @Autowired
+    private CapsuleService capsuleService;
 
     // 请求地址： user/login
     // param email: 登录键(邮箱)
@@ -359,6 +358,48 @@ public class UserController implements UserInterface {
         jsonObject.put("id", id);
         jsonObject.put("topic", topic);
         jsonObject.put("achievement", achievement);
+        return jsonObject;
+    }
+
+
+    // 请求地址: /user/getCapsuleById
+    // param id: 用户id
+    // do: 获取胶囊
+    // return:
+    // {
+    // id: xxx,
+    // count: ,
+    // data:
+    // [
+    //  {
+    //  id: ,
+    //  name: ,
+    //  content: ,
+    //  userId: ,
+    //  userName: ,
+    //  buildTime: ,
+    //  uploadTime: 上传时间/最后一次更新时间
+    //  },
+    //  {
+    //      同上
+    //  },
+    //  ......
+    // ]
+    // }
+    @RequestMapping("/getCapsuleById")
+    @ResponseJSONP
+    public JSONObject getCapsuleById(Integer id)
+    {
+        JSONObject jsonObject = new JSONObject();
+
+        // 搜索与统计
+        JSONArray data = capsuleService.getByUserId(id);
+        Integer count = data.size();
+
+        // 拼接字符串
+        jsonObject.put("id", id);
+        jsonObject.put("count", count);
+        jsonObject.put("data", data);
         return jsonObject;
     }
 }

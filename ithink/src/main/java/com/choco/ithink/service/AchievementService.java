@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.swing.text.StyledEditorKit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -381,5 +382,31 @@ public class AchievementService {
         jsonObject.put("status", status);
 
         return jsonObject;
+    }
+
+
+    // param userId: 用户id
+    // param topicId: 对应的创意主题id
+    // param content: 创意实现内容
+    // do: 发布创意实现
+    // return: 创意实现id, 失败返回null
+    public Integer publish(Integer userId, Integer topicId, String content)
+    {
+        // 构建实体
+        BbsAchievement bbsAchievement = new BbsAchievement();
+        bbsAchievement.setUserId(userId);
+        bbsAchievement.setTopicId(topicId);
+        bbsAchievement.setAchievementContent(content);
+        bbsAchievement.setAchievementBulidtime(new Date());
+
+        // 插入数据库
+        if(bbsAchievementMapper.insertSelective(bbsAchievement) == 1)
+        {
+            return bbsAchievement.getAchievementId();
+        }
+        else
+        {
+            return null;
+        }
     }
 }

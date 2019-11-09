@@ -76,3 +76,12 @@ function loadTitle(){
         }
     })
 }
+/*$(document).on("click","#search",function (){
+    var value=$("input[name='search-input']").val();
+    console.log(value);
+    if(!value){
+        alert("请输入搜索内容！");
+        return ;
+    }
+    window.location.href='search?keyword='+ encodeURI(encodeURI(value));
+});*/

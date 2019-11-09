@@ -154,4 +154,18 @@ public class AchievementController implements AchievementInterface {
     {
         return achievementService.getById(id);
     }
+
+
+    // 请求地址: /ach/publish
+    // param userId: 用户id
+    // param topicId: 对应的创意主题id
+    // param content: 创意实现内容
+    // do: 发布创意实现
+    // return: 创意实现id, 失败返回null
+    @RequestMapping("/publish")
+    @ResponseJSONP
+    public Integer publish(Integer userId, Integer topicId, String content)
+    {
+        return achievementService.publish(userId, topicId, content);
+    }
 }
