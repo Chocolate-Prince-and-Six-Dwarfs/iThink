@@ -1,5 +1,7 @@
 package com.choco.ithink.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import com.choco.ithink.DAO.mapper.CreativeCapsuleMapper;
 import com.choco.ithink.interfaces.CapsuleInterface;
 import com.choco.ithink.pojo.CreativeCapsule;
@@ -33,5 +35,28 @@ public class CapsuleController implements CapsuleInterface {
         Integer id = capsuleService.save(name, content, userId, buildTime);
 
         return id;
+    }
+
+
+    // 请求地址: capsule/update
+    // param name: 胶囊名
+    // param content: 胶囊内容
+    // param id: 胶囊id
+    // do: 更新胶囊
+    // return: {id: xxx, status: 0|1 失败|成功}
+    @RequestMapping("/update")
+    @ResponseJSONP
+    public JSONObject update(String name, String content, Integer id)
+    {
+        JSONObject jsonObject =  new JSONObject();
+
+        // 更新
+        Integer status = capsuleService.update(name, content, id);
+
+        // 拼接json
+        jsonObject.put("id", id);
+        jsonObject.put("status", status);
+
+        return jsonObject;
     }
 }

@@ -52,4 +52,45 @@ public class CapsuleService {
 
         return id;
     }
+
+
+    // 请求地址: capsule/update
+    // param name: 胶囊名
+    // param content: 胶囊内容
+    // param id: 胶囊id
+    // do: 将胶囊保存到服务器
+    // return: 0|1 失败|成功
+    public Integer update(String name, String content, Integer id)
+    {
+        Integer status = 0;
+
+        // 构建实体
+        CreativeCapsule creativeCapsule = new CreativeCapsule();
+        creativeCapsule.setCreativeName(name);
+        creativeCapsule.setCreativeContent(content);
+        creativeCapsule.setCreativeId(id);
+        Date date = new Date();
+        creativeCapsule.setCreativeUploadtime(date);
+
+        // 插入数据库
+        try
+        {
+            Integer count = creativeCapsuleMapper.updateByPrimaryKeySelective(creativeCapsule);
+            if(count == 1)
+            {
+                status = 1;
+            }
+            else
+            {
+                status = 0;
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            status = 0;
+        }
+
+        return status;
+    }
 }
