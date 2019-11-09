@@ -59,4 +59,38 @@ public class CapsuleController implements CapsuleInterface {
 
         return jsonObject;
     }
+
+
+    // 请求地址: capsule/getById
+    // param id: 胶囊id
+    // do: 获取胶囊
+    // return:
+    // {
+    // id: xxx,
+    // data:
+    // {
+    //  id: ,
+    //  name: ,
+    //  content: ,
+    //  userId: ,
+    //  userName: ,
+    //  buildTime: ,
+    //  uploadTime: 上传时间/最后一次更新时间
+    // }
+    // }
+    @RequestMapping("/getById")
+    @ResponseJSONP
+    public JSONObject getById(Integer id)
+    {
+        JSONObject jsonObject =  new JSONObject();
+
+        // 更新
+        JSONObject data = capsuleService.getById(id);
+
+        // 拼接json
+        jsonObject.put("id", id);
+        jsonObject.put("data", data);
+
+        return jsonObject;
+    }
 }

@@ -23,4 +23,24 @@ public interface CapsuleInterface {
     // do: 更新胶囊
     // return: {id: xxx, status: 0|1 失败|成功}
     JSONObject update(String name, String content, Integer id);
+
+
+    // 请求地址: capsule/getById
+    // param id: 胶囊id
+    // do: 获取胶囊
+    // return:
+    // {
+    // id: xxx,
+    // data:
+    // {
+    //  id: ,
+    //  name: ,
+    //  content: ,
+    //  userId: ,
+    //  userName: ,
+    //  buildTime: ,
+    //  uploadTime: 上传时间/最后一次更新时间
+    // }
+    // }
+    JSONObject getById(Integer id);
 }
