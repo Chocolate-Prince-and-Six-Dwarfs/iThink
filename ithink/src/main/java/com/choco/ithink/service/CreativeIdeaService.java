@@ -388,20 +388,20 @@ public class CreativeIdeaService {
         // 查询是否已经收藏
         TopicCollectionExample topicCollectionExample = new TopicCollectionExample();
         topicCollectionExample.createCriteria().andTopicIdEqualTo(id).andUserIdEqualTo(userId);
-        List<TopicCollectionKey> topicCollectionKeyList = topicCollectionMapper.selectByExample(topicCollectionExample);
+        List<TopicCollection> topicCollectionList = topicCollectionMapper.selectByExample(topicCollectionExample);
 
-        TopicCollectionKey topicCollectionKey = new TopicCollectionKey();
+        TopicCollection topicCollection = new TopicCollection();
 
         try
         {
-            switch (topicCollectionKeyList.size()) {
+            switch (topicCollectionList.size()) {
                 case 0:
                     // 构造关系
-                    topicCollectionKey.setTopicId(id);
-                    topicCollectionKey.setUserId(userId);
+                    topicCollection.setTopicId(id);
+                    topicCollection.setUserId(userId);
 
                     // 插入关系
-                    if (topicCollectionMapper.insertSelective(topicCollectionKey) == 1) {
+                    if (topicCollectionMapper.insertSelective(topicCollection) == 1) {
                         status = 1;
                     } else {
                         status = -400;
@@ -451,13 +451,13 @@ public class CreativeIdeaService {
         // 查询是否已经收藏
         TopicCollectionExample topicCollectionExample = new TopicCollectionExample();
         topicCollectionExample.createCriteria().andTopicIdEqualTo(id).andUserIdEqualTo(userId);
-        List<TopicCollectionKey> topicCollectionKeyList = topicCollectionMapper.selectByExample(topicCollectionExample);
+        List<TopicCollection> topicCollectionList = topicCollectionMapper.selectByExample(topicCollectionExample);
 
         TopicCollectionKey topicCollectionKey = new TopicCollectionKey();
 
         try
         {
-            switch (topicCollectionKeyList.size()) {
+            switch (topicCollectionList.size()) {
                 case 0:
                     status = 0;
                     break;

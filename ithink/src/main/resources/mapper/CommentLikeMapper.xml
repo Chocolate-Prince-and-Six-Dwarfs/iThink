@@ -5,6 +5,7 @@
     <id column="user_id" property="userId" jdbcType="INTEGER" />
     <id column="comment_id" property="commentId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="BIT" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -65,7 +66,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    user_id, comment_id, type
+    user_id, comment_id, type, time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.choco.ithink.pojo.CommentLikeExample" >
     select
@@ -100,10 +101,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.choco.ithink.pojo.CommentLike" >
-    insert into comment_like (user_id, comment_id, type
-      )
-    values (#{userId,jdbcType=INTEGER}, #{commentId,jdbcType=INTEGER}, #{type,jdbcType=BIT}
-      )
+    insert into comment_like (user_id, comment_id, type, 
+      time)
+    values (#{userId,jdbcType=INTEGER}, #{commentId,jdbcType=INTEGER}, #{type,jdbcType=BIT}, 
+      #{time,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.choco.ithink.pojo.CommentLike" >
     insert into comment_like
@@ -117,6 +118,9 @@
       <if test="type != null" >
         type,
       </if>
+      <if test="time != null" >
+        time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -127,6 +131,9 @@
       </if>
       <if test="type != null" >
         #{type,jdbcType=BIT},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -148,6 +155,9 @@
       <if test="record.type != null" >
         type = #{record.type,jdbcType=BIT},
       </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -157,7 +167,8 @@
     update comment_like
     set user_id = #{record.userId,jdbcType=INTEGER},
       comment_id = #{record.commentId,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=BIT}
+      type = #{record.type,jdbcType=BIT},
+      time = #{record.time,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -168,13 +179,17 @@
       <if test="type != null" >
         type = #{type,jdbcType=BIT},
       </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
       and comment_id = #{commentId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.choco.ithink.pojo.CommentLike" >
     update comment_like
-    set type = #{type,jdbcType=BIT}
+    set type = #{type,jdbcType=BIT},
+      time = #{time,jdbcType=TIMESTAMP}
     where user_id = #{userId,jdbcType=INTEGER}
       and comment_id = #{commentId,jdbcType=INTEGER}
   </update>

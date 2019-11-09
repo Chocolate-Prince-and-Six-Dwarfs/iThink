@@ -1,5 +1,6 @@
 package com.choco.ithink.DAO.mapper;
 
+import com.choco.ithink.pojo.TopicCollection;
 import com.choco.ithink.pojo.TopicCollectionExample;
 import com.choco.ithink.pojo.TopicCollectionKey;
 import java.util.List;
@@ -12,13 +13,19 @@ public interface TopicCollectionMapper {
 
     int deleteByPrimaryKey(TopicCollectionKey key);
 
-    int insert(TopicCollectionKey record);
+    int insert(TopicCollection record);
 
-    int insertSelective(TopicCollectionKey record);
+    int insertSelective(TopicCollection record);
 
-    List<TopicCollectionKey> selectByExample(TopicCollectionExample example);
+    List<TopicCollection> selectByExample(TopicCollectionExample example);
 
-    int updateByExampleSelective(@Param("record") TopicCollectionKey record, @Param("example") TopicCollectionExample example);
+    TopicCollection selectByPrimaryKey(TopicCollectionKey key);
 
-    int updateByExample(@Param("record") TopicCollectionKey record, @Param("example") TopicCollectionExample example);
+    int updateByExampleSelective(@Param("record") TopicCollection record, @Param("example") TopicCollectionExample example);
+
+    int updateByExample(@Param("record") TopicCollection record, @Param("example") TopicCollectionExample example);
+
+    int updateByPrimaryKeySelective(TopicCollection record);
+
+    int updateByPrimaryKey(TopicCollection record);
 }

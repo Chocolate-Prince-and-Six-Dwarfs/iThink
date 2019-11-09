@@ -39,4 +39,10 @@ public class IndexController {
     {
         return "user";
     }
+
+    @RequestMapping("/notifyTest")
+    public String notifyTest()
+    {
+        return "notify";
+    }
 }

@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -32,6 +33,8 @@ public class UserService {
     private TopicCollectionMapper topicCollectionMapper;
     @Resource
     private AchievementCollectionMapper achievementCollectionMapper;
+    @Resource
+    private UpdateTimeMapper updateTimeMapper;
 
     // 邮箱的正则表达式
     private String emailPattern = "^[\\w]{0,}@[\\w]{0,}\\.[\\w]{0,}$";
@@ -154,6 +157,11 @@ public class UserService {
                 UserOtherInfo userOtherInfo = new UserOtherInfo();
                 userOtherInfo.setUserId(id);
                 userOtherInfoMapper.insertSelective(userOtherInfo);
+
+                // 创建更新时间记录
+                UpdateTime updateTime = new UpdateTime();
+                updateTime.setTime(new Date());
+                updateTimeMapper.insertSelective(updateTime);
                 return 1;
             }
         }
@@ -406,11 +414,11 @@ public class UserService {
         JSONArray topic = new JSONArray();
         TopicCollectionExample topicCollectionExample = new TopicCollectionExample();
         topicCollectionExample.createCriteria().andUserIdEqualTo(id);
-        List<TopicCollectionKey> topicCollectionKeyList = topicCollectionMapper.selectByExample(topicCollectionExample);
+        List<TopicCollection> topicCollectionList = topicCollectionMapper.selectByExample(topicCollectionExample);
 
-        for(int i=0; i<topicCollectionKeyList.size(); ++i)
+        for(int i=0; i<topicCollectionList.size(); ++i)
         {
-            jsonArray.add(topicCollectionKeyList.get(i).getTopicId());
+            jsonArray.add(topicCollectionList.get(i).getTopicId());
         }
 
         return jsonArray;
@@ -428,11 +436,11 @@ public class UserService {
         JSONArray achievement = new JSONArray();
         AchievementCollectionExample achievementCollectionExample = new AchievementCollectionExample();
         achievementCollectionExample.createCriteria().andUserIdEqualTo(id);
-        List<AchievementCollectionKey> achievementCollectionKeyList = achievementCollectionMapper.selectByExample(achievementCollectionExample);
+        List<AchievementCollection> achievementCollectionList = achievementCollectionMapper.selectByExample(achievementCollectionExample);
 
-        for(int i=0; i<achievementCollectionKeyList.size(); ++i)
+        for(int i=0; i<achievementCollectionList.size(); ++i)
         {
-            jsonArray.add(achievementCollectionKeyList.get(i).getAchievementId());
+            jsonArray.add(achievementCollectionList.get(i).getAchievementId());
         }
 
         return jsonArray;

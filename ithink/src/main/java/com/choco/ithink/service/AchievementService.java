@@ -284,20 +284,20 @@ public class AchievementService {
         // 查询是否已经收藏
         AchievementCollectionExample achievementCollectionExample = new AchievementCollectionExample();
         achievementCollectionExample.createCriteria().andAchievementIdEqualTo(id).andUserIdEqualTo(userId);
-        List<AchievementCollectionKey> achievementCollectionKeyList = achievementCollectionMapper.selectByExample(achievementCollectionExample);
+        List<AchievementCollection> achievementCollectionList = achievementCollectionMapper.selectByExample(achievementCollectionExample);
 
-        AchievementCollectionKey achievementCollectionKey = new AchievementCollectionKey();
+        AchievementCollection achievementCollection = new AchievementCollection();
 
         try
         {
-            switch (achievementCollectionKeyList.size()) {
+            switch (achievementCollectionList.size()) {
                 case 0:
                     // 构造关系
-                    achievementCollectionKey.setAchievementId(id);
-                    achievementCollectionKey.setUserId(userId);
+                    achievementCollection.setAchievementId(id);
+                    achievementCollection.setUserId(userId);
 
                     // 插入关系
-                    if (achievementCollectionMapper.insertSelective(achievementCollectionKey) == 1) {
+                    if (achievementCollectionMapper.insertSelective(achievementCollection) == 1) {
                         status = 1;
                     } else {
                         status = -400;
@@ -348,13 +348,11 @@ public class AchievementService {
         // 查询是否已经收藏
         AchievementCollectionExample achievementCollectionExample = new AchievementCollectionExample();
         achievementCollectionExample.createCriteria().andAchievementIdEqualTo(id).andUserIdEqualTo(userId);
-        List<AchievementCollectionKey> achievementCollectionKeyList = achievementCollectionMapper.selectByExample(achievementCollectionExample);
-
-        AchievementCollectionKey achievementCollectionKey = new AchievementCollectionKey();
+        List<AchievementCollection> achievementCollectionList = achievementCollectionMapper.selectByExample(achievementCollectionExample);
 
         try
         {
-            switch (achievementCollectionKeyList.size()) {
+            switch (achievementCollectionList.size()) {
                 case 0:
                     status = 0;
                     break;

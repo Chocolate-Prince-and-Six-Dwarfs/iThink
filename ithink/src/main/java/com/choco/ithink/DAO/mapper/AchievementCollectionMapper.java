@@ -1,5 +1,6 @@
 package com.choco.ithink.DAO.mapper;
 
+import com.choco.ithink.pojo.AchievementCollection;
 import com.choco.ithink.pojo.AchievementCollectionExample;
 import com.choco.ithink.pojo.AchievementCollectionKey;
 import java.util.List;
@@ -12,13 +13,19 @@ public interface AchievementCollectionMapper {
 
     int deleteByPrimaryKey(AchievementCollectionKey key);
 
-    int insert(AchievementCollectionKey record);
+    int insert(AchievementCollection record);
 
-    int insertSelective(AchievementCollectionKey record);
+    int insertSelective(AchievementCollection record);
 
-    List<AchievementCollectionKey> selectByExample(AchievementCollectionExample example);
+    List<AchievementCollection> selectByExample(AchievementCollectionExample example);
 
-    int updateByExampleSelective(@Param("record") AchievementCollectionKey record, @Param("example") AchievementCollectionExample example);
+    AchievementCollection selectByPrimaryKey(AchievementCollectionKey key);
 
-    int updateByExample(@Param("record") AchievementCollectionKey record, @Param("example") AchievementCollectionExample example);
+    int updateByExampleSelective(@Param("record") AchievementCollection record, @Param("example") AchievementCollectionExample example);
+
+    int updateByExample(@Param("record") AchievementCollection record, @Param("example") AchievementCollectionExample example);
+
+    int updateByPrimaryKeySelective(AchievementCollection record);
+
+    int updateByPrimaryKey(AchievementCollection record);
 }

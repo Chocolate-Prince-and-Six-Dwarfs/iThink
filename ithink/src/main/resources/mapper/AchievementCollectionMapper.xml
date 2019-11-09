@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.choco.ithink.DAO.mapper.AchievementCollectionMapper" >
-  <resultMap id="BaseResultMap" type="com.choco.ithink.pojo.AchievementCollectionKey" >
+  <resultMap id="BaseResultMap" type="com.choco.ithink.pojo.AchievementCollection" >
     <id column="user_id" property="userId" jdbcType="INTEGER" />
     <id column="achievement_id" property="achievementId" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -64,7 +65,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    user_id, achievement_id
+    user_id, achievement_id, time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.choco.ithink.pojo.AchievementCollectionExample" >
     select
@@ -80,6 +81,13 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.choco.ithink.pojo.AchievementCollectionKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from achievement_collection
+    where user_id = #{userId,jdbcType=INTEGER}
+      and achievement_id = #{achievementId,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="com.choco.ithink.pojo.AchievementCollectionKey" >
     delete from achievement_collection
     where user_id = #{userId,jdbcType=INTEGER}
@@ -91,11 +99,13 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.choco.ithink.pojo.AchievementCollectionKey" >
-    insert into achievement_collection (user_id, achievement_id)
-    values (#{userId,jdbcType=INTEGER}, #{achievementId,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.choco.ithink.pojo.AchievementCollection" >
+    insert into achievement_collection (user_id, achievement_id, time
+      )
+    values (#{userId,jdbcType=INTEGER}, #{achievementId,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.choco.ithink.pojo.AchievementCollectionKey" >
+  <insert id="insertSelective" parameterType="com.choco.ithink.pojo.AchievementCollection" >
     insert into achievement_collection
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -104,6 +114,9 @@
       <if test="achievementId != null" >
         achievement_id,
       </if>
+      <if test="time != null" >
+        time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -111,6 +124,9 @@
       </if>
       <if test="achievementId != null" >
         #{achievementId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -129,6 +145,9 @@
       <if test="record.achievementId != null" >
         achievement_id = #{record.achievementId,jdbcType=INTEGER},
       </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -137,9 +156,26 @@
   <update id="updateByExample" parameterType="map" >
     update achievement_collection
     set user_id = #{record.userId,jdbcType=INTEGER},
-      achievement_id = #{record.achievementId,jdbcType=INTEGER}
+      achievement_id = #{record.achievementId,jdbcType=INTEGER},
+      time = #{record.time,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.choco.ithink.pojo.AchievementCollection" >
+    update achievement_collection
+    <set >
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+      and achievement_id = #{achievementId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.choco.ithink.pojo.AchievementCollection" >
+    update achievement_collection
+    set time = #{time,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=INTEGER}
+      and achievement_id = #{achievementId,jdbcType=INTEGER}
   </update>
 </mapper>
