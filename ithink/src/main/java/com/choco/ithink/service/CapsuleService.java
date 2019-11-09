@@ -166,4 +166,33 @@ public class CapsuleService {
 
         return list2JSON(creativeCapsuleList).getJSONObject(0);
     }
+
+
+    // param userId: 用户id
+    // do: 获取胶囊
+    // return:
+    // [
+    //  {
+    //  id: ,
+    //  name: ,
+    //  content: ,
+    //  userId: ,
+    //  userName: ,
+    //  buildTime: ,
+    //  uploadTime: 上传时间/最后一次更新时间
+    //  },
+    //  {
+    //      同上
+    //  },
+    //  ......
+    // ]
+    public JSONArray getByUserId(Integer userId)
+    {
+        CreativeCapsuleExample creativeCapsuleExample = new CreativeCapsuleExample();
+        creativeCapsuleExample.createCriteria().andUserIdEqualTo(userId);
+
+        List<CreativeCapsule> creativeCapsuleList = creativeCapsuleMapper.selectByExample(creativeCapsuleExample);
+
+        return list2JSON(creativeCapsuleList);
+    }
 }
