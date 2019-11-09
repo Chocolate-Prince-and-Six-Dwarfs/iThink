@@ -13,6 +13,9 @@
             min-width: 800px;
             min-height: 300px;
         }
+        .layui-form-item .layui-input-block{
+            width: 50%;
+        }
     </style>
 </head>
 <body class="layui-layout-body">
@@ -48,14 +51,14 @@
             <!--左侧导航区域-->
             <ul class="layui-nav layui-nav-tree"  lay-filter="operation"  style="background-color: #696969">
                 <li class="layui-nav-item"><a class="user-site-active" data-type="tabUserInfo">个人信息</a></li>
-                <li class="layui-nav-item"><a class="user-site-active" data-type="tabUserNotice">我的通知</a></li>
-                <li class="layui-nav-item"><a href="">发布创意</a></li>
-                <li class="layui-nav-item"><a href="">我的创意</a></li>
-                <li class="layui-nav-item"><a href="">创意胶囊</a></li>
-                <li class="layui-nav-item"><a href="">我的团组</a></li>
-                <li class="layui-nav-item"><a href="">我的收藏</a></li>
-                <li class="layui-nav-item"><a href="">我的参与</a></li>
-                <li class="layui-nav-item"><a href="">获利项目</a></li>
+                <li class="layui-nav-item"><a class="user-site-active" data-type="tabUserNotices">我的通知</a></li>
+                <li class="layui-nav-item"><a class="user-site-active" data-type="tabUserReleaseIdea">发布创意</a></li>
+                <li class="layui-nav-item"><a class="user-site-active" data-type="tabUserIdeas">我的创意</a></li>
+                <li class="layui-nav-item"><a class="user-site-active" data-type="tabUserIdeasCapsules">创意胶囊</a></li>
+                <li class="layui-nav-item"><a class="user-site-active" data-type="tabUserGroups">我的团组</a></li>
+                <li class="layui-nav-item"><a class="user-site-active" data-type="tabUserCollections">我的收藏</a></li>
+                <li class="layui-nav-item"><a class="user-site-active" data-type="tabUserParticipate">我的参与</a></li>
+                <li class="layui-nav-item"><a class="user-site-active" data-type="tabUserProfitProjects">获利项目</a></li>
 
             </ul>
         </div>
@@ -67,13 +70,13 @@
             <ul class="layui-tab-title">
                 <li class="layui-this" lay-id="userInfo">个人信息</li>
                 <!--<li lay-id="userNotice">我的通知</li>
-                <li lay-id="userCollection">我的收藏</li>
+                <li lay-id="userReleaseIdea">发布创意</li>
+                <li lay-id="userIdeas">我的创意</li>
+                <li lay-id="userIdeasCapsule">创意胶囊</li>
+                <li lay-id="userGroups">我的团组</li>
+                <li lay-id="userCollections">我的收藏</li>
                 <li lay-id="userParticipate">我的参与</li>
-                <li lay-id="">获利项目</li>
-                <li lay-id="">发布创意</li>
-                <li lay-id="">我的创意</li>
-                <li lay-id="">创意胶囊</li>
-                <li lay-id="">我的团组</li>-->
+                <li lay-id="userProfitProjects">获利项目</li>-->
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
@@ -81,7 +84,6 @@
                         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
                             <legend>个人信息</legend>
                         </fieldset>
-
                         <!--<div class="layui-upload">
                             <div class="layui-upload-list">
                                 <img class="layui-upload-img" id="userImg">
@@ -89,34 +91,93 @@
                             </div>
                             <button type="button" class="layui-btn" id="uploadImg"><i class="layui-icon">&#xe67c;</i>上传图片</button>
                         </div>-->
-
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">头像</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="head" lay-verify="required" id="inputimgurl" placeholder="图片地址" value="/img/头像.png" class="layui-input layui-hide">
-                            </div>
-                            <div class="layui-input-inline">
-                                <div class="layui-upload-list" style="margin:0">
-                                    <img src="/img/头像.png" id="srcimgurl" class="layui-upload-img">
+                        <div id="table_and_page_div_id" style="width: 80%; position: relative; left:20%;">
+                            <form class="layui-form" action="" >
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">头像</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="head" lay-verify="required" id="inputimgurl" placeholder="图片地址" value="/img/头像.png" class="layui-input layui-hide">
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <div class="layui-upload-list" style="margin:0">
+                                            <img src="/img/头像.png" id="srcimgurl" class="layui-upload-img">
+                                        </div>
+                                    </div>
+                                    <div class="layui-input-inline layui-btn-container" style="width: auto;">
+                                        <button class="layui-btn layui-btn-primary" id="editimg">修改图片</button >
+                                    </div>
+                                    <div class="layui-form-mid layui-word-aux">头像的尺寸限定150x150px,大小在50kb以内</div>
                                 </div>
-                            </div>
-                            <div class="layui-input-inline layui-btn-container" style="width: auto;">
-                                <button class="layui-btn layui-btn-primary" id="editimg">修改图片</button >
-                            </div>
-                            <div class="layui-form-mid layui-word-aux">头像的尺寸限定150x150px,大小在50kb以内</div>
-
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">昵称:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="title" required  lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">电话:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="tel" required  lay-verify="required" placeholder="123456" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">行业:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="major" required  lay-verify="required" placeholder="行业领域" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">学校:</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="school" required  lay-verify="required" placeholder="请输入学校" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">地区:</label>
+                                    <div class="layui-input-block">
+                                        <select name="city" lay-verify="required">
+                                            <option value="">国家</option>
+                                            <option value="0">中国</option>
+                                            <option value="1">美国</option>
+                                            <option value="2">俄罗斯</option>
+                                            <option value="3">日本</option>
+                                        </select>
+                                        <select name="city" lay-verify="">
+                                            <option value="">省份</option>
+                                            <option value="010">四川</option>
+                                            <option value="021">上海</option>
+                                            <option value="0571">香港</option>
+                                        </select>
+                                        <select name="city" lay-verify="">
+                                            <option value="">城市</option>
+                                            <option value="010">成都</option>
+                                            <option value="021">武汉</option>
+                                            <option value="0571">杭州</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">性别:</label>
+                                    <div class="layui-input-block">
+                                        <input type="radio" name="sex" value="男" title="男">
+                                        <input type="radio" name="sex" value="女" title="女" checked>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">简介:</label>
+                                    <div class="layui-input-block">
+                                        <textarea id="userEdit" name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn layui-btn-normal" style="background-color: #A4D3EE"
+                                                lay-submit lay-filter="userForm">立即提交</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                    </div>
                 </div>
-                <!--<div class="layui-tab-item">内容2</div>
-                <div class="layui-tab-item">内容3</div>
-                <div class="layui-tab-item">内容4</div>
-                <div class="layui-tab-item">内容5</div>
-                <div class="layui-tab-item">内容6</div>
-                <div class="layui-tab-item">内容7</div>
-                <div class="layui-tab-item">内容8</div>
-                <div class="layui-tab-item">内容9</div>
-                <div class="layui-tab-item">内容10</div>-->
             </div>
         </div>
     </div>
@@ -146,15 +207,9 @@
             ,saveW:150     //保存宽度
             ,saveH:150
             ,mark:1/1    //选取比例
-            ,area:'800px'  //弹窗宽度
+            ,area:'850px'  //弹窗宽度
             ,url: "upload/uploadImg"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
             ,done: function(url){ //上传完毕回调
-                //如果上传失败
-                if(url.code>0){
-                    return layer.msg('上传图片失败');
-                }else{
-                    return layer.msg('上传成功');
-                }
                 $("#inputimgurl").val(url);
                 $("#srcimgurl").attr('src',url);
             }
@@ -164,6 +219,11 @@
         });
     });
 
+    layui.use('layedit', function(){
+        var layedit = layui.layedit;
+        layedit.build('userEdit'); //建立编辑器
+    });
 </script>
+</div>
 </body>
 </html>
