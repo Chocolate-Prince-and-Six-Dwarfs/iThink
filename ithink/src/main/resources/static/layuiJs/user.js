@@ -5,7 +5,7 @@ layui.define(['laypage','layer', 'form','jquery','element'], function(exports){
         ,$=layui.jquery
         ,element=layui.element;
 
-    getUserInfo();
+    getUserInfo(1);//获取用户数据
     form.render();
 
     switch(location.hash) {
@@ -149,7 +149,7 @@ layui.use(['element','jquery','form'],function () {
                 });
                 element.tabChange('userDemo','userInfo');
                 form.render();
-                getUserInfo();
+                getUserInfo(1);
                 addEdit("userEdit");
             }
         }
@@ -412,7 +412,7 @@ function callUserCollections(element) {
             "            <li >\n" +
             "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题标题标题标题</div>\n" +
             "                <div>\n" +
-            "                    <img src=\"../../static/img/头像small.png\" alt=\"\">\n" +
+            "                    <img src=\"/img/头像small.png\" alt=\"\">\n" +
             "                    <span>&nbsp;&nbsp;&nbsp;100点赞</span>\n" +
             "                    <span>&nbsp;&nbsp;&nbsp;100收藏</span>\n" +
             "                    <span>&nbsp;&nbsp;&nbsp;100评论</span>\n" +
@@ -422,7 +422,7 @@ function callUserCollections(element) {
             "            <li >\n" +
             "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题标题标题标题</div>\n" +
             "                <div>\n" +
-            "                    <img src=\"../../static/img/头像small.png\" alt=\"\">\n" +
+            "                    <img src=\"/img/头像small.png\" alt=\"\">\n" +
             "                    <span>&nbsp;&nbsp;&nbsp;100点赞</span>\n" +
             "                    <span>&nbsp;&nbsp;&nbsp;100收藏</span>\n" +
             "                    <span>&nbsp;&nbsp;&nbsp;100评论</span>\n" +
@@ -432,7 +432,7 @@ function callUserCollections(element) {
             "            <li >\n" +
             "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题标题标题标题</div>\n" +
             "                <div>\n" +
-            "                    <img src=\"../../static/img/头像small.png\" alt=\"\">\n" +
+            "                    <img src=\"/img/头像small.png\" alt=\"\">\n" +
             "                    <span>&nbsp;&nbsp;&nbsp;100点赞</span>\n" +
             "                    <span>&nbsp;&nbsp;&nbsp;100收藏</span>\n" +
             "                    <span>&nbsp;&nbsp;&nbsp;100评论</span>\n" +
@@ -493,7 +493,7 @@ function callUserParticipate(element) {
             "                            <div class=\"title\">&nbsp;&nbsp;&nbsp;标题 </div>\n" +
             "                            <div>\n" +
             "                                <p>\n" +
-            "                                    <img src=\"../../static/img/头像small.png\" alt=\"\">\n" +
+            "                                    <img src=\"/img/头像small.png\" alt=\"\">\n" +
             "                                    <span class=\"state\">正在进行中...</span>\n" +
             "                                    <span>&nbsp;&nbsp;&nbsp;100参与中</span>\n" +
             "                                    <button>进入团组</button>\n" +
@@ -505,7 +505,7 @@ function callUserParticipate(element) {
             "                            <div class=\"title\">&nbsp;&nbsp;&nbsp;标题 </div>\n" +
             "                            <div>\n" +
             "                                <p>\n" +
-            "                                    <img src=\"../../static/img/头像small.png\" alt=\"\">\n" +
+            "                                    <img src=\"/img/头像small.png\" alt=\"\">\n" +
             "                                    <span class=\"state\">已结束！！！</span>\n" +
             "                                    <span>&nbsp;&nbsp;&nbsp;100参与中</span>\n" +
             "                                </p>\n" +
@@ -572,20 +572,19 @@ function callUserFans() {
     
 }
 
-function getUserInfo() {
+function getUserInfo(userId) {
     $.ajax({
-        url:"idea/detail",
+        url:"user/getById",
         type:"post",
         dataType: "json",
         data:{
-            id: 1,
+            id: userId,
         },
         success:function (data) {
-            var a="<div>Hello!</div>";
-            $(".userInfoContent").append(a);
+            console.log(data);
         },
         error:function () {
-            console.log("读取数据失败！");
+            console.log("读取用户信息失败！");
         }
     });
 }

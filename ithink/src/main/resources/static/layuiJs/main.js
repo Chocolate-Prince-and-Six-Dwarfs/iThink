@@ -128,7 +128,7 @@ function cutPage(laypage,pageSize) {
     });//分页
 }
 
-function sortLikenumInt(data) {
+function sortLikenumInt(data) {//点赞数减去点踩数加上关注数
     var tmp;
     for(var i=0;i<data.data.length;i++){
         tmp=data.data;
