@@ -191,4 +191,13 @@ public interface CreativeIdeaInterface {
     //  }
     // }
     JSONObject getCollect(Integer id, Integer userId);
+
+
+    // 请求地址: /idea/publish
+    // param topicTitle: 对应的创意主题id
+    // param userId: 用户id
+    // param content: 创意主题内容
+    // do: 发布创意主题
+    // return: 创意主题id, 失败返回null
+    Integer publish(String topicTitle, Integer userId, String content);
 }
