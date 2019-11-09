@@ -7,7 +7,7 @@ layui.define(['laypage','layer', 'form','jquery'], function(exports){
     layer.msg('Welcome to iThink!');
     viewIdea();
     cutPage(laypage,6);
-    exports('index', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
+    exports('main', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
 layui.use('element',function () {
     var element=layui.element;//导航的hover效果、二级菜单等功能，需要依赖element模块
