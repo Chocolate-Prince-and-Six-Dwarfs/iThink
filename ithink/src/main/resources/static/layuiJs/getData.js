@@ -5,7 +5,6 @@ function getUserId() {
         type:"post",
         async:false,
         success:function (data) {
-            //console.log(data);
             user_id=data;
         },
         error:function () {
@@ -23,7 +22,6 @@ function getUserInfo(userId,form) {
             id: userId,
         },
         success:function (data) {
-            console.log(data);
             $("#userImg").attr("src","data:image/png;base64,"+data.head);
             $("#userName").text(data.name);
             $("#userIndustry").text(data.industry);
@@ -34,6 +32,7 @@ function getUserInfo(userId,form) {
             $(".user_school").val(data.school);
             checkGender(data.sex,form);
             $(".user_desc").val(data.introduction);
+            $(".user_addr").val(data.address);
         },
         error:function () {
             console.log("读取用户信息失败！");
@@ -41,40 +40,63 @@ function getUserInfo(userId,form) {
     });
 }
 
-function updataImg(userId,userImg) {
+function saveUserInfo(form,layer){
+    $(document).on('click','#userInfoForm',function () {
+        updateUserInfo(form,layer);
+    })
+}
+function updateUserInfo(form,layer) {
+    var formData=new FormData();
+    formData.append('id',user_id);
+    formData.append('name',$(".user_name").val());
+    formData.append('phone',$(".user_tel").val());
+    formData.append('address',$(".user_addr").val());
+    formData.append('industry',$(".user_industry").val());
+    formData.append('school',$(".user_school").val());
+    formData.append('introduction',$(".user_desc").val());
+    formData.append('sex',$('input:radio[name="sex"]:checked').val());
     $.ajax({
         url:"user/updateInfo",
         type:"post",
         dataType: "json",
-        data:{
-            id: userId,
-            head:userImg,
-        },
-        success:function (data) {
-            console.log("success.");
+        data:formData,
+        processData: false,
+        contentType: false,
+        success:function () {
+            //layer.msg("修改信息成功");
+            form.render();
         },
         error:function () {
-            console.log("failed.");
+            layer.msg("修改信息失败");
         }
     });
 }
 
-/*function getUserInfo(userId) {
+function releaseIdeaInfo(form,layer,layedit,editIndex){
+    $(document).on('click','#releaseIdea',function () {
+        releaseIDea(form,layer,layedit,editIndex);
+    })
+}
+function releaseIDea(form,layer,layedit,editIndex) {
+    var fData=new FormData();
+    fData.append('userId',user_id);
+    fData.append('topicTitle',$("#topicTitle").val());
+    fData.append('content',layedit.getContent(editIndex));
     $.ajax({
-        url:"/user/getById",
+        url:"/idea/publish",
         type:"post",
-        dataType: "json",
-        data:{
-            id: userId,
-        },
-        success:function (data) {
-            console.log(data);
+        data:fData,
+        processData: false,
+        contentType: false,
+        success:function () {
+            layer.msg("发布成功");
+            window.location.reload();
         },
         error:function () {
-            console.log("读取用户信息失败！");
+            layer.msg("发布创意失败");
         }
     });
-}*/
+}
 
 function checkGender(mValue,form){
     var genderRadio = document.getElementsByName("sex");

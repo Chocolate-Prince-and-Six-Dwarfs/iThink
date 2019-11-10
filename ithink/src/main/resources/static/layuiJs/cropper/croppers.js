@@ -16,7 +16,7 @@ layui.config({
         "            </label>\n" +
         "            <input class=\"layui-upload-file\" id=\"cropper_avatarImgUpload\" type=\"file\" value=\"选择图片\" name=\"file\">\n" +
         "        </div>\n" +
-        "        <div class=\"layui-form-mid layui-word-aux\">头像的尺寸限定150x150px,大小在50kb以内</div>\n" +
+        "        <div class=\"layui-form-mid layui-word-aux\">头像的尺寸限定150x150px,大小在66kb以内</div>\n" +
         "    </div>\n" +
         "    <div class=\"layui-row layui-col-space15\">\n" +
         "        <div class=\"layui-col-xs9\">\n" +
@@ -37,9 +37,6 @@ layui.config({
         "                    <button type=\"button\" class=\"layui-btn layui-icon layui-icon-right\" cropper-event=\"rotate\" data-option=\"15\" title=\"Rotate 90 degrees\"> 向右旋转</button>\n" +
         "                </div>\n" +
         "                <div class=\"layui-col-xs5\" style=\"text-align: right;\">\n" +
-        "                    <!--<button type=\"button\" class=\"layui-btn\" title=\"移动\"></button>\n" +
-        "                    <button type=\"button\" class=\"layui-btn\" title=\"放大图片\"></button>\n" +
-        "                    <button type=\"button\" class=\"layui-btn\" title=\"缩小图片\"></button>\n-->" +
         "                    <button type=\"button\" class=\"layui-btn layui-icon layui-icon-refresh\" cropper-event=\"reset\" title=\"重置图片\"></button>\n" +
         "                </div>\n" +
         "            </div>\n" +
@@ -74,9 +71,11 @@ layui.config({
                     , content: content
                     , area: area
                     , success: function () {
+                        console.log("1");
                         image.cropper(options);
                     }
                     , cancel: function (index) {
+                        console.log("2");
                         layer.close(index);
                         image.cropper('destroy');
                     }
@@ -106,17 +105,8 @@ layui.config({
                             contentType: false,
                             success:function(result){
                                 layer.closeAll('page');
-                                /*if(result.code == 0){
-                                    console.log("接口响应");
-                                    //layer.msg(result.msg,{icon: 1});
-                                    //layer.closeAll('page');
-                                    //layer.msg("yes");
-                                    //return done(result.data.src);
-                                }else if(result.code == -1){
-                                    //layer.alert(result.msg,{icon: 2});
-                                    //layer.msg("fail");
-                                    console.log("接口未响应");
-                                }*/
+                                layer.msg("保存成功！");
+                                window.location.reload();
                             },
                             error:function () {
                                 console.log("网络异常");
