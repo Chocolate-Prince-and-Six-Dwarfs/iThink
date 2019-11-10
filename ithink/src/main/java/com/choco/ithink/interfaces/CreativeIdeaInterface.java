@@ -42,7 +42,9 @@ public interface CreativeIdeaInterface {
     //          time: "时间",
     //          publisherId: 0,（发布者id）
     //          publisher: "发布者",
-    //          like: 收藏数
+    //          like: 点赞数,
+    //          dislike: 点踩数,
+    //          collect: 收藏
     //      },
     //      {
     //          同上
@@ -66,7 +68,9 @@ public interface CreativeIdeaInterface {
     //      time: "时间",
     //      publisherId: 0,（发布者id）
     //      publisher: "发布者",
-    //      like: 收藏数
+    //      like: 点赞数,
+    //      dislike: 点踩数
+    //      collect: 收藏数
     //  },
     //  achievementCount: 10, (创意实现条数)
     //  achievements:
@@ -82,6 +86,7 @@ public interface CreativeIdeaInterface {
     //                  time: "创意实现时间",
     //                  good: 20 (创意实现点赞数),
     //                  bad: 2 (创意实现的点灭数)
+    //                  collect: 收藏数
     //              },
     //              commentCount: 8, (评论条数)
     //              comments:

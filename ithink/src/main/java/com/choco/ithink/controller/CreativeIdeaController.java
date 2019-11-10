@@ -38,10 +38,15 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
     // data:
     //  [
     //      {
-    //          id: 0,
+    //          id: 0,(创意主题id)
     //          title: "创意名称",
     //          content: "创意内容",
-    //          like: 收藏数
+    //          time: "时间",
+    //          publisherId: 0,（发布者id）
+    //          publisher: "发布者",
+    //          like: 点赞数,
+    //          dislike: 点踩数
+    //          collect: 收藏数
     //      },
     //      {
     //          同上
@@ -82,7 +87,9 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
     //          time: "时间",
     //          publisherId: 0,（发布者id）
     //          publisher: "发布者",
-    //          like: 收藏数
+    //          like: 点赞数,
+    //          dislike: 点踩数,
+    //          collect: 收藏
     //      },
     //      {
     //          同上
