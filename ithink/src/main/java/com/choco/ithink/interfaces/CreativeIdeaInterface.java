@@ -194,7 +194,7 @@ public interface CreativeIdeaInterface {
 
 
     // 请求地址: /idea/publish
-    // param topicTitle: 对应的创意主题id
+    // param topicTitle: 对应的创意标题
     // param userId: 用户id
     // param content: 创意主题内容
     // do: 发布创意主题
