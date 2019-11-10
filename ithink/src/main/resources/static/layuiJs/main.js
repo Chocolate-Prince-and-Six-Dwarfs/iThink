@@ -10,7 +10,7 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
     cutPage(laypage,6);//分页
     refresh(5);
     viewIdea();//查看创意详情
-    comment();
+    comment(layer);
     change();
     exports('main', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
@@ -167,7 +167,7 @@ function getIdeaInfo(id){
                     "                            </div>\n" +
                     "                            <div class=\"idea_achievement_comment"+data.achievements[i].achievement.id+"\" style=\"width: 90%; position: relative; left:10%;\">\n" +
                     "                                <input type=\"text\" name=\"title\" required lay-verify=\"required\" placeholder=\"请输入评论内容\" autocomplete=\"off\" class=\"layui-input idea-comment-content idea_achievement_comment_content"+data.achievements[i].achievement.id+"\">\n" +
-                    "                                <p style=\"text-align: right\"><button type=\"button\" class=\"layui-btn layui-btn-primary idea-comment-button idea_achievement_comment_button"+data.achievements[i].achievement.id+"\">发布评论</button></p>\n" +
+                    "                                <p style=\"text-align: right\"><button type=\"button\" toId=\""+data.achievements[i].achievement.userId+"\" class=\"layui-btn layui-btn-primary idea-comment-button idea_achievement_comment_button"+data.achievements[i].achievement.id+"\">发布评论</button></p>\n" +
                     "                                <div class=\"idea_achievement_comment_list"+data.achievements[i].achievement.id+"\">\n" +
                     "                                    <h3 >全部评论</h3>\n" +
                     "                                    <hr>\n" +
@@ -207,20 +207,59 @@ function getIdeaInfo(id){
     })
 }
 
-function comment() {
+function comment(layer) {
     $(document).on('click','.idea-comment-button',function () {
         var thisClass=$(this).attr('class');
-        console.log(thisClass.substring(79,));
-        var contentClass="idea-comment-content"+thisClass.substring(79,);
+        var contentClass="idea_achievement_comment_content"+thisClass.substring(79,);
+        var content=$("."+contentClass).val();
+        if(content==null||content==""){
+            layer.msg("请输入评论");
+            return false;
+        }
+        var achievementId=thisClass.substring(79,);
+        var toId=$(this).attr('toId');
+        //console.log("ai:"+achievementId+"c:"+content+"ui:"+user_id+"ti:"+toId);
+
         $.ajax({
-            url:"/idea/detail",
+            url:"comment/do",
             type:"post",
             dataType: "json",
             data:{
-                id: id,
+                achievementId: achievementId,
+                content:content,
+                fromId:user_id,
+                toId:toId,
             },
-            success:function () {
-
+            success:function (data) {
+                if(data.status==1){
+                    var date = new Date();
+                    var seperator1 = "-";
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    var strDate = date.getDate();
+                    if (month >= 1 && month <= 9) {
+                        month = "0" + month;
+                    }
+                    if (strDate >= 0 && strDate <= 9) {
+                        strDate = "0" + strDate;
+                    }
+                    var currentdate = year + seperator1 + month + seperator1 + strDate;
+                    var name=$("#userName").text();
+                    var a="<div class=\"imgdiv\"><img class=\"imgcss idea_achievement_comment_user"+data.id+"\" src=\"/img/头像.png\"/></div>\n" +
+                        "                                        <div class=\"conmment_details\">\n" +
+                        "                                            <span class=\"comment_name idea_achievement_comment_user_name"+data.id+"\">"+name+" </span>     <span class=\"idea_achievement_comment_user_time"+data.id+"\">"+currentdate+"</span>\n" +
+                        "                                            <div class=\"comment_content idea_achievement_comment_user_content"+data.id+"\">  "+content+"</div>\n" +
+                        "                                            <div class=\"del\">\n" +
+                        "                                                <i class=\"icon layui-icon layui-icon-praise  idea_achievement_comment_user_good"+data.id+"\">赞(0)</i>\n" +
+                        "                                                <!--<a class=\"del_comment\" data-id=\"1\"><i class=\"icon layui-icon\">回复</i></a>-->\n" +
+                        "                                            </div>\n" +
+                        "                                            <div class=\"idea_achievement_comment_reply"+data.id+"\"><!--回复-->\n" +
+                        "\n" +
+                        "                                            </div>\n" +
+                        "                                        </div>\n" +
+                        "                                        <hr>";
+                    $(".idea_achievement_comment_user_list"+achievementId).append(a);
+                }
             },
             error:function () {
                 console.log("评论失败");
