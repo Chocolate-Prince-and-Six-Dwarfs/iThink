@@ -35,9 +35,12 @@ public class UserService {
     private UpdateTimeMapper updateTimeMapper;
 
     // 邮箱的正则表达式
-    private String emailPattern = "^[\\w]{0,}@[\\w]{0,}\\.[\\w]{0,}$";
+    private String emailPattern = "^[a-zA-Z0-9]{1,}@[a-zA-Z0-9]{1,}(\\.[a-zA-Z0-9]{1,}){1,}$";
     // 密码的正则表达式
-    private String pwdPattern = "^[\\w]{6,20}$";
+    private String pwdPattern = "^[a-zA-Z0-9]{6,20}$";
+
+    // 用户名的正则表达式
+    private String namePattern = "^[a-zA-Z0-9\\u4e00-\\u9fa5]{2,20}$";
 
 
     public String getEmailPattern() {
@@ -47,6 +50,10 @@ public class UserService {
 
     public String getPwdPattern() {
         return pwdPattern;
+    }
+
+    public String getNamePattern() {
+        return namePattern;
     }
 
 

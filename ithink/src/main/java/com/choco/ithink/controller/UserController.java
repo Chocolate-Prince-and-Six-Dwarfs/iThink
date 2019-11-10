@@ -92,6 +92,7 @@ public class UserController implements UserInterface {
     // do: 检查邮箱是否符合规范
     // return: 符合返回true, 不符合返回false
     @RequestMapping("/checkEmail")
+    @ResponseBody
     public Boolean checkEmail(String email)
     {
         return userService.checkString(email, userService.getEmailPattern());
@@ -103,9 +104,21 @@ public class UserController implements UserInterface {
     // do: 检查密码是否符合规范
     // return: 符合返回true, 不符合返回false
     @RequestMapping("/checkPwd")
+    @ResponseBody
     public Boolean checkPwd(String pwd)
     {
         return userService.checkString(pwd, userService.getPwdPattern());
+    }
+
+    // 请求地址： user/checkName
+    // param name: 用户名
+    // do: 检查用户名是否符合规范
+    // return: 符合返回true, 不符合返回false
+    @RequestMapping("/checkName")
+    @ResponseBody
+    public Boolean checkName(String name)
+    {
+        return userService.checkString(name, userService.getNamePattern());
     }
 
     // 请求地址： user/register
@@ -124,6 +137,7 @@ public class UserController implements UserInterface {
         // 检查有效性
         Boolean emailAvailability = checkEmail(email);
         Boolean pwdAvailability = checkPwd(pwd);
+        Boolean nameAvailability = checkName(username);
 
         // 预定义状态
         Integer status = -400;
@@ -131,7 +145,7 @@ public class UserController implements UserInterface {
 
         try
         {
-            if (emailAvailability && pwdAvailability) {
+            if (emailAvailability && pwdAvailability && nameAvailability) {
                 // 如果符合规范
 
                 // 注册

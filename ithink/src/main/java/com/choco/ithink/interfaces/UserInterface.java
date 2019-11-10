@@ -30,6 +30,12 @@ public interface UserInterface {
     // return: 符合返回true, 不符合返回false
     Boolean checkPwd(String pwd);
 
+    // 请求地址： user/checkName
+    // param name: 用户名
+    // do: 检查用户名是否符合规范
+    // return: 符合返回true, 不符合返回false
+    public Boolean checkName(String name);
+
     // 请求地址： user/register
     // param username: 用户名称
     // param pwd: 用户密码
