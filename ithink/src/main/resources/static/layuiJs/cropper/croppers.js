@@ -105,7 +105,8 @@ layui.config({
                             processData: false,
                             contentType: false,
                             success:function(result){
-                                if(result.code == 0){
+                                layer.closeAll('page');
+                                /*if(result.code == 0){
                                     console.log("接口响应");
                                     //layer.msg(result.msg,{icon: 1});
                                     //layer.closeAll('page');
@@ -115,7 +116,7 @@ layui.config({
                                     //layer.alert(result.msg,{icon: 2});
                                     //layer.msg("fail");
                                     console.log("接口未响应");
-                                }
+                                }*/
                             },
                             error:function () {
                                 console.log("网络异常");
