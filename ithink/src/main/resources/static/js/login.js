@@ -11,12 +11,13 @@ btn2.onclick=function () {
     form2.style.display="block";
 };
 close1.onclick=function () {
-    form1.style.display="none";
-};
-close2.onclick=function () {
+    form1.style.display="block";
     form2.style.display="none";
 };
-$('#datetimepicker').datetimepicker();
+close2.onclick=function () {
+    form1.style.display="none";
+    form2.style.display="block";
+};
 $(function (){
     document.getElementById("login").onclick=function () {
         var email;

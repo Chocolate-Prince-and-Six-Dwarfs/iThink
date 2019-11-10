@@ -1,11 +1,3 @@
-layui.use(['layer','form','jquery'],function () {
-    var layer = layui.layer
-        ,form = layui.form
-        ,$=layui.jquery;
-
-    search(layer);
-});
-
 function search(layer) {
     var active={
         searchInfo:function () {

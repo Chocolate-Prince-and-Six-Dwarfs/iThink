@@ -7,7 +7,8 @@
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet"  href="/layui/css/layui.css">
     <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
-    <!--<script type="text/javascript" src="/js/search.js"></script>-->
+    <script type="text/javascript" src="/layuiJs/search.js"></script>
+    <script type="text/javascript" src="/layuiJs/getData.js"></script>
     <style>
         .layui-layout-body{
             min-width: 800px;
@@ -45,7 +46,7 @@
                 <a href="#" class="layui-icon" style="font-size: 23px; ">&#xe667;</a>
             </li>
             <li class="layui-nav-item">
-                <a href="#"><img src="/img/头像small.png" class="layui-nav-img" alt="">我</a>
+                <a href="#"><img src="/img/头像small.png" id="userImg" class="layui-nav-img" alt=""><b id="userName">我</b></a>
                 <dl class="layui-nav-child">
                     <dd><a href="/user#userDemo=userInfo">个人中心</a></dd>
                     <dd><a href="/user#userDemo=userNotices">我的通知</a></dd>
@@ -110,16 +111,11 @@
     </div>
 </div>
 
+
 <script>
     layui.config({
         base: '/layuiJs/' //你存放新模块的目录，注意，不是layui的模块目录
     }).use('main'); //加载入口
-    layui.config({
-        base: '/layuiJs/' //你存放新模块的目录，注意，不是layui的模块目录
-    }).use('search'); //加载入口
-    layui.config({
-        base: '/layuiJs/' //你存放新模块的目录，注意，不是layui的模块目录
-    }).use('getUserId'); //加载入口
 </script>
 </body>
 </html>

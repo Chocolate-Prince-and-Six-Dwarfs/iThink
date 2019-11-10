@@ -21,7 +21,7 @@ layui.config({
         "    <div class=\"layui-row layui-col-space15\">\n" +
         "        <div class=\"layui-col-xs9\">\n" +
         "            <div class=\"readyimg\" style=\"height:450px;background-color: rgb(247, 247, 247);\">\n" +
-        "                <img src=\"\" >\n" +
+        "                <img src=\"\" id=\"showImg\">\n" +
         "            </div>\n" +
         "        </div>\n" +
         "        <div class=\"layui-col-xs3\">\n" +
@@ -86,12 +86,18 @@ layui.config({
                 var event = $(this).attr("cropper-event");
                 //监听确认保存图像
                 if(event === 'confirmSave'){
+                    var showImg=$("#showImg").attr("src");
+                    if(showImg==""||showImg==null){
+                        layer.msg("请选择图片");
+                        return false;
+                    }
                     image.cropper("getCroppedCanvas",{
                         width: saveW,
                         height: saveH
                     }).toBlob(function(blob){
                         var formData=new FormData();
-                        formData.append('file',blob,'head.jpg');
+                        formData.append('id',user_id);
+                        formData.append('head',blob);
                         $.ajax({
                             method:"post",
                             url: url, //用于文件上传的服务器端请求地址
@@ -102,11 +108,15 @@ layui.config({
                                 if(result.code == 0){
                                     layer.msg(result.msg,{icon: 1});
                                     layer.closeAll('page');
+                                    layer.msg("yes");
                                     return done(result.data.src);
                                 }else if(result.code == -1){
                                     layer.alert(result.msg,{icon: 2});
+                                    layer.msg("fail");
                                 }
-
+                            },
+                            error:function () {
+                                console.log("失败的保存");
                             }
                         });
                     });

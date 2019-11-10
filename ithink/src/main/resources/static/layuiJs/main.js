@@ -3,10 +3,11 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
         ,form = layui.form
         ,laypage=layui.laypage
         ,$=layui.jquery;
-
-    //layer.msg('Welcome to iThink!');
-    viewIdea();
-    cutPage(laypage,6);
+    getUserId();//user_id已保存
+    getUserInfo(user_id,form);//获取头像
+    search(layer);//搜索
+    cutPage(laypage,6);//分页
+    viewIdea();//查看创意详情
     exports('main', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
 layui.use('element',function () {
@@ -19,7 +20,7 @@ layui.use('element',function () {
 
 function getIdeas(pageSize){
     $.ajax({
-        url:"idea/load",
+        url:"/idea/load",
         type:"post",
         dataType: "json",
         data: {
@@ -35,15 +36,15 @@ function getIdeas(pageSize){
             for(var i in data.data){
                 var idea="<div style=\"padding: 15px;\" id=\"idea"+data.data[i].id+"\">\n" +
                     "                        <fieldset class=\"layui-elem-field\">\n" +
-                    "                            <legend>"+data.data[i].title+"</legend>\n" +
-                    "                            <div class=\"layui-field-box\">\n" +
-                    "                                <p>"+data.data[i].content+"</p>\n" +
-                    "                                <p style=\"text-align: right\"><i class=\"layui-icon\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+data.data[i].time.substring(0,10)+"</i></p>\n" +
-                    "                                <p style=\"text-align: right\">\n" +
-                    "                                    <i class=\"layui-icon\">　&#xe6c6;顶一个"+data.data[i].like+"</i>\n" +
-                    "                                    <i class=\"layui-icon\">　&#xe6c5;踩一下</i>\n" +
-                    "                                    <i class=\"layui-icon\">　&#xe600;记得收藏</i>\n" +
-                    "                                </p>\n" +
+                "                            <legend>"+data.data[i].title+"</legend>\n" +
+                "                            <div class=\"layui-field-box\">\n" +
+                "                                <p>"+data.data[i].content+"</p>\n" +
+                "                                <p style=\"text-align: right\"><i class=\"layui-icon\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+data.data[i].time.substring(0,10)+"</i></p>\n" +
+                "                                <p style=\"text-align: right\">\n" +
+                "                                    <i class=\"layui-icon\">　&#xe6c6;顶一个"+data.data[i].like+"</i>\n" +
+                "                                    <i class=\"layui-icon\">　&#xe6c5;踩一下</i>\n" +
+                "                                    <i class=\"layui-icon\">　&#xe600;记得收藏</i>\n" +
+                "                                </p>\n" +
                     "                                <p style=\"text-align: right\"><a id=\"view"+data.data[i].id+"\" class=\"view\"><i class=\"layui-icon\">查看详情 &#xe65b;</i></a></p>\n" +
                     "                            </div>\n" +
                     "                        </fieldset>\n" +
@@ -57,25 +58,9 @@ function getIdeas(pageSize){
     });
 }
 
-function viewIdea() {
-    $(document).on("click",".view",function () {
-        $("#viewIdea").empty();
-        $("#ideaList").hide();
-        $("#cutPage").hide();
-        var viewId=$(this).attr("id"); //获取id属性值
-        viewId=viewId.substring(4,);
-        getIdeaInfo(viewId);
-    });
-    $(document).on("click","#ret",function () {
-        $("#ideaList").show();
-        $("#cutPage").show();
-        $("#viewIdea").empty();
-    });
-}
-
 function getIdeaInfo(id){
     $.ajax({
-        url:"idea/detail",
+        url:"/idea/detail",
         type:"post",
         dataType: "json",
         data:{
@@ -103,6 +88,22 @@ function getIdeaInfo(id){
             console.log("读取创意详情失败！");
         }
     })
+}
+
+function viewIdea() {
+    $(document).on("click",".view",function () {
+        $("#viewIdea").empty();
+        $("#ideaList").hide();
+        $("#cutPage").hide();
+        var viewId=$(this).attr("id"); //获取id属性值
+        viewId=viewId.substring(4,);
+        getIdeaInfo(viewId);
+    });
+    $(document).on("click","#ret",function () {
+        $("#ideaList").show();
+        $("#cutPage").show();
+        $("#viewIdea").empty();
+    });
 }
 
 function subStringContent(ideaContent){ //截取部分创意内容
