@@ -20,10 +20,8 @@ function loadTitle(keyword){
         url:"idea/search",
         type:"post",
         contentType:"application/json",
-        dataType:"json",
-        data: {
-            keyword:keyword,
-        },
+        dataType:false,
+        data: keyword,
         //把用户搜索的keyword发送给后台
 
         //后台需要返回给我,针对于关键字的相关信息

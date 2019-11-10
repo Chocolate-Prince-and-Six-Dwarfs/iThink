@@ -90,6 +90,12 @@ public class CreativeIdeaService {
             JestResult result = jestClient.execute(search);
             List<BbsTopic> resultList =  result.getSourceAsObjectList(BbsTopic.class);
 
+            if(resultList.size()==0)
+            {
+                result = jestClient.execute(search);
+                resultList =  result.getSourceAsObjectList(BbsTopic.class);
+            }
+
             return list2JSON(resultList);
         } catch (IOException e) {
             e.printStackTrace();
