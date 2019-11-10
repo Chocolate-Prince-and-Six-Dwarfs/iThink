@@ -106,17 +106,19 @@ layui.config({
                             contentType: false,
                             success:function(result){
                                 if(result.code == 0){
-                                    layer.msg(result.msg,{icon: 1});
-                                    layer.closeAll('page');
-                                    layer.msg("yes");
-                                    return done(result.data.src);
+                                    console.log("接口响应");
+                                    //layer.msg(result.msg,{icon: 1});
+                                    //layer.closeAll('page');
+                                    //layer.msg("yes");
+                                    //return done(result.data.src);
                                 }else if(result.code == -1){
-                                    layer.alert(result.msg,{icon: 2});
-                                    layer.msg("fail");
+                                    //layer.alert(result.msg,{icon: 2});
+                                    //layer.msg("fail");
+                                    console.log("接口未响应");
                                 }
                             },
                             error:function () {
-                                console.log("失败的保存");
+                                console.log("网络异常");
                             }
                         });
                     });
