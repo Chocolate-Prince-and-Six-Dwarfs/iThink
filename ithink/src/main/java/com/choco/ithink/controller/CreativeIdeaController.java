@@ -377,4 +377,47 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
     {
         return creativeIdeaService.publish(topicTitle, userId, content);
     }
+
+
+    // 请求地址 idea/getHot
+    // param number: 数量（可选，默认为10）
+    // do: 返回指定数量的热度靠前的创意主题
+    // return: 创意主题，格式如下
+    // {
+    // count: 10 （实际返回的条数）
+    // data:
+    //  [
+    //      {
+    //          id: 0,
+    //          title: "创意名称",
+    //          content: "创意内容",
+    //          time: "时间",
+    //          publisherId: 0,（发布者id）
+    //          publisher: "发布者",
+    //          like: 点赞数,
+    //          dislike: 点踩数,
+    //          collect: 收藏
+    //      },
+    //      {
+    //          同上
+    //      },
+    //      ......
+    //  ]
+    // }
+    @RequestMapping("/getHot")
+    @ResponseJSONP
+    public JSONObject getHot(@Nullable Integer number)
+    {
+        JSONObject jsonObject = new JSONObject();
+
+        // 搜索与统计
+        JSONArray data = creativeIdeaService.getHot(number);
+        Integer count = data.size();
+
+
+        // 拼接字符串
+        jsonObject.put("count", count);
+        jsonObject.put("data", data);
+        return jsonObject;
+    }
 }

@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -520,6 +522,71 @@ public class CreativeIdeaService {
         else
         {
             return null;
+        }
+    }
+
+
+    // param n: 数量（可选，默认为10）
+    // do: 返回指定数量的热度靠前的创意主题
+    // return: 创意主题，格式如下
+    //  [
+    //      {
+    //          id: 0,
+    //          title: "创意名称",
+    //          content: "创意内容",
+    //          time: "时间",
+    //          publisherId: 0,（发布者id）
+    //          publisher: "发布者",
+    //          like: 点赞数,
+    //          dislike: 点踩数,
+    //          collect: 收藏
+    //      },
+    //      {
+    //          同上
+    //      },
+    //      ......
+    //  ]
+    public JSONArray getHot(@Nullable Integer n)
+    {
+        Integer number = 0;
+        if(n==null)
+        {
+            number = 10;
+        }
+        else
+        {
+            number = n;
+        }
+        BbsTopicExample bbsTopicExample = new BbsTopicExample();
+        List<BbsTopic> bbsTopicList = bbsTopicMapper.selectByExample(bbsTopicExample);
+
+        // 排序
+        JSONArray jsonArray = list2JSON(bbsTopicList);
+        List<JSONObject> list = JSONArray.parseArray(jsonArray.toJSONString(), JSONObject.class);
+        list.sort((o1, o2) -> {
+            int a = o1.getInteger("collect") * 5 + o1.getInteger("like") + o1.getInteger("dislike");
+            int b = o2.getInteger("collect") * 5 + o2.getInteger("like") + o2.getInteger("dislike");
+            if (a < b) {
+                return 1;
+            } else if (a == b) {
+                return 0;
+            } else
+                return -1;
+        });
+        jsonArray = JSONArray.parseArray(list.toString());
+
+        if(jsonArray.size()>=number)
+        {
+            JSONArray tmp = new JSONArray();
+            for(int i=0; i<number; ++i)
+            {
+                 tmp.add(jsonArray.get(i));
+            }
+            return tmp;
+        }
+        else
+        {
+            return jsonArray;
         }
     }
 }
