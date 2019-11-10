@@ -81,7 +81,7 @@ public class AchievementService {
             Integer comment = bbsCommentMapper.countByExample(bbsCommentExample);
 
             // 拼接Json
-            jsonObject.put("id", bbsAchievementList.get(i).getTopicId());
+            jsonObject.put("id", bbsAchievementList.get(i).getAchievementId());
             jsonObject.put("userId", bbsAchievementList.get(i).getUserId());
             jsonObject.put("topicName", topicName);
             jsonObject.put("topicId", bbsAchievementList.get(i).getTopicId());
