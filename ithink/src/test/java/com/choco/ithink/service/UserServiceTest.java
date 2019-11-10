@@ -273,6 +273,34 @@ public class UserServiceTest {
     }
 
     @Test
+    public void checkString13() {
+        // 预计输入输出
+        String inputS = "一二三四五六七八九十十九八七六五四三二一零";
+        String inputPattern = userService.getNamePattern();
+        Boolean expected = false;
+
+        // 实际输出
+        Boolean actual = userService.checkString(inputS, inputPattern);
+
+        // 检验
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void checkString14() {
+        // 预计输入输出
+        String inputS = "一二三四五六七八九十十九八七六五四三二一";
+        String inputPattern = userService.getNamePattern();
+        Boolean expected = true;
+
+        // 实际输出
+        Boolean actual = userService.checkString(inputS, inputPattern);
+
+        // 检验
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void userRegister() {
     }
 
