@@ -126,7 +126,7 @@ layui.use(['element','jquery','form'],function () {
                         "                                <div class=\"layui-form-item\">\n" +
                         "                                    <div class=\"layui-input-block\">\n" +
                         "                                        <button class=\"layui-btn layui-btn-normal\" id=\"userInfoForm\" style=\"background-color: #A4D3EE\"\n" +
-                        "                                                lay-submit lay-filter=\"userForm\" type=\"submit\">立即提交</button>\n" +
+                        "                                                lay-submit lay-filter=\"userForm\" type=\"submit\">保存信息</button>\n" +
                         "                                    </div>\n" +
                         "                                </div>\n" +
                         "                            </form>\n" +

@@ -10,6 +10,7 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
     cutPage(laypage,6);//分页
     refresh(5);
     viewIdea();//查看创意详情
+    comment();
     change();
     exports('main', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
@@ -165,8 +166,8 @@ function getIdeaInfo(id){
                     "                                </div>\n" +
                     "                            </div>\n" +
                     "                            <div class=\"idea_achievement_comment"+data.achievements[i].achievement.id+"\" style=\"width: 90%; position: relative; left:10%;\">\n" +
-                    "                                <input type=\"text\" name=\"title\" required lay-verify=\"required\" placeholder=\"请输入评论内容\" autocomplete=\"off\" class=\"layui-input idea_achievement_comment_content"+data.achievements[i].achievement.id+"\">\n" +
-                    "                                <p style=\"text-align: right\"><button type=\"button\" class=\"layui-btn layui-btn-primary idea_achievement_comment_button"+data.achievements[i].achievement.id+"\">发布评论</button></p>\n" +
+                    "                                <input type=\"text\" name=\"title\" required lay-verify=\"required\" placeholder=\"请输入评论内容\" autocomplete=\"off\" class=\"layui-input idea-comment-content idea_achievement_comment_content"+data.achievements[i].achievement.id+"\">\n" +
+                    "                                <p style=\"text-align: right\"><button type=\"button\" class=\"layui-btn layui-btn-primary idea-comment-button idea_achievement_comment_button"+data.achievements[i].achievement.id+"\">发布评论</button></p>\n" +
                     "                                <div class=\"idea_achievement_comment_list"+data.achievements[i].achievement.id+"\">\n" +
                     "                                    <h3 >全部评论</h3>\n" +
                     "                                    <hr>\n" +
@@ -181,9 +182,9 @@ function getIdeaInfo(id){
                 "                    </fieldset>\n" +
                 "                    <div class=\"layui-col-md12\">\n" +
                 "                        <div class=\"layui-card\">\n" +
-                "                            <div class=\"layui-card-header\">创意标题</div>\n" +
+                "                            <div class=\"layui-card-header\">"+data.topic.title+"</div>\n" +
                 "                            <div class=\"layui-card-body\">\n" +
-                "                                创意内容，你值得拥有！\n" +
+                "                                "+data.topic.content+"\n" +
                 "                            </div>\n" +
                 "                        </div>\n" +
                 "                        <!--<p style=\"text-align: right\">\n" +
@@ -204,6 +205,28 @@ function getIdeaInfo(id){
             console.log("读取创意详情失败！");
         }
     })
+}
+
+function comment() {
+    $(document).on('click','.idea-comment-button',function () {
+        var thisClass=$(this).attr('class');
+        console.log(thisClass.substring(79,));
+        var contentClass="idea-comment-content"+thisClass.substring(79,);
+        $.ajax({
+            url:"/idea/detail",
+            type:"post",
+            dataType: "json",
+            data:{
+                id: id,
+            },
+            success:function () {
+
+            },
+            error:function () {
+                console.log("评论失败");
+            }
+        });
+    });
 }
 
 function viewIdea() {
