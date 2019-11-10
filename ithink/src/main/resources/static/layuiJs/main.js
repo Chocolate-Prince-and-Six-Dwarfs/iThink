@@ -82,7 +82,7 @@ function getIdeas(pageSize){
                             }
                         },
                         error:function () {
-                            console.log("点赞失败");
+                            console.log("获取点赞失败");
                         }
                     }
                 );
@@ -113,7 +113,7 @@ function getIdeas(pageSize){
                             }
                         },
                         error:function () {
-                            console.log("点赞失败");
+                            console.log("获取收藏信息失败");
                         }
                     }
                 );
