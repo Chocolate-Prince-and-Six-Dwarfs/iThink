@@ -181,7 +181,7 @@ public interface CreativeIdeaInterface {
     // 请求地址: /idea/getCollect
     // param id: 创意主题id
     // param userId：用户id
-    // do: 获取点赞数据和点赞状态
+    // do: 获取收藏数据及状态
     // return:
     // {
     // id:xxx,
