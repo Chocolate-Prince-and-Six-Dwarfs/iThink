@@ -4,7 +4,7 @@ function callUserNotices(element){
     }else{
         element.tabAdd('userDemo',{
             title: "我的通知"
-            ,content: "<div class=\"userNoticesContent\"  style=\"width: 60%; position: relative; left:20%;right: 20%\"><div class=\"notice\">\n" +
+            ,content: "<div class=\"userNoticesContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\"><div class=\"notice\">\n" +
                 "    <h3>我的通知</h3>\n" +
                 "    <hr>\n" +
                 "    <div class=\"layui-tab-content\">\n" +
@@ -41,11 +41,11 @@ function callUserReleaseIdea(element){
     }else{
         element.tabAdd('userDemo',{
             title: "发布创意"
-            ,content: "<div class=\"userReleaseIdeaContent\"><div class=\"put\">\n" +
-                "    <input type=\"text\" placeholder=\"请输入标题，最多10字\">\n" +
-                "    <textarea id=\"demo\" style=\"display: none;\"></textarea>\n" +
+            ,content: "<div class=\"userReleaseIdeaContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\"><div class=\"put\">\n" +
+                "    <input lay-verify=\"required\" id=\"topicTitle\" type=\"text\" placeholder=\"请输入标题，最多10字\">\n" +
+                "    <textarea lay-verify=\"required\" id=\"ideaEdit\" style=\"display: none;\"></textarea>\n" +
                 "</div>\n" +
-                "<button class='put-button'>发布创意</button></div>"
+                "<button class=\"put-button\" type=\"button\" id=\"releaseIdea\">发布创意</button></div>"
             ,id: "userReleaseIdea"
         });
         element.tabChange('userDemo','userReleaseIdea');
@@ -63,26 +63,6 @@ function callUserIdeas(element) {
                 "    <hr>\n" +
                 "    <div class=\"layui-tab-content\">\n" +
                 "        <ul>\n" +
-                "            <li >\n" +
-                "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题标题标题标题</div>\n" +
-                "                <div>\n" +
-                "                    <span>2019-12-12</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100喜欢</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100关注</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100伤实现</span>\n" +
-                "                </div>\n" +
-                "            </li>\n" +
-                "            <hr>\n" +
-                "            <li >\n" +
-                "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题标题标题标题</div>\n" +
-                "                <div>\n" +
-                "                    <span>2019-12-12</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100喜欢</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100关注</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100伤实现</span>\n" +
-                "                </div>\n" +
-                "            </li>\n" +
-                "            <hr>\n" +
                 "            <li >\n" +
                 "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题标题标题标题</div>\n" +
                 "                <div>\n" +

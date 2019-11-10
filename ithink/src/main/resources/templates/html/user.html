@@ -286,30 +286,24 @@
                         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
                             <legend>个人信息</legend>
                         </fieldset>
-                        <!--<div class="layui-upload">
-                            <div class="layui-upload-list">
-                                <img class="layui-upload-img" id="userImg">
-                                <p id="demoText"></p>
-                            </div>
-                            <button type="button" class="layui-btn" id="uploadImg"><i class="layui-icon">&#xe67c;</i>上传图片</button>
-                        </div>-->
                         <div id="table_and_page_div_id" style="width: 80%; position: relative; left:20%;">
-                            <form class="layui-form" action="" >
-                                <div class="layui-form-item">
-                                    <label class="layui-form-label">头像</label>
-                                    <div class="layui-input-inline">
-                                        <input type="text" name="head" lay-verify="required" id="inputimgurl" placeholder="图片地址" value="/img/头像.png" class="layui-input layui-hide">
-                                    </div>
-                                    <div class="layui-input-inline">
-                                        <div class="layui-upload-list" style="margin:0">
-                                            <img src="/img/头像.png" id="srcimgurl" class="layui-upload-img">
-                                        </div>
-                                    </div>
-                                    <div class="layui-input-inline layui-btn-container" style="width: auto;">
-                                        <button class="layui-btn layui-btn-primary" id="editimg">修改图片</button >
-                                    </div>
-                                    <div class="layui-form-mid layui-word-aux">头像的尺寸限定150x150px,大小在50kb以内</div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">头像</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="head" lay-verify="required" id="inputimgurl" placeholder="图片地址" value="/img/头像.png" class="layui-input layui-hide">
                                 </div>
+                                <div class="layui-input-inline">
+                                    <div class="layui-upload-list" style="margin:0">
+                                        <img src="/img/头像.png" id="srcimgurl" class="layui-upload-img">
+                                    </div>
+                                </div>
+                                <div class="layui-input-inline layui-btn-container" style="width: auto;">
+                                    <button class="layui-btn layui-btn-radius layui-btn-warm" id="editimg">修改图片</button >
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">头像的尺寸限定150x150px,大小在66kb以内</div>
+                            </div>
+
+                            <form class="layui-form" action="">
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">昵称:</label>
                                     <div class="layui-input-block">
@@ -337,6 +331,9 @@
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">地区:</label>
                                     <div class="layui-input-block">
+                                        <input type="text" name="addr" required  lay-verify="required" placeholder="请输入城市" autocomplete="off" class="layui-input user_addr">
+                                    </div>
+                                    <!--<div class="layui-input-block">
                                         <select name="city" lay-verify="required">
                                             <option value="">国家</option>
                                             <option value="0">中国</option>
@@ -356,7 +353,7 @@
                                             <option value="021">武汉</option>
                                             <option value="0571">杭州</option>
                                         </select>
-                                    </div>
+                                    </div>-->
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">性别:</label>
@@ -373,8 +370,8 @@
                                 </div>
                                 <div class="layui-form-item">
                                     <div class="layui-input-block">
-                                        <button class="layui-btn layui-btn-normal" style="background-color: #A4D3EE"
-                                                lay-submit lay-filter="userForm">立即提交</button>
+                                        <button class="layui-btn layui-btn-normal" id="userInfoForm" style="background-color: #A4D3EE"
+                                                lay-submit lay-filter="userForm" type="submit">立即提交</button>
                                     </div>
                                 </div>
                             </form>
@@ -411,12 +408,8 @@
             ,area:'850px'  //弹窗宽度
             ,url: "user/updateInfo"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
             ,done: function(url){ //上传完毕回调
-                console.log("success123.");
-                //$("#inputimgurl").val(url);
+                $("#inputimgurl").val(url);
                 //$("#srcimgurl").attr('src',url);
-            }
-            ,error:function () {
-                layer.msg("上传失败123");
             }
         });
     });

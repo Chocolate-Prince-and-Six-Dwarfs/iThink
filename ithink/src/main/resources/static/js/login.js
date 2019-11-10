@@ -6,17 +6,17 @@ var close1=document.getElementById("close1");
 var close2=document.getElementById("close2");
 btn1.onclick=function () {
     form1.style.display="block";
+    form2.style.display="none";
 };
 btn2.onclick=function () {
+    form1.style.display="none";
     form2.style.display="block";
 };
 close1.onclick=function () {
-    form1.style.display="block";
-    form2.style.display="none";
+    form1.style.display="none";
 };
 close2.onclick=function () {
-    form1.style.display="none";
-    form2.style.display="block";
+    form2.style.display="none";
 };
 $(function (){
     document.getElementById("login").onclick=function () {
