@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.*;
 import com.choco.ithink.exception.PrimarykeyException;
 import com.choco.ithink.pojo.*;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +13,6 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -311,9 +309,10 @@ public class UserService {
             user.setUserBirth(birthday);
             user.setUserPhone(phone);
             // 更新用户基础信息
-            if(name!=null || sex!=null || birthday!=null || phone!=null)
+            Integer countBase = 0;
+            if(name!=null || sex!=null || birthday!=null || phone!=null || head!=null)
             {
-                userMapper.updateByExampleSelective(user, userExample);
+                countBase = userMapper.updateByExampleSelective(user, userExample);
             }
 
             // 构建新的用户补充信息
@@ -322,12 +321,20 @@ public class UserService {
             userOtherInfo.setUserSchool(school);
             userOtherInfo.setUserSelfintroduction(introduction);
             // 更新用户补充信息
+            Integer countOther = 0;
             if(address!=null || industry!=null || school!=null || introduction!=null)
             {
-                userOtherInfoMapper.updateByExampleSelective(userOtherInfo, userOtherInfoExample);
+                countOther = userOtherInfoMapper.updateByExampleSelective(userOtherInfo, userOtherInfoExample);
             }
 
-            status = 1;
+            if((countBase==1 || countOther==1) && (countBase + countOther) <=2)
+            {
+                status = 1;
+            }
+            else
+            {
+                status = 0;
+            }
         }
         catch (Exception e)
         {
