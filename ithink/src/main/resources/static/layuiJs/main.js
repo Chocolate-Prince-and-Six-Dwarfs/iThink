@@ -3,10 +3,12 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
         ,form = layui.form
         ,laypage=layui.laypage
         ,$=layui.jquery;
+
     getUserId();//user_id已保存
     getUserInfo(user_id,form);//获取头像
     search(layer);//搜索
-    //cutPage(laypage,6);//分页
+    cutPage(laypage,6);//分页
+    refresh(5);
     viewIdea();//查看创意详情
     change();
     exports('main', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
@@ -39,7 +41,7 @@ function getIdeas(pageSize){
                     "                        <fieldset class=\"layui-elem-field\">\n" +
                     "                            <legend>"+data.data[i].title+"</legend>\n" +
                     "                            <div class=\"layui-field-box\">\n" +
-                    "                                <p>"+data.data[i].content+"</p>\n" +
+                    "                                <p>"+subStringContent(data.data[i].content)+"...</p>\n" +
                     "                                <p style=\"text-align: right\"><i class=\"layui-icon\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+data.data[i].time.substring(0,10)+"</i></p>\n" +
                     "                                <p style=\"text-align: right\">\n" +
                     "                                    <a class='zan'><i class=\"layui-icon\">&#xe6c6;顶一个</i></a>"+data.data[i].like+"\n" +
@@ -69,19 +71,7 @@ function getIdeaInfo(id){
         },
         success:function (data) {
             var a="<button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\" id=\"ret\"><i class=\"layui-icon\">&#xe65c;返回"+id.substring(4,)+"</i></button>";
-            var b="<div style=\"padding: 15px;\">\n" +
-                "                            <fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 30px;\">\n" +
-                "                                <legend>创意详情</legend>\n" +
-                "                            </fieldset>\n" +
-                "                            <div class=\"layui-col-md12\">\n" +
-                "                                <div class=\"layui-card\">\n" +
-                "                                    <div class=\"layui-card-header\">"+data.topic.title+"</div>\n" +
-                "                                    <div class=\"layui-card-body\">\n" +
-                "                                        "+data.topic.content+"\n" +
-                "                                    </div>\n" +
-                "                                </div>\n" +
-                "                            </div>\n" +
-                "                        </div>";
+            var b="<div style=\"padding: 15px;\"></div>";
             $("#viewIdea").append(a);
             $("#viewIdea").append(b);
         },
@@ -95,31 +85,39 @@ function viewIdea() {
     $(document).on("click",".view",function () {
         $("#viewIdea").empty();
         $("#ideaList").hide();
-        $("#cutPage").hide();
+        $("#refreshIdeas").hide();
         var viewId=$(this).attr("id"); //获取id属性值
         viewId=viewId.substring(4,);
         getIdeaInfo(viewId);
     });
     $(document).on("click","#ret",function () {
         $("#ideaList").show();
-        $("#cutPage").show();
+        $("#refreshIdeas").show();
         $("#viewIdea").empty();
     });
 }
 
 function subStringContent(ideaContent){ //截取部分创意内容
-    var ic=ideaContent.substring(0,13);
+    ideaContent = ideaContent.replace(/(\n)/g, "");
+    ideaContent = ideaContent.replace(/(\t)/g, "");
+    ideaContent = ideaContent.replace(/(\r)/g, "");
+    ideaContent = ideaContent.replace(/<\/?[^>]*>/g, "");
+    ideaContent = ideaContent.replace(/\s*/g, "");
+    var ic=ideaContent.substring(0,200);
     return ic;
 }
 
-function refresh() {
-    $(document).on("click",".view",function (){
-
+function refresh(pageSize) {
+    $(document).ready(function () {
+        getIdeas(pageSize);
+    });
+    $(document).on("click","#refreshIdeas",function (){
+        getIdeas(pageSize);
     });
 }
 
 function cutPage(laypage,pageSize) {
-    getIdeas(pageSize);
+    //getIdeas(pageSize);//sort后的
     laypage.render({
         elem: 'cutPage'
         ,count: 30
@@ -130,25 +128,10 @@ function cutPage(laypage,pageSize) {
             //console.log(obj.limit); //得到每页显示的条数
             //首次不执行
             if(!first){
-                getIdeas(pageSize);
+                //getIdeas(pageSize);
             }
         }
     });//分页
-}
-
-function sortLikenumInt(data) {//点赞数减去点踩数加上关注数
-    var tmp;
-    for(var i=0;i<data.data.length;i++){
-        tmp=data.data;
-        for(var j=i+1;j<data.data.length;j++){
-            if(data.data[i].like<data.data[j].like){
-                tmp=data.data[i];
-                data.data[i]=data.data[j];
-                data.data[j]=tmp;
-            }
-        }
-    }
-    return data;
 }
 
 function change() {
