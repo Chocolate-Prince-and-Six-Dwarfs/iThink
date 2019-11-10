@@ -142,7 +142,7 @@
         <input type="password" id="login-pdw" placeholder="输入密码吧">
       </div>
     </div>
-    <p><button type="button" class="layui-btn go" id="login" style="margin-left: 100px;">提交</button></p>
+    <p><button type="submit" class="layui-btn go" id="login" style="margin-left: 100px;">提交</button></p>
 
   </form>
 
@@ -247,7 +247,7 @@
 
     //监听提交
     form.on('submit(formDemo)', function(data){
-      layer.msg(JSON.stringify(data.field));
+      //layer.msg(JSON.stringify(data.field));
       return false;
     });
     //年选择器

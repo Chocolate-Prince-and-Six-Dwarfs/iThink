@@ -6,8 +6,9 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
     getUserId();//user_id已保存
     getUserInfo(user_id,form);//获取头像
     search(layer);//搜索
-    cutPage(laypage,6);//分页
+    //cutPage(laypage,6);//分页
     viewIdea();//查看创意详情
+    change();
     exports('main', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
 layui.use('element',function () {
@@ -20,7 +21,7 @@ layui.use('element',function () {
 
 function getIdeas(pageSize){
     $.ajax({
-        url:"/idea/load",
+        url:"idea/load",
         type:"post",
         dataType: "json",
         data: {
@@ -36,15 +37,15 @@ function getIdeas(pageSize){
             for(var i in data.data){
                 var idea="<div style=\"padding: 15px;\" id=\"idea"+data.data[i].id+"\">\n" +
                     "                        <fieldset class=\"layui-elem-field\">\n" +
-                "                            <legend>"+data.data[i].title+"</legend>\n" +
-                "                            <div class=\"layui-field-box\">\n" +
-                "                                <p>"+data.data[i].content+"</p>\n" +
-                "                                <p style=\"text-align: right\"><i class=\"layui-icon\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+data.data[i].time.substring(0,10)+"</i></p>\n" +
-                "                                <p style=\"text-align: right\">\n" +
-                "                                    <i class=\"layui-icon\">　&#xe6c6;顶一个"+data.data[i].like+"</i>\n" +
-                "                                    <i class=\"layui-icon\">　&#xe6c5;踩一下</i>\n" +
-                "                                    <i class=\"layui-icon\">　&#xe600;记得收藏</i>\n" +
-                "                                </p>\n" +
+                    "                            <legend>"+data.data[i].title+"</legend>\n" +
+                    "                            <div class=\"layui-field-box\">\n" +
+                    "                                <p>"+data.data[i].content+"</p>\n" +
+                    "                                <p style=\"text-align: right\"><i class=\"layui-icon\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+data.data[i].time.substring(0,10)+"</i></p>\n" +
+                    "                                <p style=\"text-align: right\">\n" +
+                    "                                    <a class='zan'><i class=\"layui-icon\">&#xe6c6;顶一个</i></a>"+data.data[i].like+"\n" +
+                    "                                   <a class='cai'><i class=\"layui-icon\">&#xe6c5;踩一下</i></a> \n" +
+                    "                                   <a><i class=\"layui-icon layui-icon-rate\" id='star'></i>收藏</a>\n" +
+                    "                                </p>\n" +
                     "                                <p style=\"text-align: right\"><a id=\"view"+data.data[i].id+"\" class=\"view\"><i class=\"layui-icon\">查看详情 &#xe65b;</i></a></p>\n" +
                     "                            </div>\n" +
                     "                        </fieldset>\n" +
@@ -111,6 +112,12 @@ function subStringContent(ideaContent){ //截取部分创意内容
     return ic;
 }
 
+function refresh() {
+    $(document).on("click",".view",function (){
+
+    });
+}
+
 function cutPage(laypage,pageSize) {
     getIdeas(pageSize);
     laypage.render({
@@ -143,3 +150,45 @@ function sortLikenumInt(data) {//点赞数减去点踩数加上关注数
     }
     return data;
 }
+
+function change() {
+    $(document).on('click','.zan',function () {
+        var color1=$(".zan").css('color')//赞的颜色
+        var color2=$(".cai").css('color')//踩的颜色
+        if(color1=== 'rgb(255, 0, 0)')
+        {
+            $(".zan").css("color",'rgb(0,0,0)');
+        }
+        else{
+            $(".zan").css("color",'rgb(255,0,0)');
+            $(".cai").css("color",'rgb(0,0,0)');
+        }
+    });
+
+    $(document).on('click','.cai',function () {
+        var color1=$(".zan").css('color')//赞的颜色
+        var color2=$(".cai").css('color')//踩的颜色
+        if(color2=== 'rgb(0, 0, 255)')
+        {
+            $(".cai").css("color",'rgb(0,0,0)');
+        }
+        else{
+            $(".cai").css("color",'rgb(0,0,255)');
+            $(".zan").css("color",'rgb(0,0,0)');
+        }
+    });
+
+    $(document).on('click','#star',function () {
+        //var span=$("#star").html();
+        if($("#star").attr('class') === 'layui-icon layui-icon-rate-solid'){
+            $("#star").empty();
+            $("#star").attr('class','layui-icon layui-icon-rate');
+        }
+        else {
+            $("#star").empty();
+            $("#star").attr('class','layui-icon layui-icon-rate-solid');
+        }
+
+    });
+}
+
