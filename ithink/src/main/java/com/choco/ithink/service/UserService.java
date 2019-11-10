@@ -134,8 +134,27 @@ public class UserService {
             // 插入数据
             try
             {
-                 userMapper.insertSelective(user);
+                Integer count = userMapper.insertSelective(user);
+                // 检查是否成功插入数据
+                if(count != 1)
+                {
+                    return -400;
+                }
+                else
+                {
+                    Integer id = user.getUserId();
+                    // 创建其他用户数据字段
+                    UserOtherInfo userOtherInfo = new UserOtherInfo();
+                    userOtherInfo.setUserId(id);
+                    userOtherInfoMapper.insertSelective(userOtherInfo);
 
+                    // 创建更新时间记录
+                    UpdateTime updateTime = new UpdateTime();
+                    updateTime.setTime(new Date());
+                    updateTime.setUserId(id);
+                    updateTimeMapper.insertSelective(updateTime);
+                    return 1;
+                }
             }
             catch(Exception e)
             {
@@ -144,26 +163,7 @@ public class UserService {
                 return -400;
             }
 
-            // 检查是否成功插入数据
-            List<User> userList = userMapper.selectByExample(userExample);
-            if(userList.size() != 1)
-            {
-                return -400;
-            }
-            else
-            {
-                Integer id = userList.get(0).getUserId();
-                // 创建其他用户数据字段
-                UserOtherInfo userOtherInfo = new UserOtherInfo();
-                userOtherInfo.setUserId(id);
-                userOtherInfoMapper.insertSelective(userOtherInfo);
 
-                // 创建更新时间记录
-                UpdateTime updateTime = new UpdateTime();
-                updateTime.setTime(new Date());
-                updateTimeMapper.insertSelective(updateTime);
-                return 1;
-            }
         }
         //如果结果非空(即用户已经存在)
         else
