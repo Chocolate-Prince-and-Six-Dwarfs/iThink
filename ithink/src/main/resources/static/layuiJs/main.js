@@ -58,9 +58,9 @@ function getIdeas(pageSize){
 
                 var type = "topic";
                 var className = "topic-intro";
-                var id = data.data[i].id;
+                var processId = data.data[i].id;
                 //console.log(user_id);
-                precess(type, className, id, user_id);
+                precess(type, className, processId, user_id);
             }
         },
         error:function () {
@@ -88,26 +88,27 @@ function getIdeaInfo(ideaId){
                     var comment=data.achievements[i].comments[j].comment;
                     comment_list+="<div class=\"imgdiv\"><img fromId=\""+comment.fromId+"\" class=\"imgcss idea_achievement_comment_user"+comment.commentId+"\" src=\"/img/头像.png\"/></div>\n" +
                         "                                        <div class=\"conmment_details\">\n" +
-                        "                                            <span class=\"comment_name idea_achievement_comment_user_name"+comment.commentId+"\">"+comment.fromName+" </span>     <span class=\"idea_achievement_comment_user_time"+comment.commentId+"\">"+comment.time.substring(0,10)+"</span>\n" +
-                        "                                            <div class=\"comment_content idea_achievement_comment_user_content"+comment.commentId+"\">  "+comment.content+"</div>\n" +
+                        "                                            <span class=\"comment_name idea_achievement_comment_user_name" + comment.commentId + "\">" + comment.fromName + " </span>     <span class=\"idea_achievement_comment_user_time" + comment.commentId + "\">" + comment.time.substring(0, 10) + "</span>\n" +
+                        "                                            <div class=\"comment_content idea_achievement_comment_user_content" + comment.commentId + "\">  " + comment.content + "</div>\n" +
                         "                                            <div class=\"del\">\n" +
-                        "                                                <i class=\"icon layui-icon layui-icon-praise idea_achievement_comment_user_good"+comment.commentId+"\">赞("+comment.like+")</i>\n" +
+                        "                                           <a><i class=\"icon layui-icon layui-icon-praise idea_achievement_comment_user_good" + comment.commentId + " praise-comment comment-detail\" commentId='" + comment.commentId + "'>赞一下</i></a>(<span class='likeNum-comment comment-detail' commentId='" + comment.commentId + "'>" + comment.like + "</span>)\n" +
+                        "                                           <a><i class=\"layui-icon layui-icon-tread tread-comment comment-detail\" commentId='" + comment.commentId + "'>踩一下</i></a>\n" +
                         "                                                <!--<a class=\"del_comment\" data-id=\"1\"><i class=\"icon layui-icon\">回复</i></a>-->\n" +
                         "                                            </div>\n" +
-                        "                                            <div class=\"idea_achievement_comment_reply"+comment.commentId+"\"><!--回复-->\n" +
+                        "                                            <div class=\"idea_achievement_comment_reply" + comment.commentId + "\"><!--回复-->\n" +
                         "\n" +
                         "                                            </div>\n" +
                         "                                        </div>\n" +
                         "                                        <hr>";
-
+                    commentIdList.push(comment.commentId);
                 }
-                achievements+="<fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 50px;\">\n" +
-                    "                                <legend>创意实现"+i+"</legend>\n" +
+                achievements += "<fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 50px;\">\n" +
+                    "                                <legend>创意实现" + i + "</legend>\n" +
                     "                            </fieldset>\n" +
-                    "                            <div class=\"layui-card idea_achievement"+ach.id+"\">\n" +
-                    "                                <div class=\"layui-card-header  idea_achievement_title"+ach.id+"\"></div>\n" +
-                    "                                <div class=\"layui-card-body idea_achievement_content"+ach.id+"\">\n" +
-                    "                                    "+ach.content+"\n" +
+                    "                            <div class=\"layui-card idea_achievement" + ach.id + "\">\n" +
+                    "                                <div class=\"layui-card-header  idea_achievement_title" + ach.id + "\"></div>\n" +
+                    "                                <div class=\"layui-card-body idea_achievement_content" + ach.id + "\">\n" +
+                    "                                    " + ach.content + "\n" +
                     "                                </div>\n" +
                     "                            </div>\n" +
                     "                            <div style=\"text-align: right\"><a class=\"comment-idea\" isShow=\"false\" achid=\""+ach.id+"\"><i class=\"layui-icon\">&#xe611;评论</i></a></div>\n"+
@@ -115,10 +116,11 @@ function getIdeaInfo(ideaId){
                     "                                <input type=\"text\" name=\"title\" required lay-verify=\"required\" placeholder=\"请输入评论内容\" autocomplete=\"off\" class=\"layui-input idea-comment-content idea_achievement_comment_content"+ach.id+"\">\n" +
                     "                                <p style=\"text-align: right\"><button type=\"button\" toId=\""+ach.userId+"\" class=\"layui-btn layui-btn-primary idea-comment-button idea_achievement_comment_button"+ach.id+"\">发布评论</button></p>\n" +
                     "                                <div class=\"idea_achievement_comment_list"+ach.id+"\">\n" +
+
                     "                                    <h3 >全部评论</h3>\n" +
                     "                                    <hr>\n" +
-                    "                                    <div class=\"comment idea_achievement_comment_user_list"+ach.id+"\">\n" +
-                    comment_list+
+                    "                                    <div class=\"comment idea_achievement_comment_user_list" + ach.id + "\">\n" +
+                    comment_list +
                     "                                    </div>\n" +
                     "                                </div>\n" +
                     "                            </div>" +
@@ -143,17 +145,17 @@ function getIdeaInfo(ideaId){
                 "                    </fieldset>\n" +
                 "                    <div class=\"layui-col-md12\">\n" +
                 "                        <div class=\"layui-card\">\n" +
-                "                            <div class=\"layui-card-header\">"+data.topic.title+"</div>\n" +
+                "                            <div class=\"layui-card-header\">" + data.topic.title + "</div>\n" +
                 "                            <div class=\"layui-card-body\">\n" +
-                "                                "+data.topic.content+"\n" +
+                "                                " + data.topic.content + "\n" +
                 "                            </div>\n" +
                 "                        </div>\n" +
                 "                        <p style=\"text-align: right\">\n" +
-                "                            <a><i class=\"layui-icon\">&#xe770;"+data.topic.publisher+"</i></a>\n" +
-                "                            <a><i class=\"layui-icon\">&#xe637;"+data.topic.time.substring(0,10)+"</i></a>\n" +
-                "                            <a><i class=\"layui-icon layui-icon-praise praise-topic topic-detail\" topicId='" + data.topic.id + "'>顶一个</i></a>(<span class='likeNum-topic topic-detail' topicId='"+data.topic.id+"'>"+data.topic.like+"</span>)\n" +
+                "                            <a><i class=\"layui-icon\">&#xe770;" + data.topic.publisher + "</i></a>\n" +
+                "                            <a><i class=\"layui-icon\">&#xe637;" + data.topic.time.substring(0, 10) + "</i></a>\n" +
+                "                            <a><i class=\"layui-icon layui-icon-praise praise-topic topic-detail\" topicId='" + data.topic.id + "'>顶一个</i></a>(<span class='likeNum-topic topic-detail' topicId='" + data.topic.id + "'>" + data.topic.like + "</span>)\n" +
                 "                            <a><i class=\"layui-icon layui-icon-tread tread-topic topic-detail\" topicId='" + data.topic.id + "'>踩一下</i></a>\n" +
-                "                             <a><i class=\"layui-icon layui-icon-rate rate-topic topic-detail\" topicId='" + data.topic.id + "'>收藏</i></a>(<span class='collectNum-topic topic-detail' topicId='"+data.topic.id+"'>"+data.topic.collect+"</span>)\n" +
+                "                             <a><i class=\"layui-icon layui-icon-rate rate-topic topic-detail\" topicId='" + data.topic.id + "'>收藏</i></a>(<span class='collectNum-topic topic-detail' topicId='" + data.topic.id + "'>" + data.topic.collect + "</span>)\n" +
                 "                        </p>\n" +
                 "                        <div class=\"idea_achievements\" style=\"width: 95%; position: relative; left:5%;\">\n"+
                 releaseArticle+achievements+
@@ -161,11 +163,25 @@ function getIdeaInfo(ideaId){
             $("#viewIdea").append(retButton);
             $("#viewIdea").append(ideaDetails);
             releaseArticleEdit("releaseIdeaArticleContent",ideaId);
+
             var type = "topic";
             var className = "topic-detail";
-            var id = data.topic.id;
+            var processId = data.topic.id;
             //console.log(user_id);
-            precess(type, className, id, user_id);
+            precess(type, className, processId, user_id);
+
+            if(commentIdList!=null)
+            {
+                for (var i = 0; i < commentIdList.length; ++i) {
+                    var type = "comment";
+                    var className = "comment-detail";
+                    var processId = commentIdList[i];
+                    //console.log(processId);
+                    //console.log(user_id);
+                    precess(type, className, processId, user_id);
+                }
+            }
+
         },
         error:function () {
             console.log("读取创意详情失败！");
@@ -326,7 +342,6 @@ function viewIdea() {
         $("#ideaList").show();
         $("#refreshIdeas").show();
         $("#viewIdea").empty();
-        $.parser.parse();
     });
 }
 
@@ -462,43 +477,45 @@ function change(type, className, id, user_id) {
         )
     });
 
-    var rateSelect = "i[class*=rate-" + type + "]["+ type +"Id=" + id + "][class*=" + className +"]";
-    $(document).off("click", rateSelect).on('click', rateSelect, function () {
-        var self = $(this);
-        var formData = new FormData();
-        formData.append("id", self.attr(type + "Id"));
-        formData.append("userId", user_id);
-        //console.log(self.attr("topicId"));
-        $.ajax(
-            {
-                url: request + "/collect",
-                type: "post",
-                dataType: false,
-                async: false,
-                processData : false,  //必须false才会避开jQuery对 formdata 的默认处理
-                contentType : false,  //必须false才会自动加上正确的Content-Type
-                data:formData,
-                success:function (data) {
-                    //console.log(data);
-                    // var collectElement = $(".collectNum-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]");
-                    // //console.log(likeElement.attr("topicId"));
-                    // collectElement.html(data.data.collect);
-                    // if(data.data.status === 1)
-                    // {
-                    //     self.css('color', 'rgb(255,0,0)');
-                    // }
-                    // else
-                    // {
-                    //     self.css("color", 'grey');
-                    // }
-                    changeStatus(type, data.id, user_id);
-                },
-                error:function () {
-                    console.log("点踩失败");
+    if(type!="comment") {
+        var rateSelect = "i[class*=rate-" + type + "][" + type + "Id=" + id + "][class*=" + className + "]";
+        $(document).off("click", rateSelect).on('click', rateSelect, function () {
+            var self = $(this);
+            var formData = new FormData();
+            formData.append("id", self.attr(type + "Id"));
+            formData.append("userId", user_id);
+            //console.log(self.attr("topicId"));
+            $.ajax(
+                {
+                    url: request + "/collect",
+                    type: "post",
+                    dataType: false,
+                    async: false,
+                    processData: false,  //必须false才会避开jQuery对 formdata 的默认处理
+                    contentType: false,  //必须false才会自动加上正确的Content-Type
+                    data: formData,
+                    success: function (data) {
+                        //console.log(data);
+                        // var collectElement = $(".collectNum-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]");
+                        // //console.log(likeElement.attr("topicId"));
+                        // collectElement.html(data.data.collect);
+                        // if(data.data.status === 1)
+                        // {
+                        //     self.css('color', 'rgb(255,0,0)');
+                        // }
+                        // else
+                        // {
+                        //     self.css("color", 'grey');
+                        // }
+                        changeStatus(type, data.id, user_id);
+                    },
+                    error: function () {
+                        console.log("收藏/取消收藏失败");
+                    }
                 }
-            }
-        )
-    });
+            )
+        });
+    }
 }
 
 function changeStatus(type, id, user_id)
@@ -525,66 +542,61 @@ function changeStatus(type, id, user_id)
     {
         request = "/comment";
     }
-    $.ajax(
-        {
-            url: request + "/getCollect",
-            type: "post",
-            dataType: false,
-            async: false,
-            processData : false,  //必须false才会避开jQuery对 formdata 的默认处理
-            contentType : false,  //必须false才会自动加上正确的Content-Type
-            data:formData,
-            success:function (data) {
-                if(data.data.status === 1)
-                {
-                    collect.css('color', 'rgb(255,0,0)');
+    if(type!="comment") {
+        $.ajax(
+            {
+                url: request + "/getCollect",
+                type: "post",
+                dataType: false,
+                async: false,
+                processData: false,  //必须false才会避开jQuery对 formdata 的默认处理
+                contentType: false,  //必须false才会自动加上正确的Content-Type
+                data: formData,
+                success: function (data) {
+                    if (data.data.status === 1) {
+                        collect.css('color', 'rgb(255,0,0)');
+                    } else if (data.data.status === 0) {
+                        collect.css('color', 'grey');
+                    }
+                    var collectElement = $(".collectNum-" + type + "[" + type + "Id=" + data.id + "]");
+                    collectElement.html(data.data.collect);
+                },
+                error: function () {
+                    console.log("获取收藏信息失败");
                 }
-                else if(data.data.status === 0)
-                {
-                    collect.css('color', 'grey');
-                }
-                var collectElement = $(".collectNum-" + type + "[" + type + "Id="+ data.id + "]");
-                collectElement.html(data.data.collect);
-            },
-            error:function () {
-                console.log("获取点赞失败");
             }
-        }
-    );
+        );
+    }
     $.ajax(
         {
             url: request + "/getLike",
             type: "post",
             dataType: false,
             async: false,
-            processData : false,  //必须false才会避开jQuery对 formdata 的默认处理
-            contentType : false,  //必须false才会自动加上正确的Content-Type
-            data:formData,
-            success:function (data) {
-                if(data.data.status === 1)
-                {
+            processData: false,  //必须false才会避开jQuery对 formdata 的默认处理
+            contentType: false,  //必须false才会自动加上正确的Content-Type
+            data: formData,
+            success: function (data) {
+                if (data.data.status === 1) {
                     like.css('color', 'rgb(255,0,0)');
                     dislike.css("color", 'grey');
-                }
-                else if(data.data.status === 0)
-                {
+                } else if (data.data.status === 0) {
                     like.css('color', 'grey');
                     dislike.css("color", 'rgb(0,0,255)');
-                }
-                else
-                {
+                } else {
                     like.css('color', 'grey');
                     dislike.css("color", 'grey');
                 }
-                var likeElement = $(".likeNum-" + type + "[" + type + "Id="+ data.id + "]");
+                var likeElement = $(".likeNum-" + type + "[" + type + "Id=" + data.id + "]");
                 //console.log(likeElement.attr("topicId"));
                 likeElement.html(data.data.like);
             },
-            error:function () {
-                console.log("获取收藏信息失败");
+            error: function () {
+                console.log("获取点赞信息失败");
             }
         }
     );
+
 }
 
 function precess(type, className, id, user_id)
