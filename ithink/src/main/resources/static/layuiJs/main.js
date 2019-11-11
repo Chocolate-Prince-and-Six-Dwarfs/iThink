@@ -44,9 +44,9 @@ function getIdeas(pageSize){
                     "                                <p>"+subStringContent(data.data[i].content)+"...</p>\n" +
                     "                                <p style=\"text-align: right\"><i class=\"layui-icon\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+data.data[i].time.substring(0,10)+"</i></p>\n" +
                     "                                <p style=\"text-align: right\">\n" +
-                    "                                    <a class='zan'><i class=\"layui-icon layui-icon-praise praise-topic\" topicId='" + data.data[i].id + "'>顶一个</i></a><span class='likeNum-topic' topicId='"+data.data[i].id+"'>"+data.data[i].like+"</span>\n" +
-                    "                                   <a class='cai'><i class=\"layui-icon layui-icon-tread tread-topic\" topicId='" + data.data[i].id + "'>踩一下</i></a> \n" +
-                    "                                   <a><i class=\"layui-icon layui-icon-rate rate-topic\" topicId='" + data.data[i].id + "'>收藏</i></a>\n" +
+                    "                                    <a class='zan'><i class=\"layui-icon layui-icon-praise praise-topic topic-intro\" topicId='" + data.data[i].id + "'>顶一个</i></a>(<span class='likeNum-topic topic-intro' topicId='"+data.data[i].id+"'>"+data.data[i].like+"</span>)\n" +
+                    "                                   <a class='cai'><i class=\"layui-icon layui-icon-tread tread-topic topic-intro\" topicId='" + data.data[i].id + "'>踩一下</i></a> \n" +
+                    "                                   <a><i class=\"layui-icon layui-icon-rate rate-topic topic-intro\" topicId='" + data.data[i].id + "'>收藏</i></a>(<span class='collectNum-topic topic-intro' topicId='"+data.data[i].id+"'>"+data.data[i].collect+"</span>)\n" +
                     "                                </p>\n" +
                     "                                <p style=\"text-align: right\"><a id=\"view"+data.data[i].id+"\" class=\"view\"><i class=\"layui-icon\">查看详情 &#xe65b;</i></a></p>\n" +
                     "                            </div>\n" +
@@ -56,8 +56,10 @@ function getIdeas(pageSize){
 
 
                 var type = "topic";
+                var className = "topic-intro";
                 var id = data.data[i].id;
-                precess(type, id, user_id);
+                //console.log(user_id);
+                precess(type, className, id, user_id);
             }
         },
         error:function () {
@@ -76,7 +78,7 @@ function getIdeaInfo(id){
         },
         success:function (data) {
             console.log(data);
-            var a="<button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\" id=\"ret\"><i class=\"layui-icon\">&#xe65c;返回"+id.substring(4,)+"</i></button>";
+            var a="<button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\" id=\"ret\"><i class=\"layui-icon\">&#xe65c;返回</i></button>";
             var achievements="";
             for(var i in data.achievements){
                 var comment_list="";
@@ -133,15 +135,21 @@ function getIdeaInfo(id){
                 "                        <p style=\"text-align: right\">\n" +
                 "                            <a><i class=\"layui-icon\">&#xe770;"+data.topic.publisher+"</i></a>\n" +
                 "                            <a><i class=\"layui-icon\">&#xe637;"+data.topic.time.substring(0,10)+"</i></a>\n" +
-                "                            <a><i class=\"layui-icon\">&#xe6c6;顶一个</i></a>\n" +
-                "                            <a><i class=\"layui-icon\">&#xe6c5;踩一下</i></a>\n" +
-                "                            <a><i class=\"layui-icon layui-icon-rate\"></i>收藏</a>\n" +
+                "                            <a><i class=\"layui-icon layui-icon-praise praise-topic topic-detail\" topicId='" + data.topic.id + "'>顶一个</i></a>(<span class='likeNum-topic topic-detail' topicId='"+data.topic.id+"'>"+data.topic.like+"</span>)\n" +
+                "                            <a><i class=\"layui-icon layui-icon-tread tread-topic topic-detail\" topicId='" + data.topic.id + "'>踩一下</i></a>\n" +
+                "                             <a><i class=\"layui-icon layui-icon-rate rate-topic topic-detail\" topicId='" + data.topic.id + "'>收藏</i></a>(<span class='collectNum-topic topic-detail' topicId='"+data.topic.id+"'>"+data.topic.collect+"</span>)\n" +
                 "                        </p>\n" +
                 "                        <div class=\"idea_achievements\" style=\"width: 95%; position: relative; left:5%;\">\n"+
                 achievements+
                 "                        </div></div>";
             $("#viewIdea").append(a);
             $("#viewIdea").append(b);
+
+            var type = "topic";
+            var className = "topic-detail";
+            var id = data.topic.id;
+            //console.log(user_id);
+            precess(type, className, id, user_id);
         },
         error:function () {
             console.log("读取创意详情失败！");
@@ -282,7 +290,7 @@ function cutPage(laypage,pageSize) {
     });//分页
 }
 
-function change(type, id, user_id) {
+function change(type, className, id, user_id) {
     var request = "";
     if(type === "topic")
     {
@@ -297,7 +305,7 @@ function change(type, id, user_id) {
         request = "/comment";
     }
 
-    $(document).on('click',"i[class*=praise-" + type + "]["+ type +"Id=" + id + "]",function () {
+    $(document).on('click',"i[class*=praise-" + type + "]["+ type +"Id=" + id + "][class*=" + className +"]",function () {
         var self = $(this);
         var formData = new FormData();
         formData.append("id", self.attr(type + "Id"));
@@ -315,13 +323,13 @@ function change(type, id, user_id) {
                 data:formData,
                 success:function (data) {
                     //console.log(data);
-                    var likeElement = $(".likeNum-" + type + "[" + type + "Id='"+ data.id + "']");
+                    var likeElement = $(".likeNum-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]");
                     //console.log(likeElement.attr("topicId"));
                     likeElement.html(data.data.like);
                     if(data.data.status === 1)
                     {
                         self.css('color', 'rgb(255,0,0)');
-                        $(".tread-" + type + "[" + type + "Id='"+ data.id + "']").css("color", 'grey');
+                        $(".tread-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]").css("color", 'grey');
                     }
                     else
                     {
@@ -335,7 +343,7 @@ function change(type, id, user_id) {
             )
     });
 
-    $(document).on('click',"i[class*=tread-" + type + "]["+ type +"Id=" + id + "]",function () {
+    $(document).on('click',"i[class*=tread-" + type + "]["+ type +"Id=" + id + "][class*=" + className +"]",function () {
         var self = $(this);
         var formData = new FormData();
         formData.append("id", self.attr(type + "Id"));
@@ -353,13 +361,13 @@ function change(type, id, user_id) {
                 data:formData,
                 success:function (data) {
                     //console.log(data);
-                    var likeElement = $(".likeNum-" + type + "[" + type + "Id='"+ data.id + "']");
+                    var likeElement = $(".likeNum-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]");
                     //console.log(likeElement.attr("topicId"));
                     likeElement.html(data.data.like);
                     if(data.data.status === 0)
                     {
                         self.css('color', 'rgb(0,0,255)');
-                        $(".praise-" + type + "[" + type + "Id='"+ data.id + "']").css("color", 'grey');
+                        $(".praise-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]").css("color", 'grey');
                     }
                     else
                     {
@@ -373,7 +381,7 @@ function change(type, id, user_id) {
         )
     });
 
-    $(document).on('click',"i[class*=rate-" + type + "]["+ type +"Id=" + id + "]",function () {
+    $(document).on('click',"i[class*=rate-" + type + "]["+ type +"Id=" + id + "][class*=" + className +"]",function () {
         var self = $(this);
         var formData = new FormData();
         formData.append("id", self.attr(type + "Id"));
@@ -390,6 +398,9 @@ function change(type, id, user_id) {
                 data:formData,
                 success:function (data) {
                     //console.log(data);
+                    var collectElement = $(".collectNum-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]");
+                    //console.log(likeElement.attr("topicId"));
+                    collectElement.html(data.data.collect);
                     if(data.data.status === 1)
                     {
                         self.css('color', 'rgb(255,0,0)');
@@ -407,16 +418,17 @@ function change(type, id, user_id) {
     });
 }
 
-function changeStatus(type, id, user_id)
+function changeStatus(type, className, id, user_id)
 {
     // 根据点赞点踩收藏情况修改颜色
-    var like = $(".layui-icon-praise[" + type + "Id='" + id + "']");
-    var dislike = $(".layui-icon-tread[" + type + "Id='" + id + "']");
-    var collect = $(".layui-icon-rate[" + type + "Id='" + id + "']");
+    var like = $(".layui-icon-praise[" + type + "Id=" + id + "][class*=" + className +"]");
+    var dislike = $(".layui-icon-tread[" + type + "Id=" + id + "][class*=" + className +"]");
+    var collect = $(".layui-icon-rate[" + type + "Id=" + id + "][class*=" + className +"]");
     var formData = new FormData();
     formData.append("id", id);
     formData.append("userId", user_id);
-    //console.log(data.data[i].id);
+    //console.log(formData.get("id"));
+    //console.log(formData.get("user_id"));
     var request = "";
     if(type === "topic")
     {
@@ -487,12 +499,12 @@ function changeStatus(type, id, user_id)
     );
 }
 
-function precess(type, id, user_id)
+function precess(type, className, id, user_id)
 {
     // 根据点赞点踩收藏情况修改颜色
-    changeStatus(type, id, user_id);
+    changeStatus(type, className, id, user_id);
     // 添加点击事件
-    change(type, id, user_id);
+    change(type, className, id, user_id);
 }
 
 
