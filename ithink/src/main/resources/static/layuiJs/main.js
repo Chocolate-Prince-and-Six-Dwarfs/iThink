@@ -69,13 +69,13 @@ function getIdeas(pageSize){
     });
 }
 
-function getIdeaInfo(id){
+function getIdeaInfo(ideaId){
     $.ajax({
         url:"/idea/detail",
         type:"post",
         dataType: "json",
         data:{
-            id: id,
+            id: ideaId,
         },
         success:function (data) {
             console.log(data);
@@ -123,7 +123,16 @@ function getIdeaInfo(id){
                     "                                </div>\n" +
                     "                            </div>";
             }
-            var releaseIdea="";
+
+            var releaseArticle="<div class=\"releaseIdeaArticle\">\n" +
+                "                            <div style=\"width: 60%; position: relative; left:20%;margin-top: 30px\">\n" +
+                "                                <textarea id=\"releaseIdeaArticleContent\" style=\"display: none;\"></textarea>\n" +
+                "                            </div>\n" +
+                "                            <div style=\"text-align: center\">\n" +
+                "                                <button type=\"button\" class=\"layui-btn layui-btn-primary releaseIdeaArticleButton\">发布创意实现</button>\n" +
+                "                            </div>\n" +
+                "                        </div>";//发布创意
+
             var ideaDetails="<div style=\"padding: 15px;\"><fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 30px;\">\n" +
                 "                        <legend>创意详情</legend>\n" +
                 "                    </fieldset>\n" +
@@ -142,11 +151,11 @@ function getIdeaInfo(id){
                 "                             <a><i class=\"layui-icon layui-icon-rate rate-topic topic-detail\" topicId='" + data.topic.id + "'>收藏</i></a>(<span class='collectNum-topic topic-detail' topicId='"+data.topic.id+"'>"+data.topic.collect+"</span>)\n" +
                 "                        </p>\n" +
                 "                        <div class=\"idea_achievements\" style=\"width: 95%; position: relative; left:5%;\">\n"+
-                releaseIdea+achievements+
+                releaseArticle+achievements+
                 "                        </div></div>";
             $("#viewIdea").append(retButton);
             $("#viewIdea").append(ideaDetails);
-            releaseArticleEdit("#releaseIdea");
+            releaseArticleEdit("releaseIdeaArticleContent",ideaId);
             var type = "topic";
             var className = "topic-detail";
             var id = data.topic.id;
@@ -158,11 +167,46 @@ function getIdeaInfo(id){
         }
     })
 }
-function releaseArticleEdit(editId) {
-
+function releaseArticleEdit(editId,id) {//添加富文本编辑器
+    layui.use('layedit',function(){
+        var layedit = layui.layedit
+            ,layer=layui.layer
+            ,form=layui.form;
+        var editIndex=layedit.build(editId,{tool: ['strong','italic','underline','del','|','left','center','right','link','unlink','face']}); //建立编辑器
+        releaseArticle(layedit,layer,form,editIndex,id);
+    });
 }
-function commentShow() {
-    $(document).on('click','.comment-idea',function () {
+function releaseArticle(layedit,layer,form,editIndex,id) {//发布创意实现
+    $(document).off('click','.releaseIdeaArticleButton').on('click','.releaseIdeaArticleButton',function () {
+        var fData=new FormData();
+        fData.append('userId',user_id);
+        fData.append('topicId',id);
+        fData.append('content',layedit.getContent(editIndex));
+        if(layedit.getContent(editIndex)==null||layedit.getContent(editIndex)==""){
+            layer.msg("创意实现不能为空");
+            return false;
+        }
+        $.ajax({
+            url:"/ach/publish",
+            type:"post",
+            data:fData,
+            processData: false,
+            contentType: false,
+            success:function () {
+                layer.msg("发布创意实现成功");
+                $("#ideaList").show();
+                $("#refreshIdeas").show();
+                $("#viewIdea").empty();
+                form.render();
+            },
+            error:function () {
+                layer.msg("发布创意实现失败");
+            }
+        });
+    });
+}
+function commentShow() {//评论显示与否
+    $(document).off('click','.comment-idea').on('click','.comment-idea',function () {
         var achid=$(this).attr('achid');
         var isShow = $(".idea_achievement_comment"+achid).css('display');
         $(".idea_achievement_comment"+achid).css('display',isShow=='none'?'':'none');
@@ -184,7 +228,7 @@ function getNowDate() {//得到当前时间
     return currentdate;
 }
 function comment(layer) {
-    $(document).on('click','.idea-comment-button',function () {
+    $(document).off('click','.idea-comment-button').on('click','.idea-comment-button',function () {
         var thisClass=$(this).attr('class');
         //正则表达式匹配achievementID
         var rep=new RegExp("(?<=idea_achievement_comment_button)[1-9][0-9]{0,}");
