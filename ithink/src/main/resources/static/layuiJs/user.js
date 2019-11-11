@@ -186,7 +186,6 @@ function addEdit(editId){
             ,layer=layui.layer
             ,form=layui.form;
         var editIndex=layedit.build(editId,{tool: ['strong','italic','underline','del','|','left','center','right','link','unlink','face']}); //建立编辑器
-
         releaseIdeaInfo(form,layer,layedit,editIndex);
     });
 }

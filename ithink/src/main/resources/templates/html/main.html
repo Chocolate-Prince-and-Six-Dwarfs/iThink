@@ -118,10 +118,10 @@
                         </p>
 
                         <div class="releaseIdeaArticle">
-                            <div style="width: 95%; position: relative; left:5%;">
+                            <div style="width: 60%; position: relative; left:20%;margin-top: 30px">
                                 <textarea id="releaseIdeaArticleContent" style="display: none;"></textarea>
                             </div>
-                            <div style="text-align: right">
+                            <div style="text-align: center">
                                 <button type="button" class="layui-btn layui-btn-primary releaseIdeaArticleButton">发布创意实现</button>
                             </div>
                         </div>
@@ -178,12 +178,6 @@
     layui.config({
         base: '/layuiJs/' //你存放新模块的目录，注意，不是layui的模块目录
     }).use('main'); //加载入口
-    layui.use('layedit',function(){
-        var layedit = layui.layedit
-            ,layer=layui.layer
-            ,form=layui.form;
-        var editIndex=layedit.build("releaseIdeaArticleContent",{tool: ['strong','italic','underline','del','|','left','center','right','link','unlink','face']}); //建立编辑器
-    });
 </script>
 </body>
 </html>

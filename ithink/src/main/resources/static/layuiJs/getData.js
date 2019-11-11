@@ -83,7 +83,7 @@ function releaseIdeaInfo(form,layer,layedit,editIndex){
             contentType: false,
             success:function () {
                 layer.msg("发布成功");
-                window.location.reload();
+                layedit.setContent(editIndex, "", false);
             },
             error:function () {
                 layer.msg("发布创意失败");
