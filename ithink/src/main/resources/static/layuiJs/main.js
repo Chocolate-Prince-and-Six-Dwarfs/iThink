@@ -85,9 +85,10 @@ function getIdeaInfo(ideaId){
                 var comment_list="";
                 var ach=data.achievements[i].achievement;
                 var commentIdList = [];
+                var commentUserIdList=[];
                 for(var j in data.achievements[i].comments){
                     var comment=data.achievements[i].comments[j].comment;
-                    comment_list+="<div class=\"imgdiv\"><img fromId=\""+comment.fromId+"\" class=\"imgcss idea_achievement_comment_user"+comment.commentId+"\" src=\"/img/头像.png\"/></div>\n" +
+                    comment_list+="<div class=\"imgdiv\"><img fromId=\""+comment.fromUid+"\" class=\"imgcss idea_achievement_comment_user"+comment.commentId+"\" src=\"/img/头像.png\"/></div>\n" +
                         "                                        <div class=\"conmment_details\">\n" +
                         "                                            <span class=\"comment_name idea_achievement_comment_user_name" + comment.commentId + "\">" + comment.fromName + " </span>     <span class=\"idea_achievement_comment_user_time" + comment.commentId + "\">" + comment.time.substring(0, 10) + "</span>\n" +
                         "                                            <div class=\"comment_content idea_achievement_comment_user_content" + comment.commentId + "\">  " + comment.content + "</div>\n" +
@@ -102,6 +103,7 @@ function getIdeaInfo(ideaId){
                         "                                        </div>\n" +
                         "                                        <hr>";
                     commentIdList.push(comment.commentId);
+                    commentUserIdList.push(comment.fromUid);
                 }
                 achievements += "<fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 50px;\">\n" +
                     "                                <legend>创意实现" + i + "</legend>\n" +
@@ -124,12 +126,7 @@ function getIdeaInfo(ideaId){
                     comment_list +
                     "                                    </div>\n" +
                     "                                </div>\n" +
-                    "                            </div>" +
-                    "<script>\n" +
-                    "$(document).ready(function () {\n" +
-                    "    getCommentImg(comment.fromId,comment.commentId);\n" +
-                    "})\n" +
-                    "</script>";
+                    "                            </div>";
             }
 
             var releaseArticle="<div class=\"releaseIdeaArticle\">\n" +
@@ -171,7 +168,7 @@ function getIdeaInfo(ideaId){
             //console.log(user_id);
             precess(type, className, processId, user_id);
 
-            if(commentIdList!=null)
+            if(commentIdList!=null&&commentUserIdList!=null)
             {
                 for (var i = 0; i < commentIdList.length; ++i) {
                     var type = "comment";
@@ -181,6 +178,9 @@ function getIdeaInfo(ideaId){
                     //console.log(user_id);
                     precess(type, className, processId, user_id);
                 }
+                for(var i=0;i<commentIdList.length;++i){
+                    getCommentImg(commentUserIdList[i],commentIdList[i]);
+                }
             }
 
         },
@@ -189,7 +189,7 @@ function getIdeaInfo(ideaId){
         }
     })
 }
-function getCommentImg(userId,commentId) {
+function getCommentImg(userId,commentId) {//评论图像
     $.ajax({
         url:"/user/getById",
         type:"post",
