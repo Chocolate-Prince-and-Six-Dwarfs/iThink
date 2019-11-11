@@ -77,7 +77,7 @@ function getIdeaInfo(id){
         },
         success:function (data) {
             console.log(data);
-            var a="<button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\" id=\"ret\"><i class=\"layui-icon\">&#xe65c;返回</i></button>";
+            var retButton="<button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\" id=\"ret\"><i class=\"layui-icon\">&#xe65c;返回</i></button>";
             var achievements="";
             for(var i in data.achievements){
                 var comment_list="";
@@ -121,7 +121,8 @@ function getIdeaInfo(id){
                     "                                </div>\n" +
                     "                            </div>";
             }
-            var b="<div style=\"padding: 15px;\"><fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 30px;\">\n" +
+            var releaseIdea="";
+            var ideaDetails="<div style=\"padding: 15px;\"><fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 30px;\">\n" +
                 "                        <legend>创意详情</legend>\n" +
                 "                    </fieldset>\n" +
                 "                    <div class=\"layui-col-md12\">\n" +
@@ -139,17 +140,19 @@ function getIdeaInfo(id){
                 "                            <a><i class=\"layui-icon layui-icon-rate\"></i>收藏</a>\n" +
                 "                        </p>\n" +
                 "                        <div class=\"idea_achievements\" style=\"width: 95%; position: relative; left:5%;\">\n"+
-                achievements+
+                releaseIdea+achievements+
                 "                        </div></div>";
-            $("#viewIdea").append(a);
-            $("#viewIdea").append(b);
-            var releaseIdea="";
-            $("#viewIdea").append(releaseIdea);
+            $("#viewIdea").append(retButton);
+            $("#viewIdea").append(ideaDetails);
+            releaseArticleEdit("#releaseIdea");
         },
         error:function () {
             console.log("读取创意详情失败！");
         }
     })
+}
+function releaseArticleEdit(editId) {
+
 }
 function commentShow() {
     $(document).on('click','.comment-idea',function () {
@@ -243,6 +246,7 @@ function viewIdea() {
         $("#ideaList").show();
         $("#refreshIdeas").show();
         $("#viewIdea").empty();
+        refresh(5);
     });
 }
 

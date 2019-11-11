@@ -42,60 +42,54 @@ function getUserInfo(userId,form) {
 
 function saveUserInfo(form,layer){
     $(document).on('click','#userInfoForm',function () {
-        updateUserInfo(form,layer);
+        var formData=new FormData();
+        formData.append('id',user_id);
+        formData.append('name',$(".user_name").val());
+        formData.append('phone',$(".user_tel").val());
+        formData.append('address',$(".user_addr").val());
+        formData.append('industry',$(".user_industry").val());
+        formData.append('school',$(".user_school").val());
+        formData.append('introduction',$(".user_desc").val());
+        formData.append('sex',$('input:radio[name="sex"]:checked').val());
+        $.ajax({
+            url:"user/updateInfo",
+            type:"post",
+            dataType: "json",
+            data:formData,
+            processData: false,
+            contentType: false,
+            success:function () {
+                //layer.msg("修改信息成功");
+                form.render();
+            },
+            error:function () {
+                layer.msg("修改信息失败");
+            }
+        });
     })
-}
-function updateUserInfo(form,layer) {
-    var formData=new FormData();
-    formData.append('id',user_id);
-    formData.append('name',$(".user_name").val());
-    formData.append('phone',$(".user_tel").val());
-    formData.append('address',$(".user_addr").val());
-    formData.append('industry',$(".user_industry").val());
-    formData.append('school',$(".user_school").val());
-    formData.append('introduction',$(".user_desc").val());
-    formData.append('sex',$('input:radio[name="sex"]:checked').val());
-    $.ajax({
-        url:"user/updateInfo",
-        type:"post",
-        dataType: "json",
-        data:formData,
-        processData: false,
-        contentType: false,
-        success:function () {
-            //layer.msg("修改信息成功");
-            form.render();
-        },
-        error:function () {
-            layer.msg("修改信息失败");
-        }
-    });
 }
 
 function releaseIdeaInfo(form,layer,layedit,editIndex){
     $(document).on('click','#releaseIdea',function () {
-        releaseIDea(form,layer,layedit,editIndex);
+        var fData=new FormData();
+        fData.append('userId',user_id);
+        fData.append('topicTitle',$("#topicTitle").val());
+        fData.append('content',layedit.getContent(editIndex));
+        $.ajax({
+            url:"/idea/publish",
+            type:"post",
+            data:fData,
+            processData: false,
+            contentType: false,
+            success:function () {
+                layer.msg("发布成功");
+                window.location.reload();
+            },
+            error:function () {
+                layer.msg("发布创意失败");
+            }
+        });
     })
-}
-function releaseIDea(form,layer,layedit,editIndex) {
-    var fData=new FormData();
-    fData.append('userId',user_id);
-    fData.append('topicTitle',$("#topicTitle").val());
-    fData.append('content',layedit.getContent(editIndex));
-    $.ajax({
-        url:"/idea/publish",
-        type:"post",
-        data:fData,
-        processData: false,
-        contentType: false,
-        success:function () {
-            layer.msg("发布成功");
-            window.location.reload();
-        },
-        error:function () {
-            layer.msg("发布创意失败");
-        }
-    });
 }
 
 function checkGender(mValue,form){
