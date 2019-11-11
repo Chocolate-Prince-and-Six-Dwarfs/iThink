@@ -242,7 +242,7 @@ function comment(layer) {
 
 function viewIdea() {
     $(document).on("click",".view",function () {
-        $("#viewIdea").empty();
+        //$("#viewIdea").empty();
         $("#ideaList").hide();
         $("#refreshIdeas").hide();
         var viewId=$(this).attr("id"); //获取id属性值
@@ -253,7 +253,7 @@ function viewIdea() {
         $("#ideaList").show();
         $("#refreshIdeas").show();
         $("#viewIdea").empty();
-        refresh(5);
+        $.parser.parse();
     });
 }
 
@@ -309,7 +309,8 @@ function change(type, className, id, user_id) {
         request = "/comment";
     }
 
-    $(document).on('click',"i[class*=praise-" + type + "]["+ type +"Id=" + id + "][class*=" + className +"]",function () {
+    var praiseSelect = "i[class*=praise-" + type + "]["+ type +"Id=" + id + "][class*=" + className +"]";
+    $(document).off("click", praiseSelect).on('click', praiseSelect, function () {
         var self = $(this);
         var formData = new FormData();
         formData.append("id", self.attr(type + "Id"));
@@ -330,15 +331,16 @@ function change(type, className, id, user_id) {
                     var likeElement = $(".likeNum-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]");
                     //console.log(likeElement.attr("topicId"));
                     likeElement.html(data.data.like);
-                    if(data.data.status === 1)
-                    {
-                        self.css('color', 'rgb(255,0,0)');
-                        $(".tread-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]").css("color", 'grey');
-                    }
-                    else
-                    {
-                        self.css("color", 'grey');
-                    }
+                    // if(data.data.status === 1)
+                    // {
+                    //     self.css('color', 'rgb(255,0,0)');
+                    //     $(".tread-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]").css("color", 'grey');
+                    // }
+                    // else
+                    // {
+                    //     self.css("color", 'grey');
+                    // }
+                    changeStatus(type, data.id, user_id);
                 },
                 error:function () {
                     console.log("点赞失败");
@@ -347,7 +349,8 @@ function change(type, className, id, user_id) {
             )
     });
 
-    $(document).on('click',"i[class*=tread-" + type + "]["+ type +"Id=" + id + "][class*=" + className +"]",function () {
+    var treadSelect = "i[class*=tread-" + type + "]["+ type +"Id=" + id + "][class*=" + className +"]";
+    $(document).off("click", treadSelect).on('click', treadSelect, function () {
         var self = $(this);
         var formData = new FormData();
         formData.append("id", self.attr(type + "Id"));
@@ -365,18 +368,19 @@ function change(type, className, id, user_id) {
                 data:formData,
                 success:function (data) {
                     //console.log(data);
-                    var likeElement = $(".likeNum-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]");
-                    //console.log(likeElement.attr("topicId"));
-                    likeElement.html(data.data.like);
-                    if(data.data.status === 0)
-                    {
-                        self.css('color', 'rgb(0,0,255)');
-                        $(".praise-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]").css("color", 'grey');
-                    }
-                    else
-                    {
-                        self.css("color", 'grey');
-                    }
+                    // var likeElement = $(".likeNum-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]");
+                    // //console.log(likeElement.attr("topicId"));
+                    // likeElement.html(data.data.like);
+                    // if(data.data.status === 0)
+                    // {
+                    //     self.css('color', 'rgb(0,0,255)');
+                    //     $(".praise-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]").css("color", 'grey');
+                    // }
+                    // else
+                    // {
+                    //     self.css("color", 'grey');
+                    // }
+                    changeStatus(type, data.id, user_id);
                 },
                 error:function () {
                     console.log("点踩失败");
@@ -385,7 +389,8 @@ function change(type, className, id, user_id) {
         )
     });
 
-    $(document).on('click',"i[class*=rate-" + type + "]["+ type +"Id=" + id + "][class*=" + className +"]",function () {
+    var rateSelect = "i[class*=rate-" + type + "]["+ type +"Id=" + id + "][class*=" + className +"]";
+    $(document).off("click", rateSelect).on('click', rateSelect, function () {
         var self = $(this);
         var formData = new FormData();
         formData.append("id", self.attr(type + "Id"));
@@ -402,17 +407,18 @@ function change(type, className, id, user_id) {
                 data:formData,
                 success:function (data) {
                     //console.log(data);
-                    var collectElement = $(".collectNum-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]");
-                    //console.log(likeElement.attr("topicId"));
-                    collectElement.html(data.data.collect);
-                    if(data.data.status === 1)
-                    {
-                        self.css('color', 'rgb(255,0,0)');
-                    }
-                    else
-                    {
-                        self.css("color", 'grey');
-                    }
+                    // var collectElement = $(".collectNum-" + type + "[" + type + "Id="+ data.id + "][class*=" + className +"]");
+                    // //console.log(likeElement.attr("topicId"));
+                    // collectElement.html(data.data.collect);
+                    // if(data.data.status === 1)
+                    // {
+                    //     self.css('color', 'rgb(255,0,0)');
+                    // }
+                    // else
+                    // {
+                    //     self.css("color", 'grey');
+                    // }
+                    changeStatus(type, data.id, user_id);
                 },
                 error:function () {
                     console.log("点踩失败");
@@ -422,12 +428,12 @@ function change(type, className, id, user_id) {
     });
 }
 
-function changeStatus(type, className, id, user_id)
+function changeStatus(type, id, user_id)
 {
     // 根据点赞点踩收藏情况修改颜色
-    var like = $(".layui-icon-praise[" + type + "Id=" + id + "][class*=" + className +"]");
-    var dislike = $(".layui-icon-tread[" + type + "Id=" + id + "][class*=" + className +"]");
-    var collect = $(".layui-icon-rate[" + type + "Id=" + id + "][class*=" + className +"]");
+    var like = $(".layui-icon-praise[" + type + "Id=" + id + "]");
+    var dislike = $(".layui-icon-tread[" + type + "Id=" + id + "]");
+    var collect = $(".layui-icon-rate[" + type + "Id=" + id + "]");
     var formData = new FormData();
     formData.append("id", id);
     formData.append("userId", user_id);
@@ -464,6 +470,8 @@ function changeStatus(type, className, id, user_id)
                 {
                     collect.css('color', 'grey');
                 }
+                var collectElement = $(".collectNum-" + type + "[" + type + "Id="+ data.id + "]");
+                collectElement.html(data.data.collect);
             },
             error:function () {
                 console.log("获取点赞失败");
@@ -495,6 +503,9 @@ function changeStatus(type, className, id, user_id)
                     like.css('color', 'grey');
                     dislike.css("color", 'grey');
                 }
+                var likeElement = $(".likeNum-" + type + "[" + type + "Id="+ data.id + "]");
+                //console.log(likeElement.attr("topicId"));
+                likeElement.html(data.data.like);
             },
             error:function () {
                 console.log("获取收藏信息失败");
@@ -506,7 +517,7 @@ function changeStatus(type, className, id, user_id)
 function precess(type, className, id, user_id)
 {
     // 根据点赞点踩收藏情况修改颜色
-    changeStatus(type, className, id, user_id);
+    changeStatus(type, id, user_id);
     // 添加点击事件
     change(type, className, id, user_id);
 }
