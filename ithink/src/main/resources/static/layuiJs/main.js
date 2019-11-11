@@ -305,6 +305,7 @@ function comment(layer) {
                 var currentdate=getNowDate();
                 if(data.status==1){
                     var name=$("#userName").text();
+                    var imgData=$("#userImg").attr("src");
                     var a="<div class=\"imgdiv\"><img class=\"imgcss idea_achievement_comment_user"+data.id+"\" src=\"/img/头像.png\"/></div>\n" +
                         "                                        <div class=\"conmment_details\">\n" +
                         "                                            <span class=\"comment_name idea_achievement_comment_user_name"+data.id+"\">"+name+" </span>     <span class=\"idea_achievement_comment_user_time"+data.id+"\">"+currentdate+"</span>\n" +
@@ -319,6 +320,7 @@ function comment(layer) {
                         "                                        </div>\n" +
                         "                                        <hr>";
                     $(".idea_achievement_comment_user_list"+achievementId).append(a);
+                    $(".idea_achievement_comment_user"+data.id).attr("src",imgData);
                     $("."+contentClass).val("");
                     layer.msg("评论成功");
                 }
