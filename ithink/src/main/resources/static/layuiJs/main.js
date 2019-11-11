@@ -140,16 +140,18 @@ function getIdeaInfo(id){
             var achievements="";
             for(var i in data.achievements){
                 var comment_list="";
+                var ach=data.achievements[i].achievement;
                 for(var j in data.achievements[i].comments){
-                    comment_list+="<div class=\"imgdiv\"><img class=\"imgcss idea_achievement_comment_user"+data.achievements[i].comments[j].comment.commentId+"\" src=\"/img/头像.png\"/></div>\n" +
+                    var comment=data.achievements[i].comments[j].comment;
+                    comment_list+="<div class=\"imgdiv\"><img class=\"imgcss idea_achievement_comment_user"+comment.commentId+"\" src=\"/img/头像.png\"/></div>\n" +
                         "                                        <div class=\"conmment_details\">\n" +
-                        "                                            <span class=\"comment_name idea_achievement_comment_user_name"+data.achievements[i].comments[j].comment.commentId+"\">"+data.achievements[i].comments[j].comment.fromName+" </span>     <span class=\"idea_achievement_comment_user_time"+data.achievements[i].comments[j].comment.commentId+"\">"+data.achievements[i].comments[j].comment.time.substring(0,10)+"</span>\n" +
-                        "                                            <div class=\"comment_content idea_achievement_comment_user_content"+data.achievements[i].comments[j].comment.commentId+"\">  "+data.achievements[i].comments[j].comment.content+"</div>\n" +
+                        "                                            <span class=\"comment_name idea_achievement_comment_user_name"+comment.commentId+"\">"+comment.fromName+" </span>     <span class=\"idea_achievement_comment_user_time"+comment.commentId+"\">"+comment.time.substring(0,10)+"</span>\n" +
+                        "                                            <div class=\"comment_content idea_achievement_comment_user_content"+comment.commentId+"\">  "+comment.content+"</div>\n" +
                         "                                            <div class=\"del\">\n" +
-                        "                                                <i class=\"icon layui-icon layui-icon-praise  idea_achievement_comment_user_good"+data.achievements[i].comments[j].comment.commentId+"\">赞("+data.achievements[i].comments[j].comment.like+")</i>\n" +
+                        "                                                <i class=\"icon layui-icon layui-icon-praise idea_achievement_comment_user_good"+comment.commentId+"\">赞("+comment.like+")</i>\n" +
                         "                                                <!--<a class=\"del_comment\" data-id=\"1\"><i class=\"icon layui-icon\">回复</i></a>-->\n" +
                         "                                            </div>\n" +
-                        "                                            <div class=\"idea_achievement_comment_reply"+data.achievements[i].comments[j].comment.commentId+"\"><!--回复-->\n" +
+                        "                                            <div class=\"idea_achievement_comment_reply"+comment.commentId+"\"><!--回复-->\n" +
                         "\n" +
                         "                                            </div>\n" +
                         "                                        </div>\n" +
@@ -159,19 +161,19 @@ function getIdeaInfo(id){
                 achievements+="<fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 50px;\">\n" +
                     "                                <legend>创意实现"+i+"</legend>\n" +
                     "                            </fieldset>\n" +
-                    "                            <div class=\"layui-card idea_achievement"+data.achievements[i].achievement.id+"\">\n" +
-                    "                                <div class=\"layui-card-header  idea_achievement_title"+data.achievements[i].achievement.id+"\">"+data.achievements[i].achievement.topicName+"</div>\n" +
-                    "                                <div class=\"layui-card-body  idea_achievement_content"+data.achievements[i].achievement.id+"\">\n" +
-                    "                                    "+data.achievements[i].achievement.content+"\n" +
+                    "                            <div class=\"layui-card idea_achievement"+ach.id+"\">\n" +
+                    "                                <div class=\"layui-card-header  idea_achievement_title"+ach.id+"\">"+ach.topicName+"</div>\n" +
+                    "                                <div class=\"layui-card-body idea_achievement_content"+ach.id+"\">\n" +
+                    "                                    "+ach.content+"\n" +
                     "                                </div>\n" +
                     "                            </div>\n" +
-                    "                            <div class=\"idea_achievement_comment"+data.achievements[i].achievement.id+"\" style=\"width: 90%; position: relative; left:10%;\">\n" +
-                    "                                <input type=\"text\" name=\"title\" required lay-verify=\"required\" placeholder=\"请输入评论内容\" autocomplete=\"off\" class=\"layui-input idea-comment-content idea_achievement_comment_content"+data.achievements[i].achievement.id+"\">\n" +
-                    "                                <p style=\"text-align: right\"><button type=\"button\" toId=\""+data.achievements[i].achievement.userId+"\" class=\"layui-btn layui-btn-primary idea-comment-button idea_achievement_comment_button"+data.achievements[i].achievement.id+"\">发布评论</button></p>\n" +
-                    "                                <div class=\"idea_achievement_comment_list"+data.achievements[i].achievement.id+"\">\n" +
+                    "                            <div class=\"idea_achievement_comment"+ach.id+"\" style=\"width: 90%; position: relative; left:10%;\">\n" +
+                    "                                <input type=\"text\" name=\"title\" required lay-verify=\"required\" placeholder=\"请输入评论内容\" autocomplete=\"off\" class=\"layui-input idea-comment-content idea_achievement_comment_content"+ach.id+"\">\n" +
+                    "                                <p style=\"text-align: right\"><button type=\"button\" toId=\""+ach.userId+"\" class=\"layui-btn layui-btn-primary idea-comment-button idea_achievement_comment_button"+ach.id+"\">发布评论</button></p>\n" +
+                    "                                <div class=\"idea_achievement_comment_list"+ach.id+"\">\n" +
                     "                                    <h3 >全部评论</h3>\n" +
                     "                                    <hr>\n" +
-                    "                                    <div class=\"comment idea_achievement_comment_user_list"+data.achievements[i].achievement.id+"\">\n" +
+                    "                                    <div class=\"comment idea_achievement_comment_user_list"+ach.id+"\">\n" +
                     comment_list+
                     "                                    </div>\n" +
                     "                                </div>\n" +
@@ -210,13 +212,17 @@ function getIdeaInfo(id){
 function comment(layer) {
     $(document).on('click','.idea-comment-button',function () {
         var thisClass=$(this).attr('class');
-        var contentClass="idea_achievement_comment_content"+thisClass.substring(79,);
+        //正则表达式匹配achievementID
+        rep="(?<=idea_achievement_content)[1-9][0-9]{0,}";
+        var achievementId=rep.exec(thisClass);
+        console.log(achievementId);
+        var contentClass="idea_achievement_comment_content"+achievementId;
         var content=$("."+contentClass).val();
         if(content==null||content==""){
             layer.msg("请输入评论");
             return false;
         }
-        var achievementId=thisClass.substring(79,);
+
         var toId=$(this).attr('toId');
         //console.log("ai:"+achievementId+"c:"+content+"ui:"+user_id+"ti:"+toId);
 
