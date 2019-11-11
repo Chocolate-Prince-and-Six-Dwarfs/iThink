@@ -102,12 +102,13 @@ function getIdeaInfo(id){
                     "                                <legend>创意实现"+i+"</legend>\n" +
                     "                            </fieldset>\n" +
                     "                            <div class=\"layui-card idea_achievement"+ach.id+"\">\n" +
-                    "                                <div class=\"layui-card-header  idea_achievement_title"+ach.id+"\">"+ach.topicName+"</div>\n" +
+                    "                                <div class=\"layui-card-header  idea_achievement_title"+ach.id+"\"></div>\n" +
                     "                                <div class=\"layui-card-body idea_achievement_content"+ach.id+"\">\n" +
                     "                                    "+ach.content+"\n" +
                     "                                </div>\n" +
                     "                            </div>\n" +
-                    "                            <div class=\"idea_achievement_comment"+ach.id+"\" style=\"width: 90%; position: relative; left:10%;\">\n" +
+                    "                            <div style=\"text-align: right\"><a class=\"comment-idea\" achid=\""+ach.id+"\"><i class=\"layui-icon\">&#xe611;评论</i></a></div>\n"+
+                    "                            <div class=\"idea_achievement_comment idea_achievement_comment"+ach.id+"\" style=\"width: 90%; position: relative; left:10%;\">\n" +
                     "                                <input type=\"text\" name=\"title\" required lay-verify=\"required\" placeholder=\"请输入评论内容\" autocomplete=\"off\" class=\"layui-input idea-comment-content idea_achievement_comment_content"+ach.id+"\">\n" +
                     "                                <p style=\"text-align: right\"><button type=\"button\" toId=\""+ach.userId+"\" class=\"layui-btn layui-btn-primary idea-comment-button idea_achievement_comment_button"+ach.id+"\">发布评论</button></p>\n" +
                     "                                <div class=\"idea_achievement_comment_list"+ach.id+"\">\n" +
@@ -129,14 +130,13 @@ function getIdeaInfo(id){
                 "                                "+data.topic.content+"\n" +
                 "                            </div>\n" +
                 "                        </div>\n" +
-                "                        <!--<p style=\"text-align: right\">\n" +
-                "                            <a><i class=\"layui-icon\">&#xe770;用户名</i></a>\n" +
-                "                            <a><i class=\"layui-icon\">&#xe637;日期</i></a>\n" +
+                "                        <p style=\"text-align: right\">\n" +
+                "                            <a><i class=\"layui-icon\">&#xe770;"+data.topic.publisher+"</i></a>\n" +
+                "                            <a><i class=\"layui-icon\">&#xe637;"+data.topic.time.substring(0,10)+"</i></a>\n" +
                 "                            <a><i class=\"layui-icon\">&#xe6c6;顶一个</i></a>\n" +
                 "                            <a><i class=\"layui-icon\">&#xe6c5;踩一下</i></a>\n" +
                 "                            <a><i class=\"layui-icon layui-icon-rate\"></i>收藏</a>\n" +
-                "                            <a class=\"comment-idea\"><i class=\"layui-icon\">&#xe611;评论</i></a>\n" +
-                "                        </p>\n-->" +
+                "                        </p>\n" +
                 "                        <div class=\"idea_achievements\" style=\"width: 95%; position: relative; left:5%;\">\n"+
                 achievements+
                 "                        </div></div>";
@@ -148,14 +148,38 @@ function getIdeaInfo(id){
         }
     })
 }
-
+function commentShow() {
+    $(document).ready(function () {
+        $(".idea_achievement_comment").hide();
+    });
+    $(document).on('click','.comment-idea',function () {
+        var achid=$(this).attr('achid');
+        $(".idea_achievement_comment"+achid).show();
+    })
+}
+function getNowDate() {//得到当前时间
+    var date = new Date();
+    var seperator1 = "-";
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentdate = year + seperator1 + month + seperator1 + strDate;
+    return currentdate;
+}
 function comment(layer) {
     $(document).on('click','.idea-comment-button',function () {
         var thisClass=$(this).attr('class');
         //正则表达式匹配achievementID
-        rep="(?<=idea_achievement_content)[1-9][0-9]{0,}";
-        var achievementId=rep.exec(thisClass);
-        console.log(achievementId);
+        var rep=new RegExp("(?<=idea_achievement_comment_button)[1-9][0-9]{0,}");
+        var achievementId=(rep.exec(thisClass))[0];
+        //console.log(thisClass);
+        //console.log(achievementId);
         var contentClass="idea_achievement_comment_content"+achievementId;
         var content=$("."+contentClass).val();
         if(content==null||content==""){
@@ -177,19 +201,8 @@ function comment(layer) {
                 toId:toId,
             },
             success:function (data) {
+                var currentdate=getNowDate();
                 if(data.status==1){
-                    var date = new Date();
-                    var seperator1 = "-";
-                    var year = date.getFullYear();
-                    var month = date.getMonth() + 1;
-                    var strDate = date.getDate();
-                    if (month >= 1 && month <= 9) {
-                        month = "0" + month;
-                    }
-                    if (strDate >= 0 && strDate <= 9) {
-                        strDate = "0" + strDate;
-                    }
-                    var currentdate = year + seperator1 + month + seperator1 + strDate;
                     var name=$("#userName").text();
                     var a="<div class=\"imgdiv\"><img class=\"imgcss idea_achievement_comment_user"+data.id+"\" src=\"/img/头像.png\"/></div>\n" +
                         "                                        <div class=\"conmment_details\">\n" +
@@ -205,6 +218,8 @@ function comment(layer) {
                         "                                        </div>\n" +
                         "                                        <hr>";
                     $(".idea_achievement_comment_user_list"+achievementId).append(a);
+                    $("."+contentClass).val("");
+                    layer.msg("评论成功");
                 }
             },
             error:function () {
