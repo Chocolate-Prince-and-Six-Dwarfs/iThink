@@ -10,7 +10,8 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
     cutPage(laypage,6);//分页
     refresh(5);
     viewIdea();//查看创意详情
-    comment(layer);
+    comment(layer);//评论
+    commentShow();
     exports('main', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
 layui.use('element',function () {
@@ -76,7 +77,7 @@ function getIdeaInfo(id){
         },
         success:function (data) {
             console.log(data);
-            var a="<button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\" id=\"ret\"><i class=\"layui-icon\">&#xe65c;返回"+id.substring(4,)+"</i></button>";
+            var a="<button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\" id=\"ret\"><i class=\"layui-icon\">&#xe65c;返回</i></button>";
             var achievements="";
             for(var i in data.achievements){
                 var comment_list="";
@@ -108,7 +109,7 @@ function getIdeaInfo(id){
                     "                                </div>\n" +
                     "                            </div>\n" +
                     "                            <div style=\"text-align: right\"><a class=\"comment-idea\" achid=\""+ach.id+"\"><i class=\"layui-icon\">&#xe611;评论</i></a></div>\n"+
-                    "                            <div class=\"idea_achievement_comment idea_achievement_comment"+ach.id+"\" style=\"width: 90%; position: relative; left:10%;\">\n" +
+                    "                            <div class=\"idea_achievement_comment idea_achievement_comment"+ach.id+"\" style=\"width: 90%; position: relative; left:10%;display: none\">\n" +
                     "                                <input type=\"text\" name=\"title\" required lay-verify=\"required\" placeholder=\"请输入评论内容\" autocomplete=\"off\" class=\"layui-input idea-comment-content idea_achievement_comment_content"+ach.id+"\">\n" +
                     "                                <p style=\"text-align: right\"><button type=\"button\" toId=\""+ach.userId+"\" class=\"layui-btn layui-btn-primary idea-comment-button idea_achievement_comment_button"+ach.id+"\">发布评论</button></p>\n" +
                     "                                <div class=\"idea_achievement_comment_list"+ach.id+"\">\n" +
@@ -142,6 +143,8 @@ function getIdeaInfo(id){
                 "                        </div></div>";
             $("#viewIdea").append(a);
             $("#viewIdea").append(b);
+            var releaseIdea="";
+            $("#viewIdea").append(releaseIdea);
         },
         error:function () {
             console.log("读取创意详情失败！");
@@ -149,12 +152,10 @@ function getIdeaInfo(id){
     })
 }
 function commentShow() {
-    $(document).ready(function () {
-        $(".idea_achievement_comment").hide();
-    });
     $(document).on('click','.comment-idea',function () {
         var achid=$(this).attr('achid');
-        $(".idea_achievement_comment"+achid).show();
+        var isShow = $(".idea_achievement_comment"+achid).css('display');
+        $(".idea_achievement_comment"+achid).css('display',isShow=='none'?'':'none');
     })
 }
 function getNowDate() {//得到当前时间
