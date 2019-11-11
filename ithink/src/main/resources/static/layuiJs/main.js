@@ -86,7 +86,7 @@ function getIdeaInfo(ideaId){
                 var ach=data.achievements[i].achievement;
                 for(var j in data.achievements[i].comments){
                     var comment=data.achievements[i].comments[j].comment;
-                    comment_list+="<div class=\"imgdiv\"><img class=\"imgcss idea_achievement_comment_user"+comment.commentId+"\" src=\"/img/头像.png\"/></div>\n" +
+                    comment_list+="<div class=\"imgdiv\"><img fromId=\""+comment.fromId+"\" class=\"imgcss idea_achievement_comment_user"+comment.commentId+"\" src=\"/img/头像.png\"/></div>\n" +
                         "                                        <div class=\"conmment_details\">\n" +
                         "                                            <span class=\"comment_name idea_achievement_comment_user_name"+comment.commentId+"\">"+comment.fromName+" </span>     <span class=\"idea_achievement_comment_user_time"+comment.commentId+"\">"+comment.time.substring(0,10)+"</span>\n" +
                         "                                            <div class=\"comment_content idea_achievement_comment_user_content"+comment.commentId+"\">  "+comment.content+"</div>\n" +
@@ -110,7 +110,7 @@ function getIdeaInfo(ideaId){
                     "                                    "+ach.content+"\n" +
                     "                                </div>\n" +
                     "                            </div>\n" +
-                    "                            <div style=\"text-align: right\"><a class=\"comment-idea\" achid=\""+ach.id+"\"><i class=\"layui-icon\">&#xe611;评论</i></a></div>\n"+
+                    "                            <div style=\"text-align: right\"><a class=\"comment-idea\" isShow=\"false\" achid=\""+ach.id+"\"><i class=\"layui-icon\">&#xe611;评论</i></a></div>\n"+
                     "                            <div class=\"idea_achievement_comment idea_achievement_comment"+ach.id+"\" style=\"width: 90%; position: relative; left:10%;display: none\">\n" +
                     "                                <input type=\"text\" name=\"title\" required lay-verify=\"required\" placeholder=\"请输入评论内容\" autocomplete=\"off\" class=\"layui-input idea-comment-content idea_achievement_comment_content"+ach.id+"\">\n" +
                     "                                <p style=\"text-align: right\"><button type=\"button\" toId=\""+ach.userId+"\" class=\"layui-btn layui-btn-primary idea-comment-button idea_achievement_comment_button"+ach.id+"\">发布评论</button></p>\n" +
@@ -121,7 +121,12 @@ function getIdeaInfo(ideaId){
                     comment_list+
                     "                                    </div>\n" +
                     "                                </div>\n" +
-                    "                            </div>";
+                    "                            </div>" +
+                    "<script>\n" +
+                    "$(document).ready(function () {\n" +
+                    "    getCommentImg(comment.fromId,comment.commentId);\n" +
+                    "})\n" +
+                    "</script>";
             }
 
             var releaseArticle="<div class=\"releaseIdeaArticle\">\n" +
@@ -167,6 +172,22 @@ function getIdeaInfo(ideaId){
         }
     })
 }
+function getCommentImg(userId,commentId) {
+    $.ajax({
+        url:"/user/getById",
+        type:"post",
+        dataType: "json",
+        data:{
+            id: userId,
+        },
+        success:function (data) {
+            $(".idea_achievement_comment_user"+commentId).attr("src","data:image/png;base64,"+data.head);
+        },
+        error:function () {
+            console.log("读取用户信息失败！");
+        }
+    });
+}
 function releaseArticleEdit(editId,id) {//添加富文本编辑器
     layui.use('layedit',function(){
         var layedit = layui.layedit
@@ -208,8 +229,16 @@ function releaseArticle(layedit,layer,form,editIndex,id) {//发布创意实现
 function commentShow() {//评论显示与否
     $(document).off('click','.comment-idea').on('click','.comment-idea',function () {
         var achid=$(this).attr('achid');
-        var isShow = $(".idea_achievement_comment"+achid).css('display');
-        $(".idea_achievement_comment"+achid).css('display',isShow=='none'?'':'none');
+        var isShow=$(this).attr('isShow');
+        if(isShow=="true"){
+            $(".idea_achievement_comment"+achid).hide(1000);
+            $(this).attr('isShow',"false");
+        }else{
+            $(".idea_achievement_comment"+achid).show(1000);
+            $(this).attr('isShow',"true");
+        }
+        //var isShow = $(".idea_achievement_comment"+achid).css('display');
+        //$(".idea_achievement_comment"+achid).css('display',isShow=='none'?'':'none');
     })
 }
 function getNowDate() {//得到当前时间
