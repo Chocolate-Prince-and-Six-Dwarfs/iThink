@@ -112,7 +112,7 @@ public interface CreativeIdeaInterface {
     //                              commentId: 0,(创意实现id)
     //                              content: "回复内容",
     //                              time: "回复时间",
-    //                              fromId: 0,(回复者id)
+    //                              fromUid: 0,(回复者id)
     //                              fromName: "回复者昵称"
     //                              toId: 0,(被回复者id)
     //                              toName: "被回复者昵称"
