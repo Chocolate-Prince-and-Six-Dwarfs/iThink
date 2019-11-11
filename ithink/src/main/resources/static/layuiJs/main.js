@@ -84,6 +84,7 @@ function getIdeaInfo(ideaId){
             for(var i in data.achievements){
                 var comment_list="";
                 var ach=data.achievements[i].achievement;
+                var commentIdList = [];
                 for(var j in data.achievements[i].comments){
                     var comment=data.achievements[i].comments[j].comment;
                     comment_list+="<div class=\"imgdiv\"><img fromId=\""+comment.fromId+"\" class=\"imgcss idea_achievement_comment_user"+comment.commentId+"\" src=\"/img/头像.png\"/></div>\n" +
