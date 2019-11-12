@@ -81,11 +81,11 @@ function getIdeaInfo(ideaId){
             console.log(data);
             var retButton="<button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\" id=\"ret\"><i class=\"layui-icon\">&#xe65c;返回</i></button>";
             var achievements="";
+            var commentIdList = [];
+            var commentUserIdList=[];
             for(var i in data.achievements){
                 var comment_list="";
                 var ach=data.achievements[i].achievement;
-                var commentIdList = [];
-                var commentUserIdList=[];
                 for(var j in data.achievements[i].comments){
                     var comment=data.achievements[i].comments[j].comment;
                     comment_list+="<div class=\"imgdiv\"><img fromId=\""+comment.fromUid+"\" class=\"imgcss idea_achievement_comment_user"+comment.commentId+"\" src=\"/img/头像.png\"/></div>\n" +
