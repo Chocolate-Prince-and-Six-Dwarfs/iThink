@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/layuiJs/chatRoom.js"></script>
 
 </head>
 <body>
@@ -11,15 +12,19 @@
 <script type="text/javascript">
     //需要判断浏览器支不支持，可以去w3c进行查看
 
-    var source = new EventSource('/notify?id=1');
-    source.onmessage = function (event) {
-        console.info(event.data);
-        var node = document.createTextNode(event.data);
-        var ele = document.createElement("div");
-        ele.append(node);
-        document.getElementById('result').append(ele);
-    };
+    // var source = new EventSource('/notify?id=1');
+    // source.onmessage = function (event) {
+    //     console.info(event.data);
+    //     var node = document.createTextNode(event.data);
+    //     var ele = document.createElement("div");
+    //     ele.append(node);
+    //     document.getElementById('result').append(ele);
+    // };
 
+    var chatRoom = new ChatRoom();
+    var element = chatRoom.getElement();
+    console.log(element);
+    $("body").append(element);
 </script>
 </body>
 </html>
