@@ -52,32 +52,22 @@ function callUserReleaseIdea(element){
         addEdit("ideaEdit");
     }
 }
-function callUserIdeas(element) {
+function callUserIdeas(element,layer) {
     if($(".layui-tab-title li[lay-id='userIdeas']").length>0){
         element.tabChange('userDemo','userIdeas');
+        getUserIdeas(layer,user_id);//获取个人创意信息
     }else{
         element.tabAdd('userDemo',{
             title: "我的创意"
-            ,content: "<div class=\"userIdeasContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\"><div class=\"collection\">\n" +
-                "    <h3>我的创意</h3>\n" +
-                "    <hr>\n" +
-                "    <div class=\"layui-tab-content\">\n" +
-                "        <ul>\n" +
-                "            <li >\n" +
-                "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题标题标题标题</div>\n" +
-                "                <div>\n" +
-                "                    <span>2019-12-12</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100喜欢</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100关注</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100伤实现</span>\n" +
-                "                </div>\n" +
-                "            </li>\n" +
-                "        </ul>\n" +
-                "    </div>\n" +
-                "</div>\n</div>"
+            ,content: "<div class=\"userIdeasContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\">" +
+                "<div style=\"text-align: center\">" +
+                "<h1 style=\"font-weight: bold\">空空如也<i class=\"layui-icon layui-icon-face-cry\" style=\"font-size: 50px; color: #696969;\"></i></h1>" +
+                "</div>" +
+                "</div>"
             ,id: "userIdeas"
         });
         element.tabChange('userDemo','userIdeas');
+        getUserIdeas(layer,user_id);//获取个人创意信息
     }
 }
 function callUserIdeasCapsules(element) {
@@ -319,7 +309,29 @@ function callUserProfitProjects(element) {
         element.tabChange('userDemo','userProfitProjects');
     }
 }
+function callUserFans(element) {
+    if($(".layui-tab-title li[lay-id='userFans']").length>0){
+        element.tabChange('userDemo','userFans');
+    }else{
+        element.tabAdd('userDemo',{
+            title: "我的粉丝"
+            ,content: "<div class=\"userFansContent\" style=\"width: 60%; position: relative; left:20%;\">我的粉丝</div>"
+            ,id: "userFans"
+        });
+        element.tabChange('userDemo','userFans');
 
-function callUserFans() {
+    }
+}
+function callUserFocusOn(element) {
+    if($(".layui-tab-title li[lay-id='userFocusOn']").length>0){
+        element.tabChange('userDemo','userFocusOn');
+    }else{
+        element.tabAdd('userDemo',{
+            title: "我的关注"
+            ,content: "<div class=\"userFocusOnContent\">我的关注</div>"
+            ,id: "userFocusOn"
+        });
+        element.tabChange('userDemo','userFocusOn');
 
+    }
 }

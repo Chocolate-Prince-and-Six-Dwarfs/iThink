@@ -7,7 +7,7 @@ layui.define(['laypage','layer', 'form','jquery','element'], function(exports){
     getUserId();//获取userId
     search(layer);//搜索
     getUserInfo(user_id,form);//获取用户数据
-    saveUserInfo(form,layer);
+    saveUserInfo(form,layer);//保存个人信息
     form.render();
 
     switch(location.hash) {
@@ -18,7 +18,7 @@ layui.define(['laypage','layer', 'form','jquery','element'], function(exports){
             callUserReleaseIdea(element);
             break;
         case("#userDemo=userIdeas"):
-            callUserIdeas(element);
+            callUserIdeas(element,layer);
             break;
         case("#userDemo=userIdeasCapsule"):
             callUserIdeasCapsules(element);
@@ -35,6 +35,12 @@ layui.define(['laypage','layer', 'form','jquery','element'], function(exports){
         case("#userDemo=userProfitProjects"):
             callUserProfitProjects(element);
             break;
+        case("#userDemo=userFans"):
+            callUserFans(element);
+            break;
+        case("#userDemo=userFocusOn"):
+            callUserFocusOn(element);
+            break;
         default:
             break;
     }
@@ -43,7 +49,8 @@ layui.define(['laypage','layer', 'form','jquery','element'], function(exports){
 layui.use(['element','jquery','form'],function () {
     var element=layui.element
         ,$=layui.jquery
-        ,form=layui.form;//导航的hover效果、二级菜单等功能，需要依赖element模块
+        ,form=layui.form
+        ,layer=layui.layer;//导航的hover效果、二级菜单等功能，需要依赖element模块
 
     //监听导航点击
     element.on('nav(demo)', function(elem){
@@ -135,7 +142,6 @@ layui.use(['element','jquery','form'],function () {
                 });
                 element.tabChange('userDemo','userInfo');
                 getUserInfo(user_id,form);
-                addEdit("userEdit");
                 form.render();
             }
         }
@@ -146,7 +152,7 @@ layui.use(['element','jquery','form'],function () {
             callUserReleaseIdea(element);
         }
         ,tabUserIdeas:function () {
-            callUserIdeas(element);
+            callUserIdeas(element,layer);
         }
         ,tabUserIdeasCapsules:function () {
             callUserIdeasCapsules(element);
@@ -165,6 +171,9 @@ layui.use(['element','jquery','form'],function () {
         },
         tabUserFans:function () {
             callUserFans(element);
+        },
+        tabUserFocusOn:function () {
+            callUserFocusOn(element);
         }
     };
     $('.user-site-active').on('click', function(){

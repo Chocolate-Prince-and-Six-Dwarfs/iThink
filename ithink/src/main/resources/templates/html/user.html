@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>用户界面</title>
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet"  href="/layui/css/layui.css">
@@ -244,8 +247,8 @@
                 </p>
             </div>
             <div style="font-size: 12px;color: #fff;">
-                <span id="fans" class="user-site-active" data-type="tabUserFans" style="cursor:pointer">我的粉丝100</span>&nbsp;&nbsp;&nbsp;
-                <span id="eyes" data-src="eyes.html" style="cursor:pointer">我关注的99</span>
+                <span id="fans" class="user-site-active" style="cursor:pointer"><a class="user-site-active" data-type="tabUserFans">我的粉丝</a></span>&nbsp;&nbsp;&nbsp;
+                <span id="eyes" style="cursor:pointer"><a class="user-site-active" data-type="tabUserFocusOn">我的关注</a></span>
             </div>
         </div>
         <hr>
@@ -278,7 +281,9 @@
                 <li lay-id="userGroups">我的团组</li>
                 <li lay-id="userCollections">我的收藏</li>
                 <li lay-id="userParticipate">我的参与</li>
-                <li lay-id="userProfitProjects">获利项目</li>-->
+                <li lay-id="userProfitProjects">获利项目</li>
+                <li lay-id="userFans">我的粉丝</li>
+                <li lay-id="userFocusOn">我关注的</li>-->
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
@@ -333,27 +338,6 @@
                                     <div class="layui-input-block">
                                         <input type="text" name="addr" required  lay-verify="required" placeholder="请输入城市" autocomplete="off" class="layui-input user_addr">
                                     </div>
-                                    <!--<div class="layui-input-block">
-                                        <select name="city" lay-verify="required">
-                                            <option value="">国家</option>
-                                            <option value="0">中国</option>
-                                            <option value="1">美国</option>
-                                            <option value="2">俄罗斯</option>
-                                            <option value="3">日本</option>
-                                        </select>
-                                        <select name="city" lay-verify="">
-                                            <option value="">省份</option>
-                                            <option value="010">四川</option>
-                                            <option value="021">上海</option>
-                                            <option value="0571">香港</option>
-                                        </select>
-                                        <select name="city" lay-verify="">
-                                            <option value="">城市</option>
-                                            <option value="010">成都</option>
-                                            <option value="021">武汉</option>
-                                            <option value="0571">杭州</option>
-                                        </select>
-                                    </div>-->
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">性别:</label>
@@ -413,10 +397,6 @@
             }
         });
     });
-    /*layui.use('layedit', function(){
-        var layedit = layui.layedit;
-        layedit.build('userEdit'); //建立编辑器
-    });*/
 </script>
 </div>
 </body>
