@@ -40,7 +40,7 @@ function getUserInfo(userId,form) {
     });
 }
 
-function saveUserInfo(form,layer){
+function saveUserInfo(form,layer){//保存个人信息
     $(document).on('click','#userInfoForm',function () {
         var formData=new FormData();
         formData.append('id',user_id);
@@ -69,7 +69,7 @@ function saveUserInfo(form,layer){
     })
 }
 
-function releaseIdeaInfo(form,layer,layedit,editIndex){
+function releaseIdeaInfo(form,layer,layedit,editIndex){//发布创意
     $(document).on('click','#releaseIdea',function () {
         var fData=new FormData();
         fData.append('userId',user_id);
@@ -102,4 +102,58 @@ function checkGender(mValue,form){
         }
         form.render();
     }
+}
+
+function getUserIdeas(layer,userId) {
+    $.ajax({
+        url:"user/getInfoByUserId",
+        type:"post",
+        dataType: "json",
+        data:{
+            id: userId,
+            opinion:"topic",
+        },
+        success:function (data) {
+            if(data.count==0){
+                return false;
+            }
+            $(".userIdeasContent").empty();
+            console.log("读取个人创意信息成功");
+            var myIdeas="";
+            var text="<h2  style=\"text-align: center;font-weight: bold\">我的创意</h2>\n" +
+                "    <div class=\"layui-tab-content\">\n" +
+                "        <ul class=\"userIdeasContentUL\"><hr>\n" +
+                "            \n" +
+                "        </ul>\n" +
+                "    </div>";
+            $(".userIdeasContent").append(text);
+            for(var i in data.data){
+                myIdeas="<li>\n" +
+                    "                <div class=\"title\" style=\"text-align: center;margin-top: 20px\">"+data.data[i].title+"</div>\n" +
+                    "                <div>\n" +
+                    "                    <span>"+subStringIdeaContent(data.data[i].content)+"...</span>\n" +
+                    "                </div>\n" +
+                    "                <div style=\"text-align: right\">\n" +
+                    "                    <span>点赞数:"+data.data[i].like+"</span>\n" +
+                    "                </div>\n" +
+                    "            </li>\n" +
+                    "            <hr>";
+                $(".userIdeasContentUL").append(myIdeas);
+            }
+
+        },
+        error:function () {
+            layer.msg("读取个人创意信息失败");
+        }
+    })
+}
+
+function subStringIdeaContent(ideaContent){ //截取部分创意内容
+    ideaContent = ideaContent.replace(/(\n)/g, "");
+    ideaContent = ideaContent.replace(/(\t)/g, "");
+    ideaContent = ideaContent.replace(/(\r)/g, "");
+    ideaContent = ideaContent.replace(/<\/?[^>]*>/g, "");
+    ideaContent = ideaContent.replace(/\s*/g, "");
+    var ic=ideaContent.substring(0,100);
+    return ic;
 }
