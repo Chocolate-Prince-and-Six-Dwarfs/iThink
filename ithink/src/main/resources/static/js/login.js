@@ -18,8 +18,8 @@ close1.onclick=function () {
 close2.onclick=function () {
     form2.style.display="none";
 };
-$(function (){
-    document.getElementById("login").onclick=function () {
+function Login(layer) {
+    $(document).on('click','#login',function () {
         var email;
         var pwd;
         email = $("#login-email").val();
@@ -45,34 +45,44 @@ $(function (){
                     // 如果结果是1，说明成功
                     //  console.log(res.email);
                     if (res.status === 1) {
+                        layer.msg("登陆成功");
                         window.location.href="main";
+                    }else if(res.status === 0){
+                        layer.msg("用户密码错误");
+                    }else if(res.status === -1){
+                        layer.msg("用户名不存在");
+                    }else if(res.status === -2){
+                        layer.msg("用户名或密码格式不正确");
                     }
                     else {
-                        alert("登录失败");//弹出失败的窗
+                        layer.msg("网络错误");
                     }
                 },
                 error:function(){
-                    alert("请求后台失败");
+                    layer.msg("网络错误");
                 }
             })
         }
         else{
-            alert("输入不能为空");
+            layer.msg("用户名或密码不能为空");
         }
-    };
-    document.getElementById("resign").onclick=function () {
+    });
+}
+function Register(layer,birthday){
+    //document.getElementById("login").onclick=function () {};
+    $(document).on('click','#register',function () {
         var pwd;
         var username;
         var phone;
         var email;
         var sex;
-        var birthday;
+        //var birthday;
         username = $("#username").val();
         phone = $("#tel").val();
         email= $("#resign-email").val();
         pwd = $("#resign-pwd").val();
         sex=$('input:radio:checked').val();
-        birthday=$('#birth').val();
+        //birthday=$('#birth').val();
         /*console.log(sex);
         console.log(username);
         console.log(birthday);*/
@@ -83,6 +93,10 @@ $(function (){
         formData.append("phone", phone);
         formData.append("sex", sex);
         formData.append("birthday", birthday);
+        if(birthday==null||birthday==""){
+            layer.msg("生日为空");
+            return false;
+        }
         if (username !== "" && pwd !== "" && email !=="") {
             $.ajax({
                 url : "user/register",
@@ -98,21 +112,45 @@ $(function (){
 
                 success: function (res) {
                     // 如果结果是1，说明注册成功
-                    console.log(res)
+                    //console.log(res);
                     if (res.status === 1) {
-                        alert("注册成功");//弹出成功的窗
+                        layer.msg("注册成功");
+                        form1.style.display="block";
+                        form2.style.display="none";
+                    }else if(res.status === 0){
+                        layer.msg("用户名已存在");
+                    }else if(res.status === -2){
+                        layer.msg("输入数据格式不正确");
                     }
                     else {
-                        alert("注册失败");//弹出失败的窗
+                        layer.msg("网络错误");
                     }
                 },
                 error:function(){
-                    alert("请求后台失败");
+                    layer.msg("网络错误");
                 }
             })
         }
         else{
-            alert("输入不能为空");
+            layer.msg("输入不能为空");
         }
+    });
+    //document.getElementById("resign").onclick=function (){}
+}
+function getNowFormatDate() {
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
     }
-});
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentdate = date.getFullYear() + seperator1 + month
+        + seperator1 + strDate + " " + date.getHours() + seperator2
+        + date.getMinutes() + seperator2 + date.getSeconds();
+    return currentdate;
+}

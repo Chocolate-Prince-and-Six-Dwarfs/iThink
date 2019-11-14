@@ -193,7 +193,7 @@ function getIdeaInfo(ideaId){
         }
     })
 }
-function getAchievementUserName(userId) {
+function getAchievementUserName(userId) {//获得用户名
     $.ajax({
         url:"/user/getById",
         type:"post",

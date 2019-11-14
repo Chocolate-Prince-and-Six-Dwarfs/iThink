@@ -185,7 +185,7 @@
         <div class="layui-inline">
           <label class="layui-form-label">出生日期</label>
           <div class="layui-input-inline">
-            <input type="text" class="layui-input" id="test1" placeholder="yyyy-MM-dd">
+            <input type="text" required lay-verify="required" class="layui-input" id="user_birthday" placeholder="yyyy-MM-dd">
           </div>
         </div>
       </div>
@@ -206,7 +206,7 @@
     </div>
     <div class="layui-form-item">
       <div class="layui-input-block">
-        <button class="layui-btn go" id="resign" lay-submit lay-filter="formDemo">立即注册</button>
+        <button class="layui-btn go" id="register" lay-submit lay-filter="formDemo">立即注册</button>
       </div>
     </div>
   </form>
@@ -246,16 +246,35 @@
   //Demo
   layui.use(['form','laydate'], function(){
     var form = layui.form
-            ,laydate=layui.laydate;
+            ,laydate=layui.laydate
+            ,layer=layui.layer
+            ,jquery=layui.jquery;
 
+    //年选择器
+    laydate.render({
+      elem: '#user_birthday',
+      max:getNowFormatDate(),
+      /*ready:function(value){
+        var month=value.month;
+        var date=value.date;
+        if(value.month>=1&&value.month<10){
+          month="0"+value.month;
+        }
+        if(value.date>=1&&value.date<10){
+          date="0"+value.date;
+        }
+        var birthday=value.year+"-"+month+"-"+date;
+        Register(layer,birthday);
+      },*/
+      done:function (value) {
+        Register(layer,value);
+      }
+    });
+    Login(layer);
     //监听提交
     form.on('submit(formDemo)', function(data){
       //layer.msg(JSON.stringify(data.field));
       return false;
-    });
-    //年选择器
-    laydate.render({
-      elem: '#test1'
     });
   });
 </script>
