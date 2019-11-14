@@ -76,7 +76,7 @@ layui.use(['element','jquery','form'],function () {
                         "                                    <input type=\"text\" name=\"head\" lay-verify=\"required\" id=\"inputimgurl\" placeholder=\"图片地址\" value=\"/img/头像.png\" class=\"layui-input layui-hide\">\n" +
                         "                                </div>\n" +
                         "                                <div class=\"layui-input-inline\">\n" +
-                        "                                    <div class=\"layui-upload-list\" style=\"margin:0\">\n" +
+                        "                                    <div class=\"layui-upload-list user-head\" style=\"margin:0\">\n" +
                         "                                        <img src=\"/img/头像.png\" id=\"srcimgurl\" class=\"layui-upload-img\">\n" +
                         "                                    </div>\n" +
                         "                                </div>\n" +
@@ -102,19 +102,19 @@ layui.use(['element','jquery','form'],function () {
                         "                                <div class=\"layui-form-item\">\n" +
                         "                                    <label class=\"layui-form-label\">行业:</label>\n" +
                         "                                    <div class=\"layui-input-block\">\n" +
-                        "                                        <input type=\"text\" name=\"major\" required  lay-verify=\"required\" placeholder=\"行业领域\" autocomplete=\"off\" class=\"layui-input user_industry\">\n" +
+                        "                                        <input type=\"text\" name=\"major\" placeholder=\"行业领域\" autocomplete=\"off\" class=\"layui-input user_industry\">\n" +
                         "                                    </div>\n" +
                         "                                </div>\n" +
                         "                                <div class=\"layui-form-item\">\n" +
                         "                                    <label class=\"layui-form-label\">学校:</label>\n" +
                         "                                    <div class=\"layui-input-block\">\n" +
-                        "                                        <input type=\"text\" name=\"school\" required  lay-verify=\"required\" placeholder=\"请输入学校\" autocomplete=\"off\" class=\"layui-input user_school\">\n" +
+                        "                                        <input type=\"text\" name=\"school\" placeholder=\"请输入学校\" autocomplete=\"off\" class=\"layui-input user_school\">\n" +
                         "                                    </div>\n" +
                         "                                </div>\n" +
                         "                                <div class=\"layui-form-item\">\n" +
                         "                                    <label class=\"layui-form-label\">地区:</label>\n" +
                         "                                    <div class=\"layui-input-block\">\n" +
-                        "                                        <input type=\"text\" name=\"addr\" required  lay-verify=\"required\" placeholder=\"请输入城市\" autocomplete=\"off\" class=\"layui-input user_addr\">\n" +
+                        "                                        <input type=\"text\" name=\"addr\" placeholder=\"请输入城市\" autocomplete=\"off\" class=\"layui-input user_addr\">\n" +
                         "                                    </div>\n" +
                         "                                </div>\n" +
                         "                                <div class=\"layui-form-item\">\n" +

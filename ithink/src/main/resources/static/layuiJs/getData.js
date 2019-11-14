@@ -75,6 +75,16 @@ function releaseIdeaInfo(form,layer,layedit,editIndex){//发布创意
         fData.append('userId',user_id);
         fData.append('topicTitle',$("#topicTitle").val());
         fData.append('content',layedit.getContent(editIndex));
+        if($("#topicTitle").val()==null||$("#topicTitle").val()==""){
+            layer.msg("创意标题不能为空");
+            return false;
+        }
+        if(layedit.getContent(editIndex)==null||layedit.getContent(editIndex)==""){
+            layer.msg("创意内容不能为空");
+            return false;
+        }
+        $("#topicTitle").val("");
+        layedit.setContent(editIndex, "",false);
         $.ajax({
             url:"/idea/publish",
             type:"post",
@@ -83,7 +93,6 @@ function releaseIdeaInfo(form,layer,layedit,editIndex){//发布创意
             contentType: false,
             success:function () {
                 layer.msg("发布成功");
-                layedit.setContent(editIndex, "", false);
             },
             error:function () {
                 layer.msg("发布创意失败");
@@ -114,11 +123,12 @@ function getUserIdeas(layer,userId) {
             opinion:"topic",
         },
         success:function (data) {
+            //console.log(data);
             if(data.count==0){
                 return false;
             }
             $(".userIdeasContent").empty();
-            console.log("读取个人创意信息成功");
+            //console.log("读取个人创意信息成功");
             var myIdeas="";
             var text="<h2  style=\"text-align: center;font-weight: bold\">我的创意</h2>\n" +
                 "    <div class=\"layui-tab-content\">\n" +
@@ -134,7 +144,9 @@ function getUserIdeas(layer,userId) {
                     "                    <span>"+subStringIdeaContent(data.data[i].content)+"...</span>\n" +
                     "                </div>\n" +
                     "                <div style=\"text-align: right\">\n" +
-                    "                    <span>点赞数:"+data.data[i].like+"</span>\n" +
+                    "                    <span>时间:"+data.data[i].time.substring(0,10)+"</span>\n" +
+                    "                    <span style=\"margin-left: 10px\">收藏数:"+data.data[i].collect+"</span>\n" +
+                    "                    <span style=\"margin-left: 10px\">点赞数:"+data.data[i].like+"</span>\n" +
                     "                </div>\n" +
                     "            </li>\n" +
                     "            <hr>";
@@ -144,6 +156,46 @@ function getUserIdeas(layer,userId) {
         },
         error:function () {
             layer.msg("读取个人创意信息失败");
+        }
+    })
+}
+
+function getUserFans(userId) {
+    $.ajax({
+        url:"user/getInfoByUserId",
+        type:"post",
+        dataType: "json",
+        data:{
+            id: userId,
+            opinion:"fans",
+        },
+        success:function (data) {
+            //console.log(data);
+            if(data.count==0){
+                return false;
+            }
+            $(".userFansContent").empty();
+            var myFans="";
+            var text="<h2  style=\"text-align: center;font-weight: bold\">我的粉丝</h2>\n" +
+                "    <div class=\"layui-tab-content\">\n" +
+                "        <ul class=\"userFansContentUL\" style=\"border: 1px solid #c0c0c0;\">\n" +
+                "            \n" +
+                "        </ul>\n" +
+                "    </div>";
+            $(".userFansContent").append(text);
+            for(var i in data.data){
+                myFans="<li >\n" +
+                    "                            <div class=\"title\">"+data.data[i].name+"</div>\n" +
+                    "                            <div class=\"user-head\">\n" +
+                    "                                <img src=\"data:image/png;base64,"+data.data[i].head+"\" alt=\"\">\n" +
+                    "                            </div>\n" +
+                    "                        </li>\n" +
+                    "                        <hr>";
+                $(".userFansContentUL").append(myFans);
+            }
+        },
+        error:function () {
+            console.log("读取失败！");
         }
     })
 }

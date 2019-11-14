@@ -9,6 +9,7 @@
     <title>用户界面</title>
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet"  href="/layui/css/layui.css">
+    <link rel="stylesheet"  href="/css/user-head.css">
     <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="/layuiJs/callUserTab.js"></script>
     <script type="text/javascript" src="/layuiJs/search.js"></script>
@@ -239,7 +240,7 @@
     <div class="layui-side" style="background-color: #A4D3EE">
         <!--左上-->
         <div class="left-top">
-            <div>
+            <div class="user-head">
                 <img id="userImg" src="/img/头像small.png" alt="头像图片" style="width: 150px;height:150px;background-color:#ccc;">
                 <p>
                     <span style="color: #000;font-family: 宋体" id="userName">我</span>
@@ -298,7 +299,7 @@
                                     <input type="text" name="head" lay-verify="required" id="inputimgurl" placeholder="图片地址" value="/img/头像.png" class="layui-input layui-hide">
                                 </div>
                                 <div class="layui-input-inline">
-                                    <div class="layui-upload-list" style="margin:0">
+                                    <div class="layui-upload-list user-head" style="margin:0">
                                         <img src="/img/头像.png" id="srcimgurl" class="layui-upload-img">
                                     </div>
                                 </div>
@@ -324,19 +325,19 @@
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">行业:</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="major" required  lay-verify="required" placeholder="行业领域" autocomplete="off" class="layui-input user_industry">
+                                        <input type="text" name="major" placeholder="行业领域" autocomplete="off" class="layui-input user_industry">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">学校:</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="school" required  lay-verify="required" placeholder="请输入学校" autocomplete="off" class="layui-input user_school">
+                                        <input type="text" name="school" placeholder="请输入学校" autocomplete="off" class="layui-input user_school">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">地区:</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="addr" required  lay-verify="required" placeholder="请输入城市" autocomplete="off" class="layui-input user_addr">
+                                        <input type="text" name="addr" placeholder="请输入城市" autocomplete="off" class="layui-input user_addr">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">

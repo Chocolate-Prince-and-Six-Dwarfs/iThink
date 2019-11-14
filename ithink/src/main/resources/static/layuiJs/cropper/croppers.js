@@ -71,11 +71,11 @@ layui.config({
                     , content: content
                     , area: area
                     , success: function () {
-                        console.log("1");
+                        //console.log("1");
                         image.cropper(options);
                     }
                     , cancel: function (index) {
-                        console.log("2");
+                        //console.log("2");
                         layer.close(index);
                         image.cropper('destroy');
                     }
