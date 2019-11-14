@@ -55,7 +55,6 @@ function getIdeas(pageSize){
                     "                    </div>";
                 $("#ideaList").append(idea);
 
-
                 var type = "topic";
                 var className = "topic-intro";
                 var processId = data.data[i].id;
@@ -78,11 +77,12 @@ function getIdeaInfo(ideaId){
             id: ideaId,
         },
         success:function (data) {
-            console.log(data);
+            //console.log(data);
             var retButton="<button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\" id=\"ret\"><i class=\"layui-icon\">&#xe65c;返回</i></button>";
             var achievements="";
             var commentIdList = [];
             var commentUserIdList=[];
+            var releaseUserIdList=[];
             for(var i in data.achievements){
                 var comment_list="";
                 var ach=data.achievements[i].achievement;
@@ -109,7 +109,7 @@ function getIdeaInfo(ideaId){
                     "                                <legend>创意实现" + i + "</legend>\n" +
                     "                            </fieldset>\n" +
                     "                            <div class=\"layui-card idea_achievement" + ach.id + "\">\n" +
-                    "                                <div class=\"layui-card-header  idea_achievement_title" + ach.id + "\"></div>\n" +
+                    "                                <div class=\"layui-card-header idea_achievement_title" + ach.userId + "\"></div>\n" +
                     "                                <div class=\"layui-card-body idea_achievement_content" + ach.id + "\">\n" +
                     "                                    " + ach.content + "\n" +
                     "                                </div>\n" +
@@ -127,6 +127,7 @@ function getIdeaInfo(ideaId){
                     "                                    </div>\n" +
                     "                                </div>\n" +
                     "                            </div>";
+                releaseUserIdList.push(ach.userId);
             }
 
             var releaseArticle="<div class=\"releaseIdeaArticle\">\n" +
@@ -181,6 +182,9 @@ function getIdeaInfo(ideaId){
                 for(var i=0;i<commentIdList.length;++i){
                     getCommentImg(commentUserIdList[i],commentIdList[i]);
                 }
+                for(var i=0;i<releaseUserIdList.length;++i){
+                    getAchievementUserName(releaseUserIdList[i]);
+                }
             }
 
         },
@@ -188,6 +192,22 @@ function getIdeaInfo(ideaId){
             console.log("读取创意详情失败！");
         }
     })
+}
+function getAchievementUserName(userId) {
+    $.ajax({
+        url:"/user/getById",
+        type:"post",
+        dataType: "json",
+        data:{
+            id: userId,
+        },
+        success:function (data) {
+            $(".idea_achievement_title"+userId).text("发布者："+data.name);
+        },
+        error:function () {
+            console.log("读取用户信息失败！");
+        }
+    });
 }
 function getCommentImg(userId,commentId) {//评论图像
     $.ajax({

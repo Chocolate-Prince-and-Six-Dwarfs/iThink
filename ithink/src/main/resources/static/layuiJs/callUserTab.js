@@ -312,14 +312,18 @@ function callUserProfitProjects(element) {
 function callUserFans(element) {
     if($(".layui-tab-title li[lay-id='userFans']").length>0){
         element.tabChange('userDemo','userFans');
+        getUserFans(user_id);
     }else{
         element.tabAdd('userDemo',{
             title: "我的粉丝"
-            ,content: "<div class=\"userFansContent\" style=\"width: 60%; position: relative; left:20%;\">我的粉丝</div>"
+            ,content: "<div class=\"userFansContent\" style=\"width: 60%; position: relative; left:20%;\">\n" +
+                "                                <div style=\"text-align: center\">\n" +
+                "                                <h1 style=\"font-weight: bold\">空空如也<i class=\"layui-icon layui-icon-face-cry\" style=\"font-size: 50px; color: #696969;\"></i></h1>\n" +
+                "                                </div></div>"
             ,id: "userFans"
         });
         element.tabChange('userDemo','userFans');
-
+        getUserFans(user_id);
     }
 }
 function callUserFocusOn(element) {
@@ -328,7 +332,7 @@ function callUserFocusOn(element) {
     }else{
         element.tabAdd('userDemo',{
             title: "我的关注"
-            ,content: "<div class=\"userFocusOnContent\">我的关注</div>"
+            ,content: "<div class=\"userFocusOnContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\">我的关注</div>"
             ,id: "userFocusOn"
         });
         element.tabChange('userDemo','userFocusOn');
