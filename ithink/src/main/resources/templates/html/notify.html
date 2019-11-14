@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script type="text/javascript" src="/layuiJs/chatRoom.js"></script>
 
 </head>
@@ -31,14 +32,16 @@
     // };
 
     // 聊天室调用方法
-    var chatRoom = new ChatRoom(1);
+
 
     // 1、直接获取元素(不推荐)
+    //var chatRoom = new ChatRoom(1);
     //var element = chatRoom.getElement();
-    //console.log(element);
     //$("body").append(element);
 
+
     // 2、调用内部方法设置父元素（推荐使用body）
+    var chatRoom = new ChatRoom(1);
     chatRoom.appendTo("body")
 </script>
 </body>

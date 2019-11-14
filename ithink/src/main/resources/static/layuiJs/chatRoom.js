@@ -7,7 +7,7 @@ class ChatRoom
 
         this.width = "80%";
         this._openText = "+";
-        this._closeText = "x";
+        this._container_css =
         this.element = this._createChatRoom();
 
         return this;
@@ -33,6 +33,8 @@ class ChatRoom
         let button = $("<button>");
         button.attr("id", "chat-room-button");
         button.css("border-radius", "34.0px");
+        button.css("background", "#393D49");
+        button.css("color", "rgba(255,255,255,.7)");
         button.css("padding", "1px");
         button.css("width", "2em");
         button.css("height", "2em");
@@ -96,11 +98,12 @@ class ChatRoom
         frame.css("flex-wrap", "wrap");
         frame.css("justify-content", "flex-start");
         frame.css("align-items", "flex-start");
-        frame.css("background", "black");
+        frame.css("background", "#c2c2c2");
         frame.css("color", "white");
         frame.css("padding", "1px");
         frame.css("display", "hidden");
         frame.css("margin", "0");
+        frame.css("min-height", "10em");
         frame.css("max-height", "35em");
         frame.css("overflow", "scroll");
         //let testContent = "测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>";
@@ -111,11 +114,15 @@ class ChatRoom
         //console.log(this._userId);
         this._sse = new EventSource('/chat/connect?userId=' + this._userId);
 
+        // 初始化团组信息
+        this._initGroup();
+        // 加载缓存
+        this._loadCookie();
 
-        let thisElement = this;
+        let thisObject= this;
         this._sse.onmessage = function(event)
         {
-            thisElement.appendData(event.data.substring(3,));
+            thisObject._appendData(event.data.substring(3,));
         };
 
         // 构建填充
@@ -146,7 +153,42 @@ class ChatRoom
         $("#chat-room-frame").hide();
     }
 
-    appendData(data)
+    _loadCookie()
+    {
+        //
+    }
+
+    _saveCookie(data)
+    {
+        // // 获取计数
+        // let count;
+        // let record;
+        // let countCookieName = "chat-room-group" + tmp[j].toId + "-count";
+        // let recordCookieName = "chat-room-group" + tmp[j].toId + "-record";
+        // if ($.cookie(countCookieName) === null) {
+        //     count = 0;
+        // } else
+        // {
+        //     count = parseInt($.cookie(countCookieName));
+        // }
+        // // 增加计数
+        // count++;
+        // // 设置新计数
+        // $.cookie(countCookieName, count, {path: "/"});
+        //
+        // // 读取聊天记录缓存
+        // if ($.cookie(recordCookieName) === null)
+        // {
+        //     record = "";
+        // } else
+        // {
+        //     record = $.cookie(recordCookieName);
+        // }
+        // // 设置聊天记录缓存
+        // $.cookie(recordCookieName, record + "," + data, {path: "/"});
+    }
+
+    _appendData(data)
     {
         let tmpData = $.parseJSON(data);
         for(let i=0; i<tmpData.groupChatRecord.length; ++i)
@@ -154,22 +196,190 @@ class ChatRoom
             let tmp = tmpData.groupChatRecord[i];
             for(let j=0; j<tmp.length; ++j)
             {
-                let groupEle = $("#chat-room-group-" + tmp[j].toId);
-                //console.log(groupEle);
-                if(groupEle.length <=0)
+                // let selector = "#chat-room-group-" + tmp[j].toId;
+                // let groupEle = $(selector);
+                // //console.log(groupEle);
+                // if (groupEle.length <= 0)
+                // {
+                //
+                // }
+
+                $("#chat-room-group-chat-content-" + tmp[i].toId).append(JSON.stringify(tmp[j]));
+            }
+        }
+    }
+
+    _initGroup()
+    {
+        let thisObject = this;
+        $.ajax(
+            {
+                url: "/chat/getGroupListByUserId",
+                type: "post",
+                dataType: "json",
+                data: {
+                    "userId": this._userId
+                },
+                success:function(data)
                 {
-                    let group = $("<div>");
-                    group.attr("id", "chat-room-group-" + tmp[j].toId);
-                    group.append(JSON.stringify(tmp[j]));
-                    //console.log(group);
-                    $("#chat-room-frame").append(group);
+                    for(let i=0; i<data.length; ++i)
+                    {
+                        let groupEle = thisObject._createGroupElement(data[i], thisObject._userId);
+                        $("#chat-room-frame").append(groupEle);
+                    }
+                },
+                error: function () {
+                    console.log("发送失败");
+                }
+            }
+        )
+
+    }
+
+    _createGroupElement(id, userId)
+    {
+        let groupEle;
+        groupEle = $("<div>");
+        groupEle.attr("id", "chat-room-group-" + id);
+        groupEle.append(this._createGroupClose(id));
+        groupEle.append(this._createGroupChat(id, userId));
+
+
+        return groupEle;
+    }
+
+    _createGroupClose(id)
+    {
+        let groupClose;
+        groupClose = $("<button>");
+        groupClose.attr("id", "chat-room-group-close-" + id);
+        groupClose.css("border-radius", "34.0px");
+        groupClose.css("background", "#393D49");
+        groupClose.css("color", "rgba(255,255,255,.7)");
+        groupClose.css("padding", "1px");
+        groupClose.css("width", "2em");
+        groupClose.css("height", "2em");
+        groupClose.css("border", "0px");
+        groupClose.css("transition", "transform 0.5s");
+        groupClose.css("outline", "none");
+        groupClose.css("font-size", "12px");
+        groupClose.text("+");
+        groupClose.on("click", function () {
+            // 旋转按钮
+            let rotateSign = false;
+            $(this).animate({}, function () {
+                let transform = $(this).css("transform");
+                let nowDeg;
+                if(transform!=null && transform!="" && transform!="none")
+                {
+                    nowDeg = eval('get'+transform) + 45;
                 }
                 else
                 {
-                    groupEle.append(tmp[j]);
+                    nowDeg = 45;
                 }
+                if(nowDeg>=90)
+                {
+                    nowDeg = nowDeg % 90;
+                }
+                if(nowDeg!=45 && nowDeg!=0)
+                {
+                    return;
+                }
+                $(this).css("transform", "rotate(" + nowDeg + "deg)");
+                rotateSign = true;
+            });
+
+            if(rotateSign === false)
+            {
+                return;
             }
-        }
+
+            // 更改group可见性
+            let node = $("#chat-room-group-chat-" + id);
+            //console.log(node);
+            if(node.is(':hidden')){　　//如果node是隐藏的则显示node元素，否则隐藏
+                node.show(500);
+            }else{
+                node.hide(500);
+            }
+        });
+        return groupClose;
+    }
+
+    _createGroupChat(id, userId)
+    {
+        //let thisObject = this;
+
+        let groupChat;
+        groupChat = $("<div>");
+        groupChat.attr("id", "chat-room-group-chat-" + id);
+
+        // 添加显示消息的框
+        let groupChatContent = $("<div>");
+        groupChatContent.attr("id", "chat-room-group-chat-content-" + id);
+        groupChatContent.css("width", "80%");
+        groupChatContent.css("border-radius", "6px");
+        groupChatContent.css("display", "flex");
+        groupChatContent.css("flex-direction", "column");
+        groupChatContent.css("flex-wrap", "wrap");
+        groupChatContent.css("justify-content", "flex-start");
+        groupChatContent.css("align-items", "flex-start");
+        groupChatContent.css("background", "black");
+        groupChatContent.css("color", "white");
+        groupChatContent.css("padding", "1px");
+        groupChatContent.css("display", "hidden");
+        groupChatContent.css("margin", "0");
+        groupChatContent.css("min-height", "5em");
+
+        // 添加输入消息框
+        let groupChatInput = $("<input>");
+        groupChatInput.attr("id", "chat-room-group-chat-input-" + id);
+        groupChatInput.attr("type", "text");
+
+        // 添加发送按钮
+        let groupChatSend = $("<button>");
+        groupChatSend.attr("id", "chat-room-group-chat-send-" + id);
+        groupChatSend.text("发送消息");
+        groupChatSend.on("click", function ()
+        {
+            let message = $("#chat-room-group-chat-input-" + id).val();
+            //console.log(message);
+            if(message==null || message==="")
+            {
+                return;
+            }
+
+            $.ajax(
+                {
+                    url: "/chat/toGroup",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        "userId": userId,
+                        "groupId": id,
+                        "content": message
+                    },
+                    success:function(data)
+                    {
+                        if(data === 1)
+                        {
+                            $("#chat-room-group-chat-input-" + id).val("");
+                        }
+                    },
+                    error: function () {
+                        console.log("发送失败");
+                    }
+                });
+        });
+
+        groupChat.append(groupChatContent);
+        groupChat.append(groupChatInput);
+        groupChat.append(groupChatSend);
+
+        groupChat.hide();
+
+        return groupChat;
     }
 }
 

@@ -1,9 +1,11 @@
 package com.choco.ithink.service;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.ChatUpdateTimeMapper;
 import com.choco.ithink.DAO.mapper.GroupChatRecordMapper;
 import com.choco.ithink.DAO.mapper.GroupMemberMapper;
+import com.choco.ithink.DAO.mapper.UserMapper;
 import com.choco.ithink.pojo.*;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ public class ChatService {
     private GroupMemberMapper groupMemberMapper;
     @Resource
     private GroupChatRecordMapper groupChatRecordMapper;
+    @Resource
+    private UserMapper userMapper;
 
     // param id: 用户id
     // do: 查询上次更新聊天记录的时间
@@ -39,11 +43,11 @@ public class ChatService {
         ChatUpdateTimeExample chatUpdateTimeExample = new ChatUpdateTimeExample();
         chatUpdateTimeExample.createCriteria().andUserIdEqualTo(id);
 
-        ChatUpdateTime updateTime = new ChatUpdateTime();
-        updateTime.setUserId(id);
-        updateTime.setTime(new Date());
+        ChatUpdateTime chatUpdateTime = new ChatUpdateTime();
+        chatUpdateTime.setUserId(id);
+        chatUpdateTime.setTime(new Date());
 
-        chatUpdateTimeMapper.updateByExampleSelective(updateTime, chatUpdateTimeExample);
+        chatUpdateTimeMapper.updateByExampleSelective(chatUpdateTime, chatUpdateTimeExample);
     }
 
 
@@ -74,8 +78,52 @@ public class ChatService {
             List<GroupChatRecord> groupChatRecordList = groupChatRecordMapper.selectByExample(groupChatRecordExample);
             if(groupChatRecordList.size()!=0)
             {
-                jsonArray.add(groupChatRecordList);
+                jsonArray.add(list2JSON(groupChatRecordList));
             }
+        }
+
+        return jsonArray;
+    }
+
+
+    public JSONArray list2JSON(List<GroupChatRecord> groupChatRecordList)
+    {
+        JSONArray jsonArray = new JSONArray();
+
+        // 循环处理实体
+        for(int i=0; i<groupChatRecordList.size(); ++i)
+        {
+            // 获取昵称
+            // 发送消息者
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andUserIdEqualTo(groupChatRecordList.get(i).getFromId());
+            List<User> fromList = userMapper.selectByExample(userExample);
+            String fromName = "";
+            if(fromList.size()==1)
+            {
+                fromName = fromList.get(0).getUserName();
+            }
+            // 被回复团组
+//
+//            userExample.createCriteria().andUserIdEqualTo(groupChatRecordList.get(i).getToId());
+//            List<User> toList = userMapper.selectByExample(userExample);
+//            String toName = "";
+//            if(toList.size()==1)
+//            {
+//                toName = toList.get(0).getUserName();
+//            }
+
+
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", groupChatRecordList.get(i).getId());
+            jsonObject.put("content", groupChatRecordList.get(i).getContent());
+            jsonObject.put("time", groupChatRecordList.get(i).getTime());
+            jsonObject.put("fromId", groupChatRecordList.get(i).getFromId());
+            jsonObject.put("fromName", fromName);
+            jsonObject.put("toId", groupChatRecordList.get(i).getToId());
+            //jsonObject.put("toName", toName);
+            jsonArray.add(jsonObject);
         }
 
         return jsonArray;
@@ -95,5 +143,39 @@ public class ChatService {
         groupChatRecord.setContent(content);
 
         return groupChatRecordMapper.insertSelective(groupChatRecord);
+    }
+
+
+    // param userId: 用户id
+    // do: 查询用户所有的聊天组列表
+    // return:
+    // [
+    //  {
+    //      id: 聊天组id,
+    //      name: 聊天组name
+    //  }
+    // ]
+    public JSONArray getGroupListByUserId(Integer userId)
+    {
+        JSONArray jsonArray = new JSONArray();
+
+        // 获取用户的团组
+        GroupMemberExample groupMemberExample = new GroupMemberExample();
+        groupMemberExample.createCriteria().andUserIdEqualTo(userId);
+        List<GroupMember> groupMemberList = groupMemberMapper.selectByExample(groupMemberExample);
+        if(groupMemberList.size()==0)
+        {
+            return null;
+        }
+
+        // 遍历团组
+        for(int i=0; i<groupMemberList.size(); ++i)
+        {
+            // 获取聊天室
+            // 暂时只返回id
+            jsonArray.add(groupMemberList.get(i).getChatRoomId());
+        }
+
+        return jsonArray;
     }
 }

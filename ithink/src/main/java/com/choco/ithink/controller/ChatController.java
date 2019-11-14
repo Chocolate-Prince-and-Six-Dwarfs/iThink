@@ -2,6 +2,7 @@ package com.choco.ithink.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import com.choco.ithink.interfaces.ChatInterface;
 import com.choco.ithink.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +64,22 @@ public class ChatController implements ChatInterface {
     public Integer toGroup(Integer userId, Integer groupId, String content)
     {
         return chatService.toGroup(userId, groupId, content);
+    }
+
+    // 请求地址 /chat/getGroupListByUserId
+    // param userId: 用户id
+    // do: 查询用户所有的聊天组列表
+    // return:
+    // [
+    //  {
+    //      id: 聊天组id,
+    //      name: 聊天组name
+    //  }
+    // ]
+    @RequestMapping("/getGroupListByUserId")
+    @ResponseJSONP
+    public JSONArray getGroupListByUserId(Integer userId)
+    {
+        return chatService.getGroupListByUserId(userId);
     }
 }
