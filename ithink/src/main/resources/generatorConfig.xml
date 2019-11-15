@@ -61,9 +61,6 @@
 <!--        <table tableName="bbs_reply" domainObjectName="BbsReply">-->
 <!--            <generatedKey column="reply_id" sqlStatement="MySql" identity="true"/>-->
 <!--        </table>-->
-<!--        <table tableName="bbs_group" domainObjectName="BbsGroup">-->
-<!--            <generatedKey column="group_id" sqlStatement="MySql" identity="true"/>-->
-<!--        </table>-->
 <!--        <table tableName="group_namelist" domainObjectName="GroupNamelist">-->
 <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
 <!--        </table>-->
@@ -79,7 +76,9 @@
 <!--        <table tableName="achievement_collection" domainObjectName="AchievementCollection" />-->
 <!--        <table tableName="comment_like" domainObjectName="CommentLike" />-->
 <!--        <table tableName="updatetime" domainObjectName="UpdateTime" />-->
-<!--        <table tableName="chat_room" domainObjectName="ChatRoom" />-->
+<!--            <table tableName="chat_room" domainObjectName="ChatRoom" >-->
+<!--                <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--            </table>-->
 <!--        <table tableName="group_chat_record" domainObjectName="GroupChatRecord" />-->
 <!--        <table tableName="group_member" domainObjectName="GroupMember" />-->
 <!--        <table tableName="chat_update_time" domainObjectName="ChatUpdateTime" />-->

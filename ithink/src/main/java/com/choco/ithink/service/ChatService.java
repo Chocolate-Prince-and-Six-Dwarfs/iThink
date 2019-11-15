@@ -2,10 +2,7 @@ package com.choco.ithink.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.choco.ithink.DAO.mapper.ChatUpdateTimeMapper;
-import com.choco.ithink.DAO.mapper.GroupChatRecordMapper;
-import com.choco.ithink.DAO.mapper.GroupMemberMapper;
-import com.choco.ithink.DAO.mapper.UserMapper;
+import com.choco.ithink.DAO.mapper.*;
 import com.choco.ithink.pojo.*;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +20,10 @@ public class ChatService {
     private GroupChatRecordMapper groupChatRecordMapper;
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private BbsTopicMapper bbsTopicMapper;
+    @Resource
+    private ChatRoomMapper chatRoomMapper;
 
     // param id: 用户id
     // do: 查询上次更新聊天记录的时间
@@ -78,7 +79,7 @@ public class ChatService {
             List<GroupChatRecord> groupChatRecordList = groupChatRecordMapper.selectByExample(groupChatRecordExample);
             if(groupChatRecordList.size()!=0)
             {
-                jsonArray.add(list2JSON(groupChatRecordList));
+                jsonArray.add(groupChatRecordList2JSON(groupChatRecordList));
             }
         }
 
@@ -86,7 +87,7 @@ public class ChatService {
     }
 
 
-    public JSONArray list2JSON(List<GroupChatRecord> groupChatRecordList)
+    public JSONArray groupChatRecordList2JSON(List<GroupChatRecord> groupChatRecordList)
     {
         JSONArray jsonArray = new JSONArray();
 
@@ -152,7 +153,12 @@ public class ChatService {
     // [
     //  {
     //      id: 聊天组id,
-    //      name: 聊天组name
+    //      name: 聊天组name,
+    //      time: 聊天组创建时间
+    //      ownerId: 群主id
+    //      ownerName: 群主昵称
+    //      topicId: 所属主题id
+    //      topicTitle: 所属主题标题
     //  }
     // ]
     public JSONArray getGroupListByUserId(Integer userId)
@@ -172,8 +178,53 @@ public class ChatService {
         for(int i=0; i<groupMemberList.size(); ++i)
         {
             // 获取聊天室
-            // 暂时只返回id
-            jsonArray.add(groupMemberList.get(i).getChatRoomId());
+            ChatRoomExample chatRoomExample = new ChatRoomExample();
+            chatRoomExample.createCriteria().andIdEqualTo(groupMemberList.get(i).getChatRoomId());
+            jsonArray.add(chatRoomList2JSON(chatRoomMapper.selectByExample(chatRoomExample)).get(0));
+        }
+
+        return jsonArray;
+    }
+
+    // param chatRoomList: 实体列表
+    // do： 将列表构建为JSON数组对象
+    // return: 构建的json数组对象
+    public JSONArray chatRoomList2JSON(List<ChatRoom> chatRoomList)
+    {
+        JSONArray jsonArray = new JSONArray();
+
+        // 循环处理实体
+        for(int i=0; i<chatRoomList.size(); ++i)
+        {
+            // 获取群主昵称
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andUserIdEqualTo(chatRoomList.get(i).getOwnerId());
+            List<User> fromList = userMapper.selectByExample(userExample);
+            String ownerName = "";
+            if(fromList.size()==1)
+            {
+                ownerName = fromList.get(0).getUserName();
+            }
+
+            // 获取主题标题
+            BbsTopicExample bbsTopicExample = new BbsTopicExample();
+            bbsTopicExample.createCriteria().andTopicIdEqualTo(chatRoomList.get(i).getTopicId());
+            List<BbsTopic> bbsTopicList = bbsTopicMapper.selectByExample(bbsTopicExample);
+            String topicTitle = "";
+            if(bbsTopicList.size()==1)
+            {
+                topicTitle = bbsTopicList.get(0).getTopicTitle();
+            }
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", chatRoomList.get(i).getId());
+            jsonObject.put("name", chatRoomList.get(i).getName());
+            jsonObject.put("ownerId", chatRoomList.get(i).getOwnerId());
+            jsonObject.put("ownerName", ownerName);
+            jsonObject.put("topicId", chatRoomList.get(i).getTopicId());
+            jsonObject.put("topicTitle", topicTitle);
+            jsonObject.put("time", chatRoomList.get(i).getTime());
+            jsonArray.add(jsonObject);
         }
 
         return jsonArray;

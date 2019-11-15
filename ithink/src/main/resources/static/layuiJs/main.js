@@ -12,6 +12,8 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
     viewIdea();//查看创意详情
     comment(layer);//评论
     commentShow();
+    var chatRoom = new ChatRoom(user_id);
+    chatRoom.appendTo("#test");
     exports('main', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
 layui.use('element',function () {

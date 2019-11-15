@@ -33,6 +33,8 @@ public class UserService {
     private AchievementCollectionMapper achievementCollectionMapper;
     @Resource
     private UpdateTimeMapper updateTimeMapper;
+    @Resource
+    private ChatUpdateTimeMapper chatUpdateTimeMapper;
 
     // 邮箱的正则表达式
     private String emailPattern = "^[a-zA-Z0-9]{1,}@[a-zA-Z0-9]{1,}(\\.[a-zA-Z0-9]{1,}){1,}$";
@@ -126,8 +128,10 @@ public class UserService {
         // 查询用户是否已经存在
         UserExample userExample = new UserExample();
         userExample.createCriteria().andUserNameEqualTo(username);
+        UserExample emailExample = new UserExample();
+        emailExample.createCriteria().andUserEmailEqualTo(email);
         // 如果结果为空(即用户不存在)
-        if(userMapper.selectByExample(userExample).isEmpty())
+        if(userMapper.selectByExample(userExample).isEmpty() && userMapper.selectByExample(emailExample).isEmpty())
         {
             // 构造实体
             User user = constructNewUser(username, pwd, sex, email, birthday, phone);
@@ -153,11 +157,20 @@ public class UserService {
                     userOtherInfo.setUserId(id);
                     userOtherInfoMapper.insertSelective(userOtherInfo);
 
+                    Date now = new Date();
+
                     // 创建更新时间记录
                     UpdateTime updateTime = new UpdateTime();
-                    updateTime.setTime(new Date());
+                    updateTime.setTime(now);
                     updateTime.setUserId(id);
                     updateTimeMapper.insertSelective(updateTime);
+
+
+                    // 创建团组更新事件记录
+                    ChatUpdateTime chatUpdateTime = new ChatUpdateTime();
+                    chatUpdateTime.setTime(now);
+                    chatUpdateTime.setUserId(id);
+                    chatUpdateTimeMapper.insertSelective(chatUpdateTime);
                     return 1;
                 }
             }

@@ -33,7 +33,12 @@ public interface ChatInterface {
     // [
     //  {
     //      id: 聊天组id,
-    //      name: 聊天组name
+    //      name: 聊天组name,
+    //      time: 聊天组创建时间
+    //      ownerId: 群主id
+    //      ownerName: 群主昵称
+    //      topicId: 所属主题id
+    //      topicTitle: 所属主题标题
     //  }
     // ]
     JSONArray getGroupListByUserId(Integer userId);
