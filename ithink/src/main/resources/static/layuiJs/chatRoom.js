@@ -537,13 +537,16 @@ class ChatRoom
                     }
                 });
         });
-        // $(document).on("keydown",function(event){
-        //     var code = event.keyCode;
-        //     if(code === 13){ //这是键盘的enter监听事件
-        //         //绑定焦点，有可能不成功，需要多试试一些标签
-        //         $("chat-room-group-chat-send-" + id).focus();
-        //     }
-        // });
+
+
+        // 绑定回车
+        groupChatInput.on("keydown", function(event){
+            let code = event.keyCode;
+            if(code === 13){ //这是键盘的enter监听事件
+                //绑定焦点，有可能不成功，需要多试试一些标签
+                $("#chat-room-group-chat-send-" + id).click();
+            }
+        });
 
         groupChat.append(groupChatContent);
 
