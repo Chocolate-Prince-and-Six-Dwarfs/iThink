@@ -1,38 +1,18 @@
 function callUserNotices(element){
     if($(".layui-tab-title li[lay-id='userNotices']").length>0){
         element.tabChange('userDemo','userNotices');
+        //getUserNotice(user_id);
     }else{
         element.tabAdd('userDemo',{
             title: "我的通知"
-            ,content: "<div class=\"userNoticesContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\"><div class=\"notice\">\n" +
-                "    <h3>我的通知</h3>\n" +
-                "    <hr>\n" +
-                "    <div class=\"layui-tab-content\">\n" +
-                "        <ul class='list'>\n" +
-                "            <li >\n" +
-                "                <span class=\"done\">用户七个小矮人关注了你的创意</span>\n" +
-                "                <span class=\"time\">&nbsp;&nbsp;&nbsp;2019-12-12</span>\n" +
-                "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题</div>\n" +
-                "            </li>\n" +
-                "            <hr>\n" +
-                "            <li >\n" +
-                "                <span class=\"done\">用户七个小矮人收藏了你的实现</span>\n" +
-                "                <span class=\"time\">&nbsp;&nbsp;&nbsp;2019-12-12</span>\n" +
-                "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题</div>\n" +
-                "            </li>\n" +
-                "            <hr>\n" +
-                "            <li >\n" +
-                "                <span class=\"done\">用户七个小矮人邀请你加入团组</span>\n" +
-                "                <span class=\"time\">&nbsp;&nbsp;&nbsp;2019-12-12</span>\n" +
-                "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题</div>\n" +
-                "            </li>\n" +
-                "            <hr>\n" +
-                "        </ul>\n" +
-                "    </div>\n" +
-                "</div></div>"
+            ,content: "<div class=\"userNoticesContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\">" +
+                "<div style=\"text-align: center\">" +
+                "                <h1 style=\"font-weight: bold\">空空如也<i class=\"layui-icon layui-icon-face-cry\" style=\"font-size: 50px; color: #696969;\"></i></h1>" +
+                "                </div></div>"
             ,id: "userNotices"
         });
         element.tabChange('userDemo','userNotices');
+        //getUserNotice(user_id);
     }
 }
 function callUserReleaseIdea(element){

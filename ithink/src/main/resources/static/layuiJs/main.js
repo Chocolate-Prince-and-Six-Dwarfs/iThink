@@ -13,7 +13,7 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
     comment(layer);//评论
     commentShow();
     var chatRoom = new ChatRoom(user_id);
-    chatRoom.appendTo("#test");
+    chatRoom.appendTo(".test");
     exports('main', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
 layui.use('element',function () {
@@ -333,8 +333,8 @@ function comment(layer) {
                         "                                            <span class=\"comment_name idea_achievement_comment_user_name"+data.id+"\">"+name+" </span>     <span class=\"idea_achievement_comment_user_time"+data.id+"\">"+currentdate+"</span>\n" +
                         "                                            <div class=\"comment_content idea_achievement_comment_user_content"+data.id+"\">  "+content+"</div>\n" +
                         "                                            <div class=\"del\">\n" +
-                        "                                                <i class=\"icon layui-icon layui-icon-praise  idea_achievement_comment_user_good"+data.id+"\">赞(0)</i>\n" +
-                        "                                                <!--<a class=\"del_comment\" data-id=\"1\"><i class=\"icon layui-icon\">回复</i></a>-->\n" +
+                        "                                           <a><i class=\"icon layui-icon layui-icon-praise idea_achievement_comment_user_good" + data.id + " praise-comment comment-detail\" commentId='" + data.id + "'>赞一下</i></a>(<span class='likeNum-comment comment-detail' commentId='" + data.id + "'>0</span>)\n" +
+                        "                                           <a><i class=\"layui-icon layui-icon-tread tread-comment comment-detail\" commentId='" + data.id + "'>踩一下0</i></a>\n" +
                         "                                            </div>\n" +
                         "                                            <div class=\"idea_achievement_comment_reply"+data.id+"\"><!--回复-->\n" +
                         "\n" +
@@ -344,6 +344,9 @@ function comment(layer) {
                     $(".idea_achievement_comment_user_list"+achievementId).append(a);
                     $(".idea_achievement_comment_user"+data.id).attr("src",imgData);
                     $("."+contentClass).val("");
+                    var type = "comment";
+                    var className = "comment-detail";
+                    precess(type, className, data.id, user_id);
                     layer.msg("评论成功");
                 }
             },
