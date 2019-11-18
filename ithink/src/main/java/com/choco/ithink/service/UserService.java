@@ -35,6 +35,8 @@ public class UserService {
     private UpdateTimeMapper updateTimeMapper;
     @Resource
     private ChatUpdateTimeMapper chatUpdateTimeMapper;
+    @Resource
+    private GroupMemberMapper groupMemberMapper;
 
     // 邮箱的正则表达式
     private String emailPattern = "^[a-zA-Z0-9]{1,}@[a-zA-Z0-9]{1,}(\\.[a-zA-Z0-9]{1,}){1,}$";
@@ -171,6 +173,14 @@ public class UserService {
                     chatUpdateTime.setTime(now);
                     chatUpdateTime.setUserId(id);
                     chatUpdateTimeMapper.insertSelective(chatUpdateTime);
+
+                    // 默认加入一个聊天团组
+                    GroupMember groupMember = new GroupMember();
+                    groupMember.setTime(now);
+                    groupMember.setChatRoomId(1);
+                    groupMember.setUserId(id);
+                    groupMemberMapper.insertSelective(groupMember);
+
                     return 1;
                 }
             }

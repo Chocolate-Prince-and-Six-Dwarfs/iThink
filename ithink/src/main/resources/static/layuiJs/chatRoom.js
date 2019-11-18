@@ -1,3 +1,20 @@
+Date.prototype.format = function (fmt) { //author: meizz
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "H+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+};
+
+
 class ChatRoom
 {
     constructor(userId)
@@ -109,30 +126,11 @@ class ChatRoom
         //frame.html(testContent);
         frame.hide();
 
-        // 创建SSE
-        //console.log(this._userId);
-        this._sse = new EventSource('/chat/connect?userId=' + this._userId);
 
-        let thisObject= this;
-
-        // 加载缓存
-        //this._loadCookie();
-        // 初始化团组信息
-        this._initGroup();
-        // 设置关闭时自动缓存
-        $(document).on("befοreunlοad", function () {
-            thisObject._saveCookie();
-        });
-
-
-        this._sse.onmessage = function(event)
-        {
-            thisObject._appendData(event.data.substring(3,));
-        };
 
         // 构建填充
         container.append(button);
-        container.append("<br>");
+        container.append("<br/>");
         container.append(frame);
 
         return container;
@@ -146,6 +144,24 @@ class ChatRoom
     appendTo(parent)
     {
         $(parent).append(this.element);
+
+        let thisObject= this;
+
+        // 初始化团组信息
+        this._initGroup();
+
+        // 创建SSE
+        //console.log(this._userId);
+        this._sse = new EventSource('/chat/connect?userId=' + this._userId);
+        this._sse.onmessage = function(event)
+        {
+            thisObject._appendData(event.data.substring(3,));
+        };
+
+        // 设置关闭时自动缓存
+        $(window).on("beforeunload", function () {
+            thisObject._saveCookie();
+        });
     }
 
     show()
@@ -158,11 +174,13 @@ class ChatRoom
         $("#chat-room-frame").hide();
     }
 
-    _loadCookie()
+    _loadCookie(id)
     {
         // 加载缓存
-        let cache = $.cookie("chat-room-cache");
-        $("#chat-room-frame").html(cache);
+        let cache = $.cookie(id);
+        cache = $(cache);
+        //console.log(cache);
+        $("#" + id).append(cache);
     }
 
     _saveCookie()
@@ -195,8 +213,17 @@ class ChatRoom
         // $.cookie(recordCookieName, record + "," + data, {path: "/"});
 
         // 生成缓存
-        let cache = $("#chat-room-frame").html();
-        $.cookie("chat-room-cache", cache, {path: "/"});
+        let contentElements = $("[id*='chat-room-group-chat-content-'][cached='true']");
+        //console.log(contentElements);
+        for(let i=0; i<contentElements.length; ++i)
+        {
+            let id = contentElements.eq(i).attr("id");
+            // let idReg = new RegExp("(?<=chat-room-group-chat-content-)[1-9]{1,}[0-9]{0,}");
+            // let numId = parseInt(idReg.exec(id)[0]);
+            let cache = contentElements.eq(i).html();
+            //console.log("生成缓存: " + cache);
+            $.cookie(id, cache, {path: "/"});
+        }
     }
 
     _appendData(data)
@@ -252,8 +279,9 @@ class ChatRoom
         time.css("margin-left", "inherit");
         //处理时间
         let date = new Date(data.time);
-        let formatDate = date.getUTCFullYear() + "-" + date.getUTCMonth() + "-" + date.getUTCDay() + " "
-                        + date.getUTCHours() + ":" + date.getUTCMinutes() + ":" + date.getUTCSeconds();
+        // let formatDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay() + " "
+        //                 + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        let formatDate = date.format("yyyy-MM-dd HH:mm:ss");
         time.text(formatDate);
 
         let content = $("<div>");
@@ -322,13 +350,16 @@ class ChatRoom
                 {
                     for(let i=0; i<data.length; ++i)
                     {
-                        //console.log(data[i]);
-                        if($("#chat-room-group-" + data[i].id).length!=0)
-                        {
-                            continue;
-                        }
+                        // console.log($("#chat-room-group-" + data[i].id));
+                        // if($("#chat-room-group-" + data[i].id).length!==0)
+                        // {
+                        //     console.log("跳过");
+                        //     continue;
+                        // }
                         let groupEle = thisObject._createGroupElement(data[i], thisObject._userId);
                         $("#chat-room-frame").append(groupEle);
+                        // 加载缓存
+                        thisObject._loadCookie("chat-room-group-chat-content-" + data[i].id);
                     }
                 },
                 error: function () {
@@ -434,6 +465,7 @@ class ChatRoom
         // 添加显示消息的框
         let groupChatContent = $("<div>");
         groupChatContent.attr("id", "chat-room-group-chat-content-" + id);
+        groupChatContent.attr("cached", "true");
         groupChatContent.css("width", "80%");
         groupChatContent.css("border-radius", "6px");
         groupChatContent.css("display", "flex");
@@ -505,6 +537,13 @@ class ChatRoom
                     }
                 });
         });
+        // $(document).on("keydown",function(event){
+        //     var code = event.keyCode;
+        //     if(code === 13){ //这是键盘的enter监听事件
+        //         //绑定焦点，有可能不成功，需要多试试一些标签
+        //         $("chat-room-group-chat-send-" + id).focus();
+        //     }
+        // });
 
         groupChat.append(groupChatContent);
 
@@ -556,3 +595,4 @@ function getmatrix(a,b,c,d,e,f){
     return deg>=360?0:deg;
     //return (aa+','+bb+','+cc+','+dd);
 }
+
