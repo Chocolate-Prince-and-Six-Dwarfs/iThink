@@ -44,6 +44,7 @@ class ChatRoom
         container.css("align-items", "flex-end");
         container.css("max-height", "40em");
         //container.css("overflow", "scroll");
+        container.css("margin", "2em");
 
         // 构建打开关闭的按钮
         let button = $("<button>");
