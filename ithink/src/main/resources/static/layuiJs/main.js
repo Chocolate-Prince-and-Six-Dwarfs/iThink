@@ -328,8 +328,9 @@ function releaseArticle(layedit,layer,form,editIndex,id) {//发布创意实现
                 layer.msg("发布创意实现成功");
                 $(".ideaList").show();
                 $("#refreshIdeas").show();
-                $("#viewIdea").empty();
+                $(".viewIdea").empty();
                 form.render();
+                window.location.reload();
             },
             error:function () {
                 layer.msg("发布创意实现失败");

@@ -76,7 +76,7 @@
 
     <div class="layui-body" style="background-color: #FFFFF0;">
         <!-- 内容主体区域 -->
-        <div class="layui-tab">
+        <div class="layui-tab" lay-filter="mainTab">
             <ul class="layui-tab-title">
                 <li class="layui-this refreshData1">创意推荐</li>
                 <li class="refreshData2">热搜榜</li>
@@ -84,7 +84,7 @@
                 <li>聊天室</li>
             </ul>
             <div class="layui-tab-content">
-                <div class="layui-tab-item layui-show" id="layui-tab-1">
+                <div class="layui-tab-item layui-show" id="layui-tab-1" lay-id="lay-main-1">
                     <div ><button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="refreshIdeas"><i class="layui-icon">&#xe669;刷新</i></button></div >
                     <div class="ideaList">
                         <div style="padding: 15px;">
@@ -104,7 +104,6 @@
 
                 <div class="layui-tab-item">
                     <div class="test">
-
                     </div>
                 </div>
 
