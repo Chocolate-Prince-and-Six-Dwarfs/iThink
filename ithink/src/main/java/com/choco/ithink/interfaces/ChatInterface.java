@@ -3,6 +3,8 @@ package com.choco.ithink.interfaces;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface ChatInterface {
     // 请求地址 /chat/connect
     // param userId: 用户id
@@ -42,4 +44,9 @@ public interface ChatInterface {
     //  }
     // ]
     JSONArray getGroupListByUserId(Integer userId);
+
+    // 请求地址 /chat/close
+    // param userId: 用户id
+    // do: 关闭连接
+    void close(Integer userId);
 }

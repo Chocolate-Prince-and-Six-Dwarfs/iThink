@@ -48,7 +48,7 @@ public class ChatService {
         chatUpdateTime.setUserId(id);
         chatUpdateTime.setTime(new Date());
 
-        chatUpdateTimeMapper.updateByExampleSelective(chatUpdateTime, chatUpdateTimeExample);
+        chatUpdateTimeMapper.updateByExample(chatUpdateTime, chatUpdateTimeExample);
     }
 
 

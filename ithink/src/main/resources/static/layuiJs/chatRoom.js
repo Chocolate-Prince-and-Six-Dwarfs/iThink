@@ -159,13 +159,41 @@ class ChatRoom
         this._sse = new EventSource('/chat/connect?userId=' + this._userId);
         this._sse.onmessage = function(event)
         {
-            thisObject._appendData(event.data.substring(3,));
+            //console.log("收到信息" + thisObject._userId + "，状态" + thisObject._sse.readyState);
+            if(event.data === "{}")
+            {
+                return;
+            }
+            thisObject._appendData(event.data);
         };
 
-        // 设置关闭时自动缓存
+        // 设置关闭时行为
         $(window).on("beforeunload", function () {
             thisObject._saveCache();
+            //thisObject._sse.close();
+            //console.log("关闭" + thisObject._userId + "，状态" + thisObject._sse.readyState);
+            thisObject._close();
         });
+    }
+
+    _close()
+    {
+        $.ajax(
+            {
+                url: "/chat/close",
+                type: "post",
+                data: {
+                    "userId": this._userId,
+                },
+                success:function()
+                {
+                    console.log("关闭成功");
+                },
+                error: function () {
+                    console.log("关闭失败");
+                }
+            }
+        );
     }
 
     show()
@@ -181,8 +209,21 @@ class ChatRoom
     _loadCache(id)
     {
         // 加载缓存
-        let cache = localStorage.getItem(id);
+        let cache = localStorage.getItem(id + ":userId=" + this._userId);
         cache = $(cache);
+        // for(let i=0; i<cache.length; ++i)
+        // {
+        //     if(parseInt(cache.eq(i).attr("user-id")) === this._userId)
+        //     {
+        //         cache.eq(i).css("margin-left", "auto");
+        //         cache.eq(i).css("margin-right", "0.2em");
+        //     }
+        //     else
+        //     {
+        //         cache.eq(i).css("margin-left", null);
+        //         cache.eq(i).css("margin-right", null);
+        //     }
+        // }
         //console.log(cache);
         $("#" + id).append(cache);
         $("#" + id).animate({scrollTop:$("#" + id)[0].scrollHeight},'500');
@@ -227,7 +268,7 @@ class ChatRoom
             // let numId = parseInt(idReg.exec(id)[0]);
             let cache = contentElements.eq(i).html();
             //console.log("生成缓存: " + cache);
-            localStorage.setItem(id, cache);
+            localStorage.setItem(id + ":userId=" + this._userId, cache);
         }
     }
 
@@ -257,6 +298,7 @@ class ChatRoom
     {
         let message = $("<div>");
         message.attr("id", "chat-room-group-chat-content-message-" + data.id);
+        message.attr("user-id", userId);
         message.css("display", "flex");
         message.css("flex-direction", "column");
         message.css("justify-content", "left");
@@ -382,7 +424,7 @@ class ChatRoom
                     console.log("发送失败");
                 }
             }
-        )
+        );
 
     }
 
