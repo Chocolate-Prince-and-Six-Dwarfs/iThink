@@ -41,7 +41,7 @@ function getUserInfo(userId,form) {
 }
 
 function saveUserInfo(form,layer){//保存个人信息
-    $(document).on('click','#userInfoForm',function () {
+    $(document).off('click','#userInfoForm').on('click','#userInfoForm',function () {
         var formData=new FormData();
         formData.append('id',user_id);
         formData.append('name',$(".user_name").val());
@@ -70,7 +70,7 @@ function saveUserInfo(form,layer){//保存个人信息
 }
 
 function releaseIdeaInfo(form,layer,layedit,editIndex){//发布创意
-    $(document).on('click','#releaseIdea',function () {
+    $(document).off('click','#releaseIdea').on('click','#releaseIdea',function () {
         var fData=new FormData();
         fData.append('userId',user_id);
         fData.append('topicTitle',$("#topicTitle").val());

@@ -76,29 +76,28 @@
 
     <div class="layui-body" style="background-color: #FFFFF0;">
         <!-- 内容主体区域 -->
-        <div class="" style="position: relative"></div>
         <div class="layui-tab">
             <ul class="layui-tab-title">
-                <li class="layui-this">创意推荐</li>
-                <li>热搜榜</li>
+                <li class="layui-this refreshData1">创意推荐</li>
+                <li class="refreshData2">热搜榜</li>
                 <!--<li>测试div</li>-->
                 <li>聊天室</li>
             </ul>
             <div class="layui-tab-content">
-                <div class="layui-tab-item layui-show">
+                <div class="layui-tab-item layui-show" id="layui-tab-1">
                     <div ><button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="refreshIdeas"><i class="layui-icon">&#xe669;刷新</i></button></div >
-                    <div id="ideaList">
+                    <div class="ideaList">
                         <div style="padding: 15px;">
                         </div>
                     </div>
-                    <div id="viewIdea">
-
+                    <div class="viewIdea viewIdea-empty">
                     </div>
                 </div>
 
-                <div class="layui-tab-item">
-                    <div id="viewSortIdeaList">
-
+                <div class="layui-tab-item" id="layui-tab-2">
+                    <div class="sortIdeaList">
+                    </div>
+                    <div class="viewIdea viewSortIdea-empty">
                     </div>
                     <div id="cutPage"></div>
                 </div>
