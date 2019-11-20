@@ -125,6 +125,7 @@ class ChatRoom
         frame.css("min-height", "10em");
         frame.css("max-height", "35em");
         frame.css("overflow", "scroll");
+        frame.css("overflow-x", "hidden");
         //let testContent = "测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>测试<br/>";
         //frame.html(testContent);
         frame.hide();
@@ -497,6 +498,7 @@ class ChatRoom
         groupChatContent.css("border", "1px solid #C9C9C9");
         groupChatContent.css("max-height", "20em");
         groupChatContent.css("overflow", "scroll");
+        groupChatContent.css("overflow-x", "hidden");
         // 添加输入组
         let groupChatInputGroup = $("<div>");
         groupChatInputGroup.css("width", "80%");
