@@ -7,7 +7,7 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
     getUserId();//user_id已保存
     getUserInfo(user_id,form);//获取头像
     search(layer);//搜索
-    cutPage(laypage,6);//分页
+    getSortIdeas(20);//热搜榜
     refresh(5);
     viewIdea();//查看创意详情
     comment(layer);//评论
@@ -35,13 +35,13 @@ function getIdeas(pageSize){
         },
         beforeSend:function(){
             var load="<i class=\"layui-icon\">&#xe63d;请稍后，正在获取数据。。。</i>";
-            $("#ideaList").append(load);
+            $(".ideaList").append(load);
         },
         success:function (data) {
-            $("#ideaList").empty();
+            $(".ideaList").empty();
             //sortLikenumInt(data);
             for(var i in data.data){
-                var idea="<div style=\"padding: 15px;\" id=\"idea"+data.data[i].id+"\">\n" +
+                var idea="<div style=\"padding: 15px;\" class=\"idea"+data.data[i].id+"\">\n" +
                     "                        <fieldset class=\"layui-elem-field\">\n" +
                     "                            <legend>"+data.data[i].title+"</legend>\n" +
                     "                            <div class=\"layui-field-box\">\n" +
@@ -52,11 +52,11 @@ function getIdeas(pageSize){
                     "                                   <a class='cai'><i class=\"layui-icon layui-icon-tread tread-topic topic-intro\" topicId='" + data.data[i].id + "'>踩一下</i></a> \n" +
                     "                                   <a><i class=\"layui-icon layui-icon-rate rate-topic topic-intro\" topicId='" + data.data[i].id + "'>收藏</i></a>(<span class='collectNum-topic topic-intro' topicId='"+data.data[i].id+"'>"+data.data[i].collect+"</span>)\n" +
                     "                                </p>\n" +
-                    "                                <p style=\"text-align: right\"><a id=\"view"+data.data[i].id+"\" class=\"view\"><i class=\"layui-icon\">查看详情 &#xe65b;</i></a></p>\n" +
+                    "                                <p style=\"text-align: right\"><a viewClass=\"view"+data.data[i].id+"\" class=\"view\"><i class=\"layui-icon\">查看详情 &#xe65b;</i></a></p>\n" +
                     "                            </div>\n" +
                     "                        </fieldset>\n" +
                     "                    </div>";
-                $("#ideaList").append(idea);
+                $(".ideaList").append(idea);
 
                 var type = "topic";
                 var className = "topic-intro";
@@ -69,6 +69,77 @@ function getIdeas(pageSize){
             console.log("读取数据失败！");
         }
     });
+}
+
+function getSortIdeas(numSize){
+    $.ajax({
+        url:"idea/getHot",
+        type:"post",
+        dataType: "json",
+        data: {
+            number: numSize
+        },
+        beforeSend:function(){
+            var load="<i class=\"layui-icon\">&#xe63d;请稍后，正在获取数据。。。</i>";
+            $(".sortIdeaList").append(load);
+        },
+        success:function (data) {
+            $(".sortIdeaList").empty();
+            //sortLikenumInt(data);
+            for(var i in data.data){
+                var time=formatTime(data.data[i].time,"Y-M-D");
+                var idea="<div style=\"padding: 15px;\" class=\"idea"+data.data[i].id+"\">\n" +
+                    "                        <fieldset class=\"layui-elem-field\">\n" +
+                    "                            <legend>"+data.data[i].title+"</legend>\n" +
+                    "                            <div class=\"layui-field-box\">\n" +
+                    "                                <p>"+subStringContent(data.data[i].content)+"...</p>\n" +
+                    "                                <p style=\"text-align: right\"><i class=\"layui-icon\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+time+"</i></p>\n" +
+                    "                                <p style=\"text-align: right\">\n" +
+                    "                                    <a class='zan'><i class=\"layui-icon layui-icon-praise praise-topic topic-intro\" topicId='" + data.data[i].id + "'>顶一个</i></a>(<span class='likeNum-topic topic-intro' topicId='"+data.data[i].id+"'>"+data.data[i].like+"</span>)\n" +
+                    "                                   <a class='cai'><i class=\"layui-icon layui-icon-tread tread-topic topic-intro\" topicId='" + data.data[i].id + "'>踩一下</i></a> \n" +
+                    "                                   <a><i class=\"layui-icon layui-icon-rate rate-topic topic-intro\" topicId='" + data.data[i].id + "'>收藏</i></a>(<span class='collectNum-topic topic-intro' topicId='"+data.data[i].id+"'>"+data.data[i].collect+"</span>)\n" +
+                    "                                </p>\n" +
+                    "                                <p style=\"text-align: right\"><a viewClass=\"view"+data.data[i].id+"\" class=\"view\"><i class=\"layui-icon\">查看详情 &#xe65b;</i></a></p>\n" +
+                    "                            </div>\n" +
+                    "                        </fieldset>\n" +
+                    "                    </div>";
+                $(".sortIdeaList").append(idea);
+
+                var type = "topic";
+                var className = "topic-intro";
+                var processId = data.data[i].id;
+                //console.log(user_id);
+                precess(type, className, processId, user_id);
+            }
+        },
+        error:function () {
+            console.log("读取数据失败！");
+        }
+    });
+}
+
+// 格式化日期，如月、日、时、分、秒保证为2位数
+function formatNumber (n) {
+    n = n.toString();
+    return n[1] ? n : '0' + n;
+}
+// 参数number为毫秒时间戳，format为需要转换成的日期格式
+function formatTime(number, format) {
+    var time = new Date(number);
+    var newArr = [];
+    var formatArr = ['Y', 'M', 'D', 'h', 'm', 's'];
+    newArr.push(time.getFullYear());
+    newArr.push(formatNumber(time.getMonth() + 1));
+    newArr.push(formatNumber(time.getDate()));
+
+    newArr.push(formatNumber(time.getHours()));
+    newArr.push(formatNumber(time.getMinutes()));
+    newArr.push(formatNumber(time.getSeconds()));
+
+    for (var i in newArr) {
+        format = format.replace(formatArr[i], newArr[i]);
+    }
+    return format;
 }
 
 function getIdeaInfo(ideaId){
@@ -162,8 +233,8 @@ function getIdeaInfo(ideaId){
                 "                        <div class=\"idea_achievements\" style=\"width: 95%; position: relative; left:5%;\">\n"+
                 releaseArticle+achievements+
                 "                        </div></div>";
-            $("#viewIdea").append(retButton);
-            $("#viewIdea").append(ideaDetails);
+            $(".viewIdea").append(retButton);
+            $(".viewIdea").append(ideaDetails);
             releaseArticleEdit("releaseIdeaArticleContent",ideaId);
 
             var type = "topic";
@@ -255,7 +326,7 @@ function releaseArticle(layedit,layer,form,editIndex,id) {//发布创意实现
             contentType: false,
             success:function () {
                 layer.msg("发布创意实现成功");
-                $("#ideaList").show();
+                $(".ideaList").show();
                 $("#refreshIdeas").show();
                 $("#viewIdea").empty();
                 form.render();
@@ -359,18 +430,20 @@ function comment(layer) {
 }
 
 function viewIdea() {
-    $(document).on("click",".view",function () {
+    $(document).off('click','.view').on("click",".view",function () {
         //$("#viewIdea").empty();
-        $("#ideaList").hide();
+        $(".ideaList").hide();
+        $(".sortIdeaList").hide();
         $("#refreshIdeas").hide();
-        var viewId=$(this).attr("id"); //获取id属性值
+        var viewId=$(this).attr("viewClass"); //获取id属性值
         viewId=viewId.substring(4,);
         getIdeaInfo(viewId);
     });
-    $(document).on("click","#ret",function () {
-        $("#ideaList").show();
+    $(document).off('click','#ret').on("click","#ret",function () {
+        $(".ideaList").show();
+        $(".sortIdeaList").show();
         $("#refreshIdeas").show();
-        $("#viewIdea").empty();
+        $(".viewIdea").empty();
     });
 }
 
@@ -385,30 +458,43 @@ function subStringContent(ideaContent){ //截取部分创意内容
 }
 
 function refresh(pageSize) {
+    $(document).off('click','.refreshData1').on('click','.refreshData1',function () {
+        $("#layui-tab-1").empty();
+        $("#layui-tab-2").empty();
+        var text="<div ><button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\" id=\"refreshIdeas\"><i class=\"layui-icon\">&#xe669;刷新</i></button></div >\n" +
+            "                    <div class=\"ideaList\">\n" +
+            "                        <div style=\"padding: 15px;\">\n" +
+            "                        </div>\n" +
+            "                    </div>\n" +
+            "                    <div class=\"viewIdea viewIdea-empty\">\n" +
+            "                    </div>";
+        $("#layui-tab-1").append(text);
+        refresh(5);
+        viewIdea();//查看创意详情
+        $(".ideaList").show();
+        $("#refreshIdeas").show();
+        $(".viewIdea").empty();
+    });
+    $(document).off('click','.refreshData2').on('click','.refreshData2',function () {
+        $("#layui-tab-1").empty();
+        $("#layui-tab-2").empty();
+        var text1="<div class=\"sortIdeaList\">\n" +
+            "                    </div>\n" +
+            "                    <div class=\"viewIdea viewSortIdea-empty\">\n" +
+            "                    </div>\n" +
+            "                    <div id=\"cutPage\"></div>";
+        $("#layui-tab-2").append(text1);
+        getSortIdeas(20);//热搜榜
+        viewIdea();//查看创意详情
+        $(".sortIdeaList").show();
+        $(".viewIdea").empty();
+    });
     $(document).ready(function () {
         getIdeas(pageSize);
     });
-    $(document).on("click","#refreshIdeas",function (){
+    $(document).off("click","#refreshIdeas").on("click","#refreshIdeas",function (){
         getIdeas(pageSize);
     });
-}
-
-function cutPage(laypage,pageSize) {
-    //getIdeas(pageSize);//sort后的
-    laypage.render({
-        elem: 'cutPage'
-        ,count: 30
-        ,limit: pageSize
-        ,theme: '#1E9FFF'
-        ,jump:function (obj,first) {
-            //console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
-            //console.log(obj.limit); //得到每页显示的条数
-            //首次不执行
-            if(!first){
-                //getIdeas(pageSize);
-            }
-        }
-    });//分页
 }
 
 function change(type, className, id, user_id) {
