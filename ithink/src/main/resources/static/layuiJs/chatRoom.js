@@ -162,7 +162,7 @@ class ChatRoom
 
         // 设置关闭时自动缓存
         $(window).on("beforeunload", function () {
-            thisObject._saveCookie();
+            thisObject._saveCache();
         });
     }
 
@@ -176,17 +176,17 @@ class ChatRoom
         $("#chat-room-frame").hide();
     }
 
-    _loadCookie(id)
+    _loadCache(id)
     {
         // 加载缓存
-        let cache = $.cookie(id);
+        let cache = localStorage.getItem(id);
         cache = $(cache);
         //console.log(cache);
         $("#" + id).append(cache);
         $("#" + id).animate({scrollTop:$("#" + id)[0].scrollHeight},'500');
     }
 
-    _saveCookie()
+    _saveCache()
     {
         // // 获取计数
         // let count;
@@ -225,7 +225,7 @@ class ChatRoom
             // let numId = parseInt(idReg.exec(id)[0]);
             let cache = contentElements.eq(i).html();
             //console.log("生成缓存: " + cache);
-            $.cookie(id, cache, {path: "/"});
+            localStorage.setItem(id, cache);
         }
     }
 
@@ -373,7 +373,7 @@ class ChatRoom
                         $("#chat-room-frame").append(groupEle);
                         $("#chat-room-frame").animate({scrollTop:$("#chat-room-frame")[0].scrollHeight},'500');
                         // 加载缓存
-                        thisObject._loadCookie("chat-room-group-chat-content-" + data[i].id);
+                        thisObject._loadCache("chat-room-group-chat-content-" + data[i].id);
                     }
                 },
                 error: function () {
