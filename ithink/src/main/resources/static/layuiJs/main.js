@@ -13,6 +13,7 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
     comment(layer);//评论
     commentShow();
     var chatRoom = new ChatRoom(user_id);
+    chatRoom.setLayuiLayer(layer);
     chatRoom.appendTo(".test");
     exports('main', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
