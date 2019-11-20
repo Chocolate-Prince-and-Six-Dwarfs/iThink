@@ -21,6 +21,7 @@ class ChatRoom
     {
 
         this._userId = userId;
+        this._layer = null;
 
         this.width = "80%";
         this._openText = "+";
@@ -470,7 +471,7 @@ class ChatRoom
 
     _createGroupChat(id, userId)
     {
-        //let thisObject = this;
+        let thisObject = this;
 
         let groupChat;
         groupChat = $("<div>");
@@ -533,6 +534,18 @@ class ChatRoom
             //console.log(message);
             if(message==null || message==="")
             {
+                if(thisObject._layer!=null)
+                {
+                    thisObject._layer.msg("消息不能为空");
+                }
+                return;
+            }
+            else if(message.length>255)
+            {
+                if(thisObject._layer!=null)
+                {
+                    thisObject._layer.msg("消息字符个数不能大于255");
+                }
                 return;
             }
 
@@ -579,6 +592,11 @@ class ChatRoom
         groupChat.hide();
 
         return groupChat;
+    }
+
+    setLayuiLayer(layer)
+    {
+        this._layer = layer;
     }
 }
 
