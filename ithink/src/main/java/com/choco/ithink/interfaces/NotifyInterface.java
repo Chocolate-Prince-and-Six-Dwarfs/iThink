@@ -30,4 +30,10 @@ public interface NotifyInterface {
     //      ]
     // }
     String notify(Integer id) throws InterruptedException;
+
+
+    // 请求地址: /stopNotify
+    // param id: 用户id
+    // do: 关闭推送，请在页面关闭或者刷新时调用(beforeunload事件)
+    void stopNotify(Integer id) throws InterruptedException;
 }

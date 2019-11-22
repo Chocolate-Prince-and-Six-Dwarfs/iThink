@@ -2,21 +2,23 @@ package com.choco.ithink.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import com.choco.ithink.interfaces.NotifyInterface;
 import com.choco.ithink.service.NotifyService;
-import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 @Controller
 public class NotifyController implements NotifyInterface {
     @Autowired
     private NotifyService notifyService;
+    private List<Integer> unhandledConnection = new ArrayList<Integer>();
 
     // 请求地址: /notify
     // param id: 用户id
@@ -66,6 +68,11 @@ public class NotifyController implements NotifyInterface {
         JSONArray achievementCollect = new JSONArray();
         do
         {
+            if(unhandledConnection.contains(id))
+            {
+                unhandledConnection.remove(id);
+                return "data:" + "{}" + "\n\n";
+            }
             topicLike = notifyService.getTopicLikeAfter(id, lastUpdateTIme);
             achievementLike = notifyService.getAchievementLikeAfter(id, lastUpdateTIme);
             commentLike = notifyService.getCommentLikeAfter(id, lastUpdateTIme);
@@ -85,6 +92,17 @@ public class NotifyController implements NotifyInterface {
         // 刷新时间
         notifyService.flushUpdateTime(id);
 
-        return "data:" + "id:" + jsonObject.toJSONString() + "\n\n";
+        return "data:"  + jsonObject.toJSONString() + "\n\n";
+    }
+
+
+    // 请求地址: /stopNotify
+    // param id: 用户id
+    // do: 关闭推送，请在页面关闭或者刷新时调用(beforeunload事件)
+    @RequestMapping("/stopNotify")
+    @ResponseJSONP
+    public void stopNotify(Integer id) throws InterruptedException
+    {
+        unhandledConnection.add(id);
     }
 }
