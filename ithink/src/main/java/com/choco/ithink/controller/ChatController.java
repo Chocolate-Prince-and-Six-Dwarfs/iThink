@@ -110,4 +110,21 @@ public class ChatController implements ChatInterface {
         unhandledConnection.add(userId);
     }
 
+    // 请求地址 /chat/getGroupChatRecord
+    // param id: 团组id
+    // do: 全部聊天记录
+    @RequestMapping("/getGroupChatRecord")
+    @ResponseJSONP
+    public JSONObject getGroupChatRecord(Integer id)
+    {
+        JSONObject jsonObject = new JSONObject();
+
+        JSONArray groupChatRecord = chatService.getGroupChatRecord(id);
+
+        // 拼接json
+        jsonObject.put("groupChatRecord", groupChatRecord);
+
+        return jsonObject;
+    }
+
 }

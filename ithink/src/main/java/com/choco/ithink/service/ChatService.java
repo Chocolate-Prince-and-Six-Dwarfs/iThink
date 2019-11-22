@@ -86,6 +86,26 @@ public class ChatService {
         return jsonArray;
     }
 
+    // param id: 团组id
+    // do: 全部聊天记录
+    // return: {groupId: xxx, userId: xxx, time: }
+    public JSONArray getGroupChatRecord(Integer id)
+    {
+        JSONArray jsonArray = new JSONArray();
+
+        // 获取聊天记录
+        GroupChatRecordExample groupChatRecordExample = new GroupChatRecordExample();
+        groupChatRecordExample.setOrderByClause("time");
+        groupChatRecordExample.createCriteria().andToIdEqualTo(id);
+        List<GroupChatRecord> groupChatRecordList = groupChatRecordMapper.selectByExample(groupChatRecordExample);
+        if(groupChatRecordList.size()!=0)
+        {
+            jsonArray.add(groupChatRecordList2JSON(groupChatRecordList));
+        }
+
+        return jsonArray;
+    }
+
 
     public JSONArray groupChatRecordList2JSON(List<GroupChatRecord> groupChatRecordList)
     {

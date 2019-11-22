@@ -49,4 +49,17 @@ public interface ChatInterface {
     // param userId: 用户id
     // do: 关闭连接
     void close(Integer userId);
+
+    // 请求地址 /chat/getGroupChatRecord
+    // param id: 团组id
+    // do: 全部聊天记录
+    // return:
+    //  （以下时间都是时间戳的形式(即一个长整型数字)）
+    // {
+    //      groupChatRecord:
+    //      [
+    //          {id:聊天记录id, fromId: 发送消息的用户id, fromName: , toId: 接收消息的团组id, time: , content: ,}
+    //      ]
+    // }
+    JSONObject getGroupChatRecord(Integer id);
 }
