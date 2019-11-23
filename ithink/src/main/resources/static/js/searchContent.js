@@ -4,6 +4,7 @@ layui.define(['element','jquery','layer'],function (exports) {
         ,layer=layui.layer;
     $(".search_content_list").empty();
     var keyword=getOption();
+    console.log(keyword);
     $(".keywordLegend").prepend("\""+keyword+"\"的");
     loadTitle(keyword,element);
     exports('searchContent', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
@@ -21,11 +22,9 @@ function loadTitle(keyword,element){
     $.ajax({
         url:"idea/search",
         type:"post",
-        contentType:"application/json",
+        contentType:false,
         dataType:false,
-        data: {
-            keyword:keyword,
-        },
+        data: keyword,
         //把用户搜索的keyword发送给后台
         //后台需要返回给我,针对于关键字的相关信息
         //返回帖子名称（title）,帖子内容（content），点赞数量（thumb），评论数量（comment）
