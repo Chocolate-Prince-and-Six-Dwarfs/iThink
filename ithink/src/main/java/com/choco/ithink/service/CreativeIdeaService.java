@@ -7,21 +7,21 @@ import com.choco.ithink.pojo.*;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Bulk;
+import io.searchbox.core.Delete;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.metrics.cardinality.CardinalityAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -40,6 +40,8 @@ public class CreativeIdeaService {
     private TopicCollectionMapper topicCollectionMapper;
     @Resource
     private BbsAchievementMapper bbsAchievementMapper;
+    @Autowired
+    private ElasticsearchTemplate elasticsearchTemplate;
 
 
     // param bbsTopicList: mybatis查询数据库得到的实体列表
@@ -53,6 +55,24 @@ public class CreativeIdeaService {
         }
         try {
             // 执行保存
+            JestResult result = jestClient.execute(bulk.build());
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // param bbsTopicList: mybatis查询数据库得到的实体列表
+    // do： 将实体列表从搜索仓库中删除
+    public void delBbsTopic(List<BbsTopic> bbsTopicList) {
+        // 构建删除器
+        Bulk.Builder bulk = new Bulk.Builder();
+        for(BbsTopic bbsTopic : bbsTopicList) {
+            Delete delete = new Delete.Builder(bbsTopic.getTopicId().toString()).index(BbsTopic.INDEX).type(BbsTopic.TYPE).refresh(true).build();
+            bulk.addAction(delete);
+        }
+        try {
+            // 执行删除
             JestResult result = jestClient.execute(bulk.build());
             return;
         } catch (IOException e) {
@@ -92,11 +112,11 @@ public class CreativeIdeaService {
             JestResult result = jestClient.execute(search);
             List<BbsTopic> resultList =  result.getSourceAsObjectList(BbsTopic.class);
 
-            if(resultList.size()==0)
-            {
-                result = jestClient.execute(search);
-                resultList =  result.getSourceAsObjectList(BbsTopic.class);
-            }
+//            if(resultList.size()==0)
+//            {
+//                result = jestClient.execute(search);
+//                resultList =  result.getSourceAsObjectList(BbsTopic.class);
+//            }
 
             return list2JSON(resultList);
         } catch (IOException e) {
@@ -517,6 +537,9 @@ public class CreativeIdeaService {
         // 插入数据库
         if(bbsTopicMapper.insertSelective(bbsTopic) == 1)
         {
+            List<BbsTopic> tmpList = new ArrayList<BbsTopic>();
+            tmpList.add(bbsTopic);
+            saveBbsTopic(tmpList);
             return bbsTopic.getTopicId();
         }
         else

@@ -2,6 +2,8 @@ package com.choco.ithink.pojo;
 
 import io.searchbox.annotations.JestId;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,11 +21,12 @@ public class BbsTopic implements Serializable {
 
     private Integer userId;
 
-    //@Field(type = FieldType.Text, searchAnalyzer = "ik", analyzer = "ik")
+    @Field(type = FieldType.Text, searchAnalyzer = "ik_smart", analyzer = "ik_smart")
     private String topicTitle;
 
     private Integer topicCreativecapsule;
 
+    @Field(type = FieldType.Text, searchAnalyzer = "ik_smart", analyzer = "ik_smart")
     private String topicContent;
 
     private Date topicBuildtime;
