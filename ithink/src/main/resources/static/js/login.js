@@ -120,7 +120,7 @@ function Register(layer,birthday){
                     }else if(res.status === 0){
                         layer.msg("邮箱已被占用");
                     }else if(res.status === -2){
-                        layer.msg("用户名或密码格式不正确");
+                        layer.msg("用户名、密码或者邮箱格式不正确");
                     }
                     else {
                         layer.msg("网络错误");
