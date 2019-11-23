@@ -1,23 +1,23 @@
-var btn1=document.getElementById("btn1");
-var form1=document.getElementById("form1");
-var btn2=document.getElementById("btn2");
-var form2=document.getElementById("form2");
-var close1=document.getElementById("close1");
-var close2=document.getElementById("close2");
-btn1.onclick=function () {
-    form1.style.display="block";
-    form2.style.display="none";
-};
-btn2.onclick=function () {
-    form1.style.display="none";
-    form2.style.display="block";
-};
-close1.onclick=function () {
-    form1.style.display="none";
-};
-close2.onclick=function () {
-    form2.style.display="none";
-};
+var btn1=$("#btn1");
+var form1=$("#form1");
+var btn2=$("#btn2");
+var form2=$("#form2");
+var close1=$("#close1");
+var close2=$("#close2");
+btn1.on("click", function () {
+    form1.show(200);
+    form2.hide(200);
+});
+btn2.on("click", function () {
+    form1.hide(200);
+    form2.show(200);
+});
+close1.on("click", function () {
+    form1.hide(200);
+});
+close2.on("click", function () {
+    form2.hide(200);
+});
 function Login(layer) {
     $(document).on('click','#login',function () {
         var email;
@@ -115,12 +115,12 @@ function Register(layer,birthday){
                     //console.log(res);
                     if (res.status === 1) {
                         layer.msg("注册成功");
-                        form1.style.display="block";
-                        form2.style.display="none";
+                        form1.show(200);
+                        form2.hide(200);
                     }else if(res.status === 0){
-                        layer.msg("用户名已存在");
+                        layer.msg("邮箱已被占用");
                     }else if(res.status === -2){
-                        layer.msg("输入数据格式不正确");
+                        layer.msg("用户名或密码格式不正确");
                     }
                     else {
                         layer.msg("网络错误");

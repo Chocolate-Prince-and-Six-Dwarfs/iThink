@@ -128,12 +128,13 @@ public class UserService {
     public Integer userRegister(String username, String pwd, String sex, String email, String birthday, @Nullable String phone)
     {
         // 查询用户是否已经存在
-        UserExample userExample = new UserExample();
-        userExample.createCriteria().andUserNameEqualTo(username);
+//        UserExample userExample = new UserExample();
+//        userExample.createCriteria().andUserNameEqualTo(username);
         UserExample emailExample = new UserExample();
         emailExample.createCriteria().andUserEmailEqualTo(email);
         // 如果结果为空(即用户不存在)
-        if(userMapper.selectByExample(userExample).isEmpty() && userMapper.selectByExample(emailExample).isEmpty())
+//        userMapper.selectByExample(userExample).isEmpty() &&
+        if(userMapper.selectByExample(emailExample).isEmpty())
         {
             // 构造实体
             User user = constructNewUser(username, pwd, sex, email, birthday, phone);
