@@ -3,28 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>idea</title>
-    <link rel="stylesheet" href="css/search.css">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet"  href="/layui/css/layui.css">
+    <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
 </head>
 <body>
-<div id="getvalue">
-    <div class="begin">
-    <a href="main.html">
-        <img src="img/商标.png" alt="">
-    </a>
-    <p>不要你觉得，我要我觉得</p>
+<div id="getvalue" style="width: 80%;position: relative; left:10%">
+    <div style="width: 80%;height: 20%;margin: auto;">
+        <a href="main">
+            <img src="img/商标.png" alt="">
+        </a>
+        <p style="font-weight: bold;font-family: 幼圆;font-size: medium;margin-top: -25px;color: #ABCDEF;padding-bottom: 20px;">不要你觉得，我要我觉得</p>
     </div>
-    <hr>
-    <div class="content">
-        <div class="line">
+    <div class="searchContent">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend class="keywordLegend">搜索结果</legend>
+        </fieldset>
+        <div class="layui-collapse search_content_list" style="width: 80%;position: relative;left: 10%" lay-accordion="">
+        </div>
         </div>
     </div>
 
 </div>
 
 </body>
-<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-<script src="js/search.js"></script>
 <script>
-
+    layui.config({
+        base: '/js/' //你存放新模块的目录，注意，不是layui的模块目录
+    }).use('searchContent'); //加载入口
 </script>
 </html>
