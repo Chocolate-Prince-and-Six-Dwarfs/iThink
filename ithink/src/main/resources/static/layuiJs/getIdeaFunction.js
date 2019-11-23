@@ -18,7 +18,7 @@ function getIdeaInfo(ideaId,appendDivName,ideaList){
                 var ach=data.achievements[i].achievement;
                 for(var j in data.achievements[i].comments){
                     var comment=data.achievements[i].comments[j].comment;
-                    comment_list+="<div class=\"imgdiv\"><img fromId=\""+comment.fromUid+"\" class=\"imgcss idea_achievement_comment_user"+comment.commentId+"\" src=\"/img/头像.png\"/></div>\n" +
+                    comment_list+="<div class=\"imgdiv\"><img fromId=\""+comment.fromUid+"\" data-type=\"viewOtherInfo\" class=\"imgcss idea_achievement_comment_user"+comment.commentId+"\" src=\"/img/头像.png\"/></div>\n" +
                         "                                        <div class=\"conmment_details\">\n" +
                         "                                            <span class=\"comment_name idea_achievement_comment_user_name" + comment.commentId + "\">" + comment.fromName + " </span>     <span class=\"idea_achievement_comment_user_time" + comment.commentId + "\">" + comment.time.substring(0, 10) + "</span>\n" +
                         "                                            <div class=\"comment_content idea_achievement_comment_user_content" + comment.commentId + "\">  " + comment.content + "</div>\n" +
@@ -39,7 +39,7 @@ function getIdeaInfo(ideaId,appendDivName,ideaList){
                     "                                <legend>创意实现" + i + "</legend>\n" +
                     "                            </fieldset>\n" +
                     "                            <div class=\"layui-card idea_achievement" + ach.id + "\">\n" +
-                    "                                <div class=\"layui-card-header idea_achievement_title" + ach.userId + "\"></div>\n" +
+                    "                                <div data-type=\"viewOtherInfoLayui\" userId=\""+ach.userId+"\" class=\"layui-card-header layui-view-user-info idea_achievement_title" + ach.userId + "\"></div>\n" +
                     "                                <div class=\"layui-card-body idea_achievement_content" + ach.id + "\">\n" +
                     "                                    " + ach.content + "\n" +
                     "                                </div>\n" +
@@ -80,7 +80,7 @@ function getIdeaInfo(ideaId,appendDivName,ideaList){
                 "                            </div>\n" +
                 "                        </div>\n" +
                 "                        <p style=\"text-align: right\">\n" +
-                "                            <a><i class=\"layui-icon\">&#xe770;" + data.topic.publisher + "</i></a>\n" +
+                "                            <a><i data-type=\"viewOtherInfoLayui\" userId=\""+data.topic.publisherId+"\" class=\"layui-icon layui-view-user-info\">&#xe770;" + data.topic.publisher + "</i></a>\n" +
                 "                            <a><i class=\"layui-icon\">&#xe637;" + data.topic.time.substring(0, 10) + "</i></a>\n" +
                 "                            <a><i class=\"layui-icon layui-icon-praise praise-topic topic-detail\" topicId='" + data.topic.id + "'>顶一个</i></a>(<span class='likeNum-topic topic-detail' topicId='" + data.topic.id + "'>" + data.topic.like + "</span>)\n" +
                 "                            <a><i class=\"layui-icon layui-icon-tread tread-topic topic-detail\" topicId='" + data.topic.id + "'>踩一下</i></a>\n" +
@@ -123,7 +123,29 @@ function getIdeaInfo(ideaId,appendDivName,ideaList){
         }
     })
 }
-function getCommentImg(userId,commentId) {//评论图像
+function viewOtherInfo(){//查看他人信息
+    var active={
+        viewOtherInfo:function () {
+            var userId1=$(this).attr("fromId");
+            window.location.href='/otherUser?userId='+ encodeURI(encodeURI(userId1));
+        }
+    };
+    $(document).off('click','.imgcss').on('click','.imgcss',function () {
+        var othis = $(this),type=$(this).data('type');
+        active[type] ? active[type].call(this, othis) : '';
+    });
+    var active2={
+        viewOtherInfoLayui:function () {
+            var userId2=$(this).attr("userId");
+            window.location.href='/otherUser?userId='+ encodeURI(encodeURI(userId2));
+        }
+    };
+    $(document).off('click','.layui-view-user-info').on('click','.layui-view-user-info',function () {
+        var othis2 = $(this),type2=$(this).data('type');
+        active2[type2] ? active2[type2].call(this, othis2) : '';
+    });
+}
+function getCommentImg(userId,commentId) {//评论图像显示
     $.ajax({
         url:"/user/getById",
         type:"post",

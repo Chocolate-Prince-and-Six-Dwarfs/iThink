@@ -3,7 +3,6 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
         ,form = layui.form
         ,laypage=layui.laypage
         ,$=layui.jquery;
-
     getUserId();//user_id已保存
     getUserInfo(user_id,form);//获取头像
     search(layer);//搜索
@@ -12,6 +11,7 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
     viewIdea(".viewIdea",".ideaList");//查看创意详情
     comment(layer);//评论
     commentShow();
+    viewOtherInfo();
     var chatRoom = new ChatRoom(user_id);
     chatRoom.setLayuiLayer(layer);
     chatRoom.appendTo(".test");
@@ -45,7 +45,7 @@ function getIdeas(pageSize){//得到创意列表
                     "                            <legend>"+data.data[i].title+"</legend>\n" +
                     "                            <div class=\"layui-field-box\">\n" +
                     "                                <p>"+subStringContent(data.data[i].content)+"...</p>\n" +
-                    "                                <p style=\"text-align: right\"><i class=\"layui-icon\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+data.data[i].time.substring(0,10)+"</i></p>\n" +
+                    "                                <p style=\"text-align: right\"><i data-type=\"viewOtherInfoLayui\" userId=\""+data.data[i].publisherId+"\" class=\"layui-icon layui-view-user-info\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+data.data[i].time.substring(0,10)+"</i></p>\n" +
                     "                                <p style=\"text-align: right\">\n" +
                     "                                    <a class='zan'><i class=\"layui-icon layui-icon-praise praise-topic topic-intro\" topicId='" + data.data[i].id + "'>顶一个</i></a>(<span class='likeNum-topic topic-intro' topicId='"+data.data[i].id+"'>"+data.data[i].like+"</span>)\n" +
                     "                                   <a class='cai'><i class=\"layui-icon layui-icon-tread tread-topic topic-intro\" topicId='" + data.data[i].id + "'>踩一下</i></a> \n" +
@@ -92,7 +92,7 @@ function getSortIdeas(numSize){//热搜榜
                     "                            <legend>"+data.data[i].title+"</legend>\n" +
                     "                            <div class=\"layui-field-box\">\n" +
                     "                                <p>"+subStringContent(data.data[i].content)+"...</p>\n" +
-                    "                                <p style=\"text-align: right\"><i class=\"layui-icon\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+time+"</i></p>\n" +
+                    "                                <p style=\"text-align: right\"><i data-type=\"viewOtherInfoLayui\" userId=\""+data.data[i].publisherId+"\" class=\"layui-icon layui-view-user-info\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+time+"</i></p>\n" +
                     "                                <p style=\"text-align: right\">\n" +
                     "                                    <a class='zan'><i class=\"layui-icon layui-icon-praise praise-topic topic-intro\" topicId='" + data.data[i].id + "'>顶一个</i></a>(<span class='likeNum-topic topic-intro' topicId='"+data.data[i].id+"'>"+data.data[i].like+"</span>)\n" +
                     "                                   <a class='cai'><i class=\"layui-icon layui-icon-tread tread-topic topic-intro\" topicId='" + data.data[i].id + "'>踩一下</i></a> \n" +
