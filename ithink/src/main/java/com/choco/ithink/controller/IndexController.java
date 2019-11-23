@@ -45,4 +45,10 @@ public class IndexController {
     {
         return "notify";
     }
+
+    @RequestMapping("/otherUser")
+    public String otherUser()
+    {
+        return "other-user";
+    }
 }
