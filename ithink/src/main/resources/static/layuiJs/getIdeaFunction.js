@@ -239,7 +239,7 @@ function comment(layer) {
         //console.log(thisClass);
         //console.log(achievementId);
         var contentClass="idea_achievement_comment_content"+achievementId;
-        var content=$("."+contentClass).val();
+        var content= htmlEscape($("."+contentClass).val());
         if(content==null||content==""){
             layer.msg("请输入评论");
             return false;

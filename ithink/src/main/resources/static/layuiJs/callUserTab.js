@@ -22,7 +22,7 @@ function callUserReleaseIdea(element){
         element.tabAdd('userDemo',{
             title: "发布创意"
             ,content: "<div class=\"userReleaseIdeaContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\"><div class=\"put\">\n" +
-                "    <input lay-verify=\"required\" id=\"topicTitle\" type=\"text\" placeholder=\"请输入标题，最多10字\">\n" +
+                "    <input lay-verify=\"required\" id=\"topicTitle\" type=\"text\" placeholder=\"请输入标题\">\n" +
                 "    <textarea lay-verify=\"required\" id=\"ideaEdit\" style=\"display: none;\"></textarea>\n" +
                 "</div>\n" +
                 "<button class=\"put-button\" type=\"button\" id=\"releaseIdea\">发布创意</button></div>"
