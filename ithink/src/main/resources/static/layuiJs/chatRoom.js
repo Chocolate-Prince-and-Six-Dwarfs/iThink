@@ -320,7 +320,33 @@ class ChatRoom
         {
             $("#chat-room-group-chat-content-" + tmp[j].toId).append(this._createRecordMessage(tmp[j], this._userId));
         }
+        $("#chat-room-group-chat-content-" + tmp[0].toId).append(this._createRecordHr(tmp[0]));
         $("#chat-room-group-chat-content-" + tmp[0].toId).animate({scrollTop:$("#chat-room-group-chat-content-" + tmp[0].toId)[0].scrollHeight},'500');
+    }
+
+    _createRecordHr(data)
+    {
+        let hrGroup = $("<div>");
+        hrGroup.attr("chat-room-group-chat-content-record-hr-" + data.id);
+        hrGroup.css("width", "100%");
+        hrGroup.css("display", "flex");
+        hrGroup.css("flex-direction", "column");
+        hrGroup.css("flex-wrap", "nowrap");
+        hrGroup.css("justify-content", "flex-start");
+        hrGroup.css("align-items", "center");
+
+        let hr = $("<hr>");
+        hr.css("width", "80%");
+        hr.css("color", "#393D49");
+
+        let msg = $("<div>");
+        msg.text("以上为聊天记录");
+        msg.css("color", "#393D49");
+
+        hrGroup.append(hr);
+        hrGroup.append(msg);
+
+        return hrGroup;
     }
 
     _createRecordMessage(data, userId)

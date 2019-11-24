@@ -5,6 +5,7 @@ import com.choco.ithink.pojo.BbsTopicExample;
 import com.choco.ithink.service.CreativeIdeaService;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
+import io.searchbox.client.config.exception.CouldNotConnectException;
 import io.searchbox.indices.DeleteIndex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -28,7 +29,7 @@ public class AfterRunning implements ApplicationRunner {
     private CreativeIdeaService creativeIdeaService;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) throws CouldNotConnectException {
         initIndex();
     }
 

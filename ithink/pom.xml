@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.choco</groupId>
     <artifactId>ithink</artifactId>
-    <version>alpha-2.1</version>
+    <version>alpha-2.2</version>
     <name>ithink</name>
     <description>project of Chocolate-Prince-and-Six-Dwarfs</description>
 
