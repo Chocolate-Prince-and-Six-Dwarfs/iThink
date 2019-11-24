@@ -147,6 +147,9 @@ function getUserIdeas(layer,userId) {
                     "                    <span>时间:"+data.data[i].time.substring(0,10)+"</span>\n" +
                     "                    <span style=\"margin-left: 10px\">收藏数:"+data.data[i].collect+"</span>\n" +
                     "                    <span style=\"margin-left: 10px\">点赞数:"+data.data[i].like+"</span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary\">修改创意</button></span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary\" >删除创意</button></span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary\">生成团组</button></span>\n" +
                     "                </div>\n" +
                     "            </li>\n" +
                     "            <hr>";
