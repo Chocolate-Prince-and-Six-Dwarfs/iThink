@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping("/chat")
@@ -182,16 +183,16 @@ public class ChatController implements ChatInterface {
     // return: 持续推送聊天信息
     @RequestMapping(value = "/getOnlineNum", produces = "text/event-stream;charset=UTF-8")
     @ResponseBody
-    public String getOnlineNum(@NotNull Integer id)
-    {
+    public String getOnlineNum(@NotNull Integer id) throws InterruptedException {
         JSONObject jsonObject = new JSONObject();
 
         String key = id.toString();
         Integer num = 0;
-        //while(!canUpdate.getBoolean(key));
+        while(!canUpdate.getBoolean(key));
         num = connectionNum.getInteger(key);
 
         // 更新flag置否
+        TimeUnit.SECONDS.sleep(3);
         canUpdate.put(key, false);
 
         return "data:" +  num.toString() + "\n\n";
