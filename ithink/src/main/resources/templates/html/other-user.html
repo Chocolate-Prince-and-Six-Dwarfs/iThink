@@ -5,18 +5,19 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
     <title>Welcome to iThink </title>
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-    <link rel="stylesheet"  href="../../static/layui/css/layui.css">
-    <script type="text/javascript" src="../../static/layui/layui.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/layuiJs/search.js"></script>
+    <link rel="stylesheet"  href="/css/user-head.css">
     <style>
         body {
-            background-image: url("../../static/img/sky3.jpg");
+            background-image: url("/img/sky3.jpg");
             background-repeat: no-repeat;
-            background-size: 100%;
+            background-attachment:fixed;
         }
         .mid{
             background-color: rgba(255, 255, 255, 0.5);
             width: 100%;
-            height: 1000px;
         }
         .mid-top{
             width: 60%;
@@ -26,140 +27,81 @@
             background-color:#fff;
             color: #529ac3;
             font-weight: bold;
-            border-radius: 10px;
             font-family:"幼圆" ;
             font-size: 16px;
+            border-radius: 10px;
+            margin-top: 3em;
         }
-        .intro {
-            margin-left: 120px;
-            padding-bottom: 10px;
-        }
-        .show{
+        .user-other-show{
             width: 60%;
-            height: 1000px;
             position: relative;
             left:20%;
-            right: 20%;
+            right:20%;
             background-color:#fff;
-            margin-top: 10px;
             border-radius: 10px;
             opacity: 0.5;
+            margin-top: 10px;
         }
-        .show ul li h3{
-            color: #09355a;
-            font-weight: bold;
-
-        }
-        .show ul li i {
-            color: #09355a;
-            font-weight: bold;
-        }
-
     </style>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
-    <!--//头部导航栏-->
-    <div class="layui-header top">
-        <ul class="layui-nav" style="background-color: #6CA6CD;">
+    <div class="layui-header" style="background-color: #6CA6CD">
+        <ul class="layui-nav">
             <li class="layui-nav-item">
-                <img src="../../static/img/商标small.png" style="width: 120px;" alt="">
+                <img src="/img/商标small.png" alt="">
             </li>
 
             <li class="layui-nav-item">
-                <a href="" style=" font-size: 20px;">首页</a>
+                <a href="/main">首页</a>
             </li>
             <li class="layui-nav-item">
-                <a href="" style=" font-size: 20px;">发现</a>
+                <a href="">发现</a>
             </li>
             <li class="layui-nav-item">
-                <a href="" style=" font-size: 20px;">合作</a>
-            </li>
-            <li class="layui-nav-item" style="margin-left: 10px;">
-                <label>
-                    <input type="text" placeholder="搜索内容" style="width: 320px;" class="layui-input"/>
-                </label>
-            </li>
-            <li class="layui-nav-item" style="margin-left: -20px;">
-                <a href="#" class="layui-icon" style="font-size: 25px; " >&#xe615;</a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="#" class="layui-icon" style="font-size: 25px; " >&#xe667;</a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="#"><img src="../../static/img/头像small.png" class="layui-nav-img" alt="">我</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="#">个人中心</a></dd>
-                    <dd><a href="#">修改信息</a></dd>
-                    <dd><a href="#">退出</a></dd>
-                </dl>
+                <a href="">合作</a>
             </li>
         </ul>
     </div>
 
-    <!--中间模块-->
     <div class="mid">
-        <div class="mid-top layui-anim layui-anim-fadein">
-            <img src="../../static/img/头像small.png" alt="" class="layui-anim layui-anim-rotate " style="width: 100px;height: 100px; margin-left: 20px;">
-            <span class="name">巧克力王子</span>
-            <p class="intro">简介：谢谢你那么帅，还来关注我！</p>
+        <div class="mid-top">
+            <div class="user-head" style="text-align: center;padding-top: 1em"><img src="/img/头像small.png" class="user-other-img">用户名：<b class="user-other-name"></b></div>
+            <div class="user-other-intro" style="margin-top: 1em;text-align: center;"><div style="padding-bottom: 1em;">用户简介：<b class="user-intro-info"></b></div></div>
         </div>
-        <div class="show">
-            <ul class="layui-timeline layui-anim layui-anim-up">
-                <li class="layui-timeline-item ">
-                    <i class="layui-icon layui-timeline-axis"></i>
-                    <div class="layui-timeline-content layui-text">
-                        <h3 class="layui-timeline-title">行业：</h3>
-                        <p>
-                            计算机软件 <i class="layui-icon"></i>
-                        </p>
-                    </div>
-                </li>
-                <li class="layui-timeline-item">
-                    <i class="layui-icon layui-timeline-axis"></i>
-                    <div class="layui-timeline-content layui-text">
-                        <h3 class="layui-timeline-title">学校：</h3>
-                        <p>西南石油大学</p>
-                    </div>
-                </li>
-                <li class="layui-timeline-item">
-                    <i class="layui-icon layui-timeline-axis"></i>
-                    <div class="layui-timeline-content layui-text">
-                        <h3 class="layui-timeline-title">性别：</h3>
-                        <p>
-                           男
-                        </p>
-                    </div>
-                </li>
-                <li class="layui-timeline-item">
-                    <i class="layui-icon layui-timeline-axis"></i>
-                    <div class="layui-timeline-content layui-text">
-                        <h3 class="layui-timeline-title">该用户的粉丝数量：</h3>
-                        <p>
-                            100
-                        </p>
-                    </div>
-                </li>
-                <li class="layui-timeline-item">
-                    <i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop" style="display: inline-block"></i>
-                    <div class="layui-timeline-content layui-text">
-                        <h3 class="layui-timeline-title">他发布的创意：</h3>
-                        <ul>
-                            <li>《登高》</li>
-                            <li>《茅屋为秋风所破歌》</li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-
+        <div class="user-other-show">
+            <div>
+                <p style="margin-left: 1em;padding-top: 1em">性别：<b class="sex-info"></b></p>
+            </div>
+            <div>
+                <p style="margin-top: 1em;margin-left: 1em">学校：<b class="school-info"></b></p>
+            </div>
+            <div>
+                <p style="margin-top: 1em;margin-left: 1em">生日：<b class="birthday-info"></b></p>
+            </div>
+            <div>
+                <p style="margin-top: 1em;margin-left: 1em">所在城市：<b class="addr-info"></b></p>
+            </div>
+            <div>
+                <p style="margin-top: 1em;margin-left: 1em">邮箱：<b class="email-info"></b></p>
+            </div>
+            <div>
+                <p style="margin-top: 1em;margin-left: 1em">信用积分：<b class="credit-info"></b></p>
+            </div>
+            <div>
+                <p style="margin-top: 1em;margin-left: 1em">行业：<b class="industry-info"></b></p>
+            </div>
+            <div>
+                <p style="margin-top: 1em;margin-left: 1em;padding-bottom: 1em">电话：<b class="tel-info"></b></p>
+            </div>
         </div>
     </div>
 </div>
 
 <script >
-    // layui.config({
-    //     base: '/layuiJs/' //你存放新模块的目录，注意，不是layui的模块目录
-    // }).use('index'); //加载入口
+    layui.config({
+        base: '/layuiJs/' //你存放新模块的目录，注意，不是layui的模块目录
+    }).use('viewOtherInfo'); //加载入口
 </script>
 </body>
 </html>

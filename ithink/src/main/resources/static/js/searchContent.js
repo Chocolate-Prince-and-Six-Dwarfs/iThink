@@ -4,7 +4,7 @@ layui.define(['element','jquery','layer'],function (exports) {
         ,layer=layui.layer;
     $(".search_content_list").empty();
     var keyword=getOption();
-    console.log(keyword);
+    //console.log(keyword);
     $(".keywordLegend").prepend("\""+keyword+"\"的");
     loadTitle(keyword,element);
     exports('searchContent', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
