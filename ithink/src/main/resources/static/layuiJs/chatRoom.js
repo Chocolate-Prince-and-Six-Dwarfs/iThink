@@ -25,6 +25,7 @@ class ChatRoom
 
         this.width = "80%";
         this._openText = "+";
+        this._onlineUpdateSSE = [];
         this.element = this._createChatRoom();
 
         return this;
@@ -156,6 +157,8 @@ class ChatRoom
         // 初始化团组信息
         this._initGroup();
 
+        this._auth();
+
         // 创建SSE
         //console.log(this._userId);
         this._sse = new EventSource('/chat/connect?userId=' + this._userId);
@@ -184,6 +187,7 @@ class ChatRoom
             {
                 url: "/chat/close",
                 type: "post",
+                async:false,
                 data: {
                     "userId": this._userId,
                 },
@@ -193,6 +197,26 @@ class ChatRoom
                 },
                 error: function () {
                     console.log("关闭失败");
+                }
+            }
+        );
+    }
+
+    _auth()
+    {
+        $.ajax(
+            {
+                url: "/chat/auth",
+                type: "post",
+                data: {
+                    "userId": this._userId,
+                },
+                success:function()
+                {
+                    console.log("连接成功");
+                },
+                error: function () {
+                    console.log("连接");
                 }
             }
         );
@@ -575,6 +599,7 @@ class ChatRoom
 
         groupEle.append(hr);
         groupEle.append(this._createGroupName(data.id, data.name));
+        groupEle.append(this._createGroupOnlineNum(data.id));
         groupEle.append(this._createGroupClose(data.id));
         groupEle.append(this._createGroupSync(data.id));
         groupEle.append(this._createGroupChat(data.id, userId));
@@ -590,6 +615,33 @@ class ChatRoom
         groupName.text(name);
 
         return groupName;
+    }
+
+    _createGroupOnlineNum(id)
+    {
+        let groupOnlineNum;
+        groupOnlineNum = $("<div>");
+        groupOnlineNum.attr("id", "chat-room-group-online-" + id);
+        groupOnlineNum.css("font-size", "0.75em");
+        groupOnlineNum.text("本群在线人数: 0");
+
+        // 创建SSE
+        //console.log(this._userId);
+        let sse = new EventSource('/chat/getOnlineNum?id=' + id);
+        sse.onmessage = function(event)
+        {
+            //console.log("收到信息" + thisObject._userId + "，状态" + thisObject._sse.readyState);
+            if(event.data === "{}")
+            {
+                return;
+            }
+            $("#chat-room-group-online-" + id).text("本群在线人数: " + event.data);
+        };
+
+        this._onlineUpdateSSE.push(sse);
+
+        return groupOnlineNum;
+
     }
 
     _createGroupClose(id)

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +21,10 @@ public class ChatController implements ChatInterface {
     @Autowired
     private ChatService chatService;
 
-    private List<Integer> unhandledConnection = new ArrayList<Integer>();
+    private List<Integer> waitingForClosingConnection = new ArrayList<Integer>();
+    private List<Integer> connectionList = new ArrayList<Integer>();
+    private JSONObject connectionNum = new JSONObject();
+    private JSONObject canUpdate = new JSONObject();
 
     // 请求地址 /chat/connect
     // param userId: 用户id
@@ -33,7 +35,6 @@ public class ChatController implements ChatInterface {
     public String connect(@NotNull Integer userId)
     {
         JSONObject jsonObject = new JSONObject();
-
 
         // 获取上次更新时间
         Date lastUpdateTIme = chatService.lastUpdateTime(userId);
@@ -46,9 +47,9 @@ public class ChatController implements ChatInterface {
         JSONArray groupChatRecord = new JSONArray();
         do
         {
-            if(unhandledConnection.contains(userId))
+            if(waitingForClosingConnection.contains(userId))
             {
-                unhandledConnection.remove(userId);
+                waitingForClosingConnection.remove(userId);
                 return "data:" + "{}" + "\n\n";
             }
             groupChatRecord = chatService.getGroupChatRecordAfter(userId, lastUpdateTIme);
@@ -97,7 +98,9 @@ public class ChatController implements ChatInterface {
     @ResponseJSONP
     public JSONArray getGroupListByUserId(Integer userId)
     {
-        return chatService.getGroupListByUserId(userId);
+        JSONArray groupList =  chatService.getGroupListByUserId(userId);
+
+        return groupList;
     }
 
     // 请求地址 /chat/close
@@ -107,7 +110,26 @@ public class ChatController implements ChatInterface {
     @ResponseJSONP
     public void close(Integer userId)
     {
-        unhandledConnection.add(userId);
+        if(!connectionList.contains(userId))
+        {
+            return;
+        }
+        JSONArray groupList =  chatService.getGroupListByUserId(userId);
+        for(int i=0; i<groupList.size(); ++i)
+        {
+            String key = ((JSONObject)(groupList.get(i))).getInteger("id").toString();
+            if (connectionNum.containsKey(key))
+            {
+                Integer old = connectionNum.getInteger(key);
+                Integer updated = old - 1;
+                connectionNum.put(key, updated);
+            } else {
+                connectionNum.put(key, 0);
+            }
+            canUpdate.put(key, true);
+        }
+        connectionList.remove(userId);
+        waitingForClosingConnection.add(userId);
     }
 
     // 请求地址 /chat/getGroupChatRecord
@@ -127,4 +149,51 @@ public class ChatController implements ChatInterface {
         return jsonObject;
     }
 
+    // 请求地址 /chat/auth
+    // param userId: 用户id
+    // do: 登记聊天室推送
+    @RequestMapping("/auth")
+    @ResponseJSONP
+    public void auth(Integer userId)
+    {
+        if(connectionList.contains(userId))
+        {
+            return;
+        }
+        JSONArray groupList =  chatService.getGroupListByUserId(userId);
+        for(int i=0; i<groupList.size(); ++i)
+        {
+            String key = ((JSONObject)(groupList.get(i))).getInteger("id").toString();
+            if (connectionNum.containsKey(key)) {
+                Integer old = connectionNum.getInteger(key);
+                Integer updated = old + 1;
+                connectionNum.put(key, updated);
+            } else {
+                connectionNum.put(key, 1);
+            }
+            canUpdate.put(key, true);
+        }
+        connectionList.add(userId);
+    }
+
+    // 请求地址 /chat/getOnlineNum
+    // param id: 团组id
+    // do: 建立聊天连接
+    // return: 持续推送聊天信息
+    @RequestMapping(value = "/getOnlineNum", produces = "text/event-stream;charset=UTF-8")
+    @ResponseBody
+    public String getOnlineNum(@NotNull Integer id)
+    {
+        JSONObject jsonObject = new JSONObject();
+
+        String key = id.toString();
+        Integer num = 0;
+        //while(!canUpdate.getBoolean(key));
+        num = connectionNum.getInteger(key);
+
+        // 更新flag置否
+        canUpdate.put(key, false);
+
+        return "data:" +  num.toString() + "\n\n";
+    }
 }
