@@ -180,4 +180,18 @@ public class AchievementController implements AchievementInterface {
     {
         return achievementService.delete(id);
     }
+
+    // 请求地址: /ach/update
+    // param id: 创意实现id
+    // param userId: 用户id
+    // param topicId: 对应的创意主题id
+    // param content: 创意实现内容
+    // do: 发布创意实现
+    // return: 创意实现id, 失败返回null
+    @RequestMapping("/update")
+    @ResponseJSONP
+    public Integer update(Integer id, Integer userId, Integer topicId, String content)
+    {
+        return achievementService.update(id, userId, topicId, content);
+    }
 }

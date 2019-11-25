@@ -16,6 +16,7 @@ function getIdeaInfo(ideaId,appendDivName,ideaList){
             for(var i in data.achievements){
                 var comment_list="";
                 var ach=data.achievements[i].achievement;
+                var tmp=i+1;
                 for(var j in data.achievements[i].comments){
                     var comment=data.achievements[i].comments[j].comment;
                     comment_list+="<div class=\"imgdiv\"><img fromId=\""+comment.fromUid+"\" data-type=\"viewOtherInfo\" class=\"imgcss idea_achievement_comment_user"+comment.commentId+"\" src=\"/img/头像.png\"/></div>\n" +
@@ -36,7 +37,7 @@ function getIdeaInfo(ideaId,appendDivName,ideaList){
                     commentUserIdList.push(comment.fromUid);
                 }
                 achievements += "<fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 50px;\">\n" +
-                    "                                <legend>创意实现" + i + "</legend>\n" +
+                    "                                <legend>创意实现-" + tmp + "</legend>\n" +
                     "                            </fieldset>\n" +
                     "                            <div class=\"layui-card idea_achievement" + ach.id + "\">\n" +
                     "                                <div data-type=\"viewOtherInfoLayui\" userId=\""+ach.userId+"\" class=\"layui-card-header layui-view-user-info idea_achievement_title" + ach.userId + "\"></div>\n" +
