@@ -168,7 +168,7 @@ function callUserCollections(element) {
         element.tabChange('userDemo','userCollections');
     }
 }
-function callUserParticipate(element) {
+/*function callUserParticipate(element) {
     if($(".layui-tab-title li[lay-id='userParticipate']").length>0){
         element.tabChange('userDemo','userParticipate');
     }else{
@@ -243,7 +243,7 @@ function callUserParticipate(element) {
         });
         element.tabChange('userDemo','userParticipate');
     }
-}
+}*/
 function callUserProfitProjects(element) {
     if($(".layui-tab-title li[lay-id='userProfitProjects']").length>0){
         element.tabChange('userDemo','userProfitProjects');
