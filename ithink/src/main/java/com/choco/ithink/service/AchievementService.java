@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.*;
 import com.choco.ithink.pojo.*;
+import com.choco.ithink.tool.Tool;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -394,7 +395,7 @@ public class AchievementService {
         BbsAchievement bbsAchievement = new BbsAchievement();
         bbsAchievement.setUserId(userId);
         bbsAchievement.setTopicId(topicId);
-        bbsAchievement.setAchievementContent(content);
+        bbsAchievement.setAchievementContent(Tool.delS(content));
         bbsAchievement.setAchievementBulidtime(new Date());
 
         // 插入数据库

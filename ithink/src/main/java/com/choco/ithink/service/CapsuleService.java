@@ -8,6 +8,7 @@ import com.choco.ithink.pojo.CreativeCapsule;
 import com.choco.ithink.pojo.CreativeCapsuleExample;
 import com.choco.ithink.pojo.User;
 import com.choco.ithink.pojo.UserExample;
+import com.choco.ithink.tool.Tool;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +77,7 @@ public class CapsuleService {
         // 构建实体
         CreativeCapsule creativeCapsule = new CreativeCapsule();
         creativeCapsule.setCreativeName(name);
-        creativeCapsule.setCreativeContent(content);
+        creativeCapsule.setCreativeContent(Tool.delS(content));
         creativeCapsule.setCreativeId(id);
         Date date = new Date();
         creativeCapsule.setCreativeUploadtime(date);

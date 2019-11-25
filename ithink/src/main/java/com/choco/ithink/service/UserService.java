@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.*;
 import com.choco.ithink.exception.PrimarykeyException;
 import com.choco.ithink.pojo.*;
+import com.choco.ithink.tool.Tool;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -137,7 +138,7 @@ public class UserService {
         if(userMapper.selectByExample(emailExample).isEmpty())
         {
             // 构造实体
-            User user = constructNewUser(username, pwd, sex, email, birthday, phone);
+            User user = constructNewUser(username, pwd, sex, email, birthday, Tool.delS(phone));
             if(user == null)
             {
                 return -400;
@@ -338,7 +339,7 @@ public class UserService {
             user.setUserName(name);
             user.setUserSex(sex);
             user.setUserBirth(birthday);
-            user.setUserPhone(phone);
+            user.setUserPhone(Tool.delS(phone));
             // 更新用户基础信息
             Integer countBase = 0;
             if(name!=null || sex!=null || birthday!=null || phone!=null || head!=null)
@@ -347,10 +348,10 @@ public class UserService {
             }
 
             // 构建新的用户补充信息
-            userOtherInfo.setUserAddress(address);
-            userOtherInfo.setUserIndustry(industry);
-            userOtherInfo.setUserSchool(school);
-            userOtherInfo.setUserSelfintroduction(introduction);
+            userOtherInfo.setUserAddress(Tool.delS(address));
+            userOtherInfo.setUserIndustry(Tool.delS(industry));
+            userOtherInfo.setUserSchool(Tool.delS(school));
+            userOtherInfo.setUserSelfintroduction(Tool.delS(introduction));
             // 更新用户补充信息
             Integer countOther = 0;
             if(address!=null || industry!=null || school!=null || introduction!=null)

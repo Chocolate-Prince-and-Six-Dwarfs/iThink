@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.*;
 import com.choco.ithink.pojo.*;
+import com.choco.ithink.tool.Tool;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Bulk;
@@ -527,9 +528,9 @@ public class CreativeIdeaService {
     {
         // 构建实体
         BbsTopic bbsTopic = new BbsTopic();
-        bbsTopic.setTopicTitle(topicTitle);
+        bbsTopic.setTopicTitle(Tool.delS(topicTitle));
         bbsTopic.setUserId(userId);
-        bbsTopic.setTopicContent(content);
+        bbsTopic.setTopicContent(Tool.delS(content));
         // 待修改
         bbsTopic.setTopicCreativecapsule(1);
         bbsTopic.setTopicBuildtime(new Date());

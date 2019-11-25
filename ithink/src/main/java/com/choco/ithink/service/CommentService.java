@@ -7,6 +7,7 @@ import com.choco.ithink.DAO.mapper.BbsReplyMapper;
 import com.choco.ithink.DAO.mapper.CommentLikeMapper;
 import com.choco.ithink.DAO.mapper.UserMapper;
 import com.choco.ithink.pojo.*;
+import com.choco.ithink.tool.Tool;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -118,7 +119,7 @@ public class CommentService {
         // 构建实体
         BbsComment bbsComment = new BbsComment();
         bbsComment.setAchievementId(achievementId);
-        bbsComment.setCommentContent(content);
+        bbsComment.setCommentContent(Tool.delS(content));
         bbsComment.setFromUid(fromId);
         bbsComment.setCommentBuildtime(new Date());
         bbsComment.setToUid(toId);

@@ -8,6 +8,7 @@ import com.choco.ithink.pojo.BbsReply;
 import com.choco.ithink.pojo.BbsReplyExample;
 import com.choco.ithink.pojo.User;
 import com.choco.ithink.pojo.UserExample;
+import com.choco.ithink.tool.Tool;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -97,7 +98,7 @@ public class ReplyService {
         // 构建实体
         BbsReply bbsReply = new BbsReply();
         bbsReply.setCommentId(commentId);
-        bbsReply.setReplyContent(content);
+        bbsReply.setReplyContent(Tool.delS(content));
         bbsReply.setFromUid(fromId);
         bbsReply.setReplyBuildtime(new Date());
         bbsReply.setToUid(toId);
