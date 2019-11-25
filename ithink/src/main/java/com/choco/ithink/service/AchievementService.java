@@ -454,4 +454,32 @@ public class AchievementService {
 
         return status;
     }
+
+
+    // param id: 创意实现id
+    // param userId: 用户id
+    // param topicId: 对应的创意主题id
+    // param content: 创意实现内容
+    // do: 发布创意实现
+    // return: 创意实现id, 失败返回null
+    public Integer update(Integer id, Integer userId, Integer topicId, String content)
+    {
+        // 构建实体
+        BbsAchievement bbsAchievement = new BbsAchievement();
+        bbsAchievement.setAchievementId(id);
+        bbsAchievement.setUserId(userId);
+        bbsAchievement.setTopicId(topicId);
+        bbsAchievement.setAchievementContent(Tool.delS(content));
+        bbsAchievement.setAchievementBulidtime(new Date());
+
+        // 插入数据库
+        if(bbsAchievementMapper.updateByPrimaryKeySelective(bbsAchievement) == 1)
+        {
+            return bbsAchievement.getAchievementId();
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

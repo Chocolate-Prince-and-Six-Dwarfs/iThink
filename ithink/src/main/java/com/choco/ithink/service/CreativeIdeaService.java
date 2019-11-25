@@ -667,7 +667,6 @@ public class CreativeIdeaService {
     }
 
 
-    // 请求地址: /idea/update
     // param id: 创意主题id
     // param topicTitle: 对应的创意标题
     // param userId: 用户id
