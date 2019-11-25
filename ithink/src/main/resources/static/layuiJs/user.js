@@ -8,6 +8,11 @@ layui.define(['laypage','layer', 'form','jquery','element'], function(exports){
     search(layer);//搜索
     getUserInfo(user_id,form);//获取用户数据
     saveUserInfo(form,layer);//保存个人信息
+    $(document).off('click','#userInfoForm').on('click','#userInfoForm',function () {
+        if(($('#layui-form-item-username').val()!=='')&&($('#idcard').val()!=='')){
+            layer.msg("申请成功");
+        }
+    });
     form.render();
 
     switch(location.hash) {

@@ -233,4 +233,11 @@ public interface CreativeIdeaInterface {
     //  ]
     // }
     JSONObject getHot(@Nullable Integer number);
+
+
+    // 请求地址: /idea/delete
+    // param id: 创意主题id
+    // do: 删除创意主题
+    // return: 1|0 成功|失败
+    Integer delete(Integer id);
 }

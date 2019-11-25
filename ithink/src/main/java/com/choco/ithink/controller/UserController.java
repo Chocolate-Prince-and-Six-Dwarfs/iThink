@@ -267,6 +267,8 @@ public class UserController implements UserInterface {
         }
 
         // 拼接JSON
+        jsonObject.put("code",0);
+        jsonObject.put("msg","");
         jsonObject.put("count", count);
         jsonObject.put("data", data);
         return jsonObject;
@@ -294,9 +296,22 @@ public class UserController implements UserInterface {
         JSONObject jsonObject = new JSONObject();
         Integer status = 0;
 
-        // 更新
-        status = userService.updateInfoById(id, head, name, sex, birthday, phone,
-                address, industry, school, introduction);
+        // 检查有效性
+        Boolean nameAvailability;
+        if(name!=null)
+        {
+            nameAvailability = checkName(name);
+        }
+        else
+        {
+            nameAvailability = true;
+        }
+        if(nameAvailability)
+        {
+            // 更新
+            status = userService.updateInfoById(id, head, name, sex, birthday, phone,
+                    address, industry, school, introduction);
+        }
 
         // 拼接字符串
         jsonObject.put("id", id);

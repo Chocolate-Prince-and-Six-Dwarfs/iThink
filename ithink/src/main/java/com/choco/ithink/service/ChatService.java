@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.*;
 import com.choco.ithink.pojo.*;
+import com.choco.ithink.tool.Tool;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -161,7 +162,7 @@ public class ChatService {
         GroupChatRecord groupChatRecord = new GroupChatRecord();
         groupChatRecord.setFromId(userId);
         groupChatRecord.setToId(groupId);
-        groupChatRecord.setContent(content);
+        groupChatRecord.setContent(Tool.delS(content));
 
         return groupChatRecordMapper.insertSelective(groupChatRecord);
     }

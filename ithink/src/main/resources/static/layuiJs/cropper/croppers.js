@@ -109,6 +109,7 @@ layui.config({
                                 window.location.reload();
                             },
                             error:function () {
+                                layer.msg("网络异常");
                                 console.log("网络异常");
                             }
                         });

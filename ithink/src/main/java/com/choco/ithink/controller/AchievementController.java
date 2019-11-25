@@ -8,6 +8,7 @@ import com.choco.ithink.service.AchievementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/ach")
@@ -167,5 +168,16 @@ public class AchievementController implements AchievementInterface {
     public Integer publish(Integer userId, Integer topicId, String content)
     {
         return achievementService.publish(userId, topicId, content);
+    }
+
+    // 请求地址: /ach/delete
+    // param id: 创意实现id
+    // do: 删除创意实现
+    // return: 1|0 成功|失败
+    @RequestMapping("/delete")
+    @ResponseBody
+    public Integer delete(Integer id)
+    {
+        return achievementService.delete(id);
     }
 }
