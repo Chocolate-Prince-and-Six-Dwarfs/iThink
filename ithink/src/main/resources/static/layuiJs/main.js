@@ -45,7 +45,7 @@ function getIdeas(pageSize){//得到创意列表
                     "                            <legend>"+data.data[i].title+"</legend>\n" +
                     "                            <div class=\"layui-field-box\">\n" +
                     "                                <p>"+subStringContent(data.data[i].content)+"...</p>\n" +
-                    "                                <p style=\"text-align: right\"><i data-type=\"viewOtherInfoLayui\" userId=\""+data.data[i].publisherId+"\" class=\"layui-icon layui-view-user-info\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+data.data[i].time.substring(0,10)+"</i></p>\n" +
+                    "                                <p style=\"text-align: right\"><i data-type=\"viewOtherInfoLayui\" userId=\""+data.data[i].publisherId+"\" class=\"layui-icon layui-view-user-info\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+myTime(data.data[i].time)+"</i></p>\n" +
                     "                                <p style=\"text-align: right\">\n" +
                     "                                    <a class='zan'><i class=\"layui-icon layui-icon-praise praise-topic topic-intro\" topicId='" + data.data[i].id + "'>顶一个</i></a>(<span class='likeNum-topic topic-intro' topicId='"+data.data[i].id+"'>"+data.data[i].like+"</span>)\n" +
                     "                                   <a class='cai'><i class=\"layui-icon layui-icon-tread tread-topic topic-intro\" topicId='" + data.data[i].id + "'>踩一下</i></a> \n" +
@@ -117,37 +117,25 @@ function getSortIdeas(numSize){//热搜榜
     });
 }
 
-function getAchievementUserName(userId) {//获得用户名
-    $.ajax({
-        url:"/user/getById",
-        type:"post",
-        dataType: "json",
-        data:{
-            id: userId,
-        },
-        success:function (data) {
-            $(".idea_achievement_title"+userId).text("发布者："+data.name);
-        },
-        error:function () {
-            console.log("读取用户信息失败！");
-        }
-    });
-}
-function viewIdea(appendDivName,ideaList) {
+function viewIdea() {
+    // $(document).off('click','.view').on("click",".view",function () {
+    //     //$("#viewIdea").empty();
+    //     $(".ideaList").hide();
+    //     $(".sortIdeaList").hide();
+    //     $("#refreshIdeas").hide();
+    //     var viewId=$(this).attr("viewClass"); //获取id属性值
+    //     viewId=viewId.substring(4,);
+    //     getIdeaInfo(viewId,appendDivName,ideaList);
+    // });
+    // $(document).off('click','#ret').on("click","#ret",function () {
+    //     $(".ideaList").show();
+    //     $(".sortIdeaList").show();
+    //     $("#refreshIdeas").show();
+    //     $(".viewIdea").empty();
+    // });
     $(document).off('click','.view').on("click",".view",function () {
-        //$("#viewIdea").empty();
-        $(".ideaList").hide();
-        $(".sortIdeaList").hide();
-        $("#refreshIdeas").hide();
-        var viewId=$(this).attr("viewClass"); //获取id属性值
-        viewId=viewId.substring(4,);
-        getIdeaInfo(viewId,appendDivName,ideaList);
-    });
-    $(document).off('click','#ret').on("click","#ret",function () {
-        $(".ideaList").show();
-        $(".sortIdeaList").show();
-        $("#refreshIdeas").show();
-        $(".viewIdea").empty();
+        var ideaId=$(this).attr("viewClass").substring(4,);
+        window.open('/viewIdea?ideaId='+ encodeURI(encodeURI(ideaId)));;
     });
 }
 
@@ -163,35 +151,12 @@ function subStringContent(ideaContent){ //截取部分创意内容
 
 function refresh(pageSize) {
     $(document).off('click','.refreshData1').on('click','.refreshData1',function () {
-        $("#layui-tab-1").empty();
-        $("#layui-tab-2").empty();
-        var text="<div ><button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\" id=\"refreshIdeas\"><i class=\"layui-icon\">&#xe669;刷新</i></button></div >\n" +
-            "                    <div class=\"ideaList\">\n" +
-            "                        <div style=\"padding: 15px;\">\n" +
-            "                        </div>\n" +
-            "                    </div>\n" +
-            "                    <div class=\"viewIdea viewIdea-empty\">\n" +
-            "                    </div>";
-        $("#layui-tab-1").append(text);
-        refresh(5);
-        viewIdea(".viewIdea",".ideaList");//查看创意详情
-        $(".ideaList").show();
-        $("#refreshIdeas").show();
-        $(".viewIdea").empty();
+        refresh(pageSize);
+        viewIdea();//查看创意详情
     });
     $(document).off('click','.refreshData2').on('click','.refreshData2',function () {
-        $("#layui-tab-1").empty();
-        $("#layui-tab-2").empty();
-        var text1="<div class=\"sortIdeaList\">\n" +
-            "                    </div>\n" +
-            "                    <div class=\"viewIdea viewSortIdea-empty\">\n" +
-            "                    </div>\n" +
-            "                    <div id=\"cutPage\"></div>";
-        $("#layui-tab-2").append(text1);
-        getSortIdeas(10);//热搜榜
-        viewIdea(".viewIdea",".sortIdeaList");//查看创意详情
-        $(".sortIdeaList").show();
-        $(".viewIdea").empty();
+        getSortIdeas(pageSize+5);//热搜榜
+        viewIdea();//查看创意详情
     });
     $(document).ready(function () {
         getIdeas(pageSize);

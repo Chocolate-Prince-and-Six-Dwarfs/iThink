@@ -200,11 +200,12 @@ public interface CreativeIdeaInterface {
 
     // 请求地址: /idea/publish
     // param topicTitle: 对应的创意标题
+    // param capsuleId: 胶囊id
     // param userId: 用户id
     // param content: 创意主题内容
     // do: 发布创意主题
     // return: 创意主题id, 失败返回null
-    Integer publish(String topicTitle, Integer userId, String content);
+    Integer publish(@Nullable Integer capsuleId, String topicTitle, Integer userId, String content);
 
 
     // 请求地址 idea/getHot

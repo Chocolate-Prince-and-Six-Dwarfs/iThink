@@ -526,7 +526,7 @@ public class CreativeIdeaService {
     // param content: 创意主题内容
     // do: 发布创意主题
     // return: 创意主题id, 失败返回null
-    public Integer publish(String topicTitle, Integer userId, String content)
+    public Integer publish(@Nullable Integer capsuleId, String topicTitle, Integer userId, String content)
     {
         // 构建实体
         BbsTopic bbsTopic = new BbsTopic();
@@ -534,7 +534,7 @@ public class CreativeIdeaService {
         bbsTopic.setUserId(userId);
         bbsTopic.setTopicContent(Tool.delS(content));
         // 待修改
-        bbsTopic.setTopicCreativecapsule(1);
+        bbsTopic.setTopicCreativecapsule(capsuleId);
         bbsTopic.setTopicBuildtime(new Date());
 
         // 插入数据库

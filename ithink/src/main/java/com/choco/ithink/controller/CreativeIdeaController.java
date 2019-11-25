@@ -374,9 +374,9 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
     // return: 创意主题id, 失败返回null
     @RequestMapping("/publish")
     @ResponseJSONP
-    public Integer publish(String topicTitle, Integer userId, String content)
+    public Integer publish(@Nullable Integer capsuleId, String topicTitle, Integer userId, String content)
     {
-        return creativeIdeaService.publish(topicTitle, userId, content);
+        return creativeIdeaService.publish(capsuleId, topicTitle, userId, content);
     }
 
 
