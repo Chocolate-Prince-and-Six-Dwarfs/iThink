@@ -51,4 +51,10 @@ public class IndexController {
     {
         return "other-user";
     }
+
+    @RequestMapping("/viewIdea")
+    public String viewIdea()
+    {
+        return "viewIdea";
+    }
 }

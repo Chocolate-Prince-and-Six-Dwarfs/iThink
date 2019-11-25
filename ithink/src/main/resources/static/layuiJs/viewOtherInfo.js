@@ -105,15 +105,15 @@ layui.use(['laypage', 'layer', 'table'], function(){
             var active={
                 otherUserViewIdea:function () {
                     var ideaId=data.id;
-                    window.location.href='/viewIdea?ideaId='+ encodeURI(encodeURI(ideaId));
+                    window.open('/viewIdea?ideaId='+ encodeURI(encodeURI(ideaId)));;
                 }
             }
             var othis = $(this),type=$(this).data('type');
             active[type] ? active[type].call(this, othis) : '';
-            layer.msg('查看操作');
         }else{
             layer.msg('非法的操作');
             return false;
         }
     });
 });
+
