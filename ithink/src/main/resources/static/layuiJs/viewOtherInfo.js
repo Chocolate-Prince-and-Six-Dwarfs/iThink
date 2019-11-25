@@ -84,13 +84,13 @@ layui.use(['laypage', 'layer', 'table'], function(){
         ,page: false //开启分页
         ,style: "color: block;"
         ,cols: [[ //表头
-            {field: 'title', title: '创意名称', width:'15%', fixed: 'left', style: 'color:black;'}
-            ,{field: 'content', title: '创意详情', width:'25%', style: 'color:black;'}
-            ,{field: 'experience', title: '发布者', width: '10%', style: 'color:black;'}
-            ,{field: 'like', title: '点赞', width:'10%', sort: true, style: 'color:black;'}
-            ,{field: 'collect', title: '收藏', width: '10%', sort: true, totalRow: true, style: 'color:black;'}
-            ,{field: 'time', title: '发布时间', width:'20%', style: 'color:black;'}
-            ,{fixed: 'right', width: '10%', align:'center', toolbar: '#barDemo', style: 'color:black;'}
+            {field: 'title', title: '创意名称', width:'15%', fixed: 'left', style: 'color:black;font-weight:bold'}
+            ,{field: 'content', title: '创意详情', width:'25%', style: 'color:black;font-weight:bold'}
+            ,{field: 'experience', title: '发布者', width: '10%', style: 'color:black;font-weight:bold'}
+            ,{field: 'like', title: '点赞', width:'10%', sort: true, style: 'color:black;font-weight:bold'}
+            ,{field: 'collect', title: '收藏', width: '10%', sort: true, totalRow: true, style: 'color:black;font-weight:bold'}
+            ,{field: 'time', title: '发布时间', width:'20%', style: 'color:black;font-weight:bold'}
+            ,{fixed: 'right', width: '10%', align:'center', toolbar: '#barDemo', style: 'color:black;font-weight:bold'}
         ]]
     });
 
@@ -100,6 +100,7 @@ layui.use(['laypage', 'layer', 'table'], function(){
             ,layEvent = obj.event; //获得 lay-event 对应的值
         if(layEvent === 'detail'){
             layer.msg('查看操作');
+            console(obj.data);
         }else{
             layer.msg('非法的操作');
             return false;
