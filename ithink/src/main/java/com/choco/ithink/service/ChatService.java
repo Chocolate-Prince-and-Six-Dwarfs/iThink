@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.*;
 import com.choco.ithink.pojo.*;
 import com.choco.ithink.tool.Tool;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -228,13 +229,15 @@ public class ChatService {
             }
 
             // 获取主题标题
-            BbsTopicExample bbsTopicExample = new BbsTopicExample();
-            bbsTopicExample.createCriteria().andTopicIdEqualTo(chatRoomList.get(i).getTopicId());
-            List<BbsTopic> bbsTopicList = bbsTopicMapper.selectByExample(bbsTopicExample);
             String topicTitle = "";
-            if(bbsTopicList.size()==1)
+            if(chatRoomList.get(i).getTopicId()!=null)
             {
-                topicTitle = bbsTopicList.get(0).getTopicTitle();
+                BbsTopicExample bbsTopicExample = new BbsTopicExample();
+                bbsTopicExample.createCriteria().andTopicIdEqualTo(chatRoomList.get(i).getTopicId());
+                List<BbsTopic> bbsTopicList = bbsTopicMapper.selectByExample(bbsTopicExample);
+                if (bbsTopicList.size() == 1) {
+                    topicTitle = bbsTopicList.get(0).getTopicTitle();
+                }
             }
 
             JSONObject jsonObject = new JSONObject();
@@ -249,5 +252,141 @@ public class ChatService {
         }
 
         return jsonArray;
+    }
+
+    // param topicId: 创意主题id(可选)
+    // param name: 聊天室名(可选。)
+    // param userIdList: 用户id列表
+    // param ownerId: 群主id (可选，默认为列表中第一个用户id)
+    // do:
+    // 若对应创意主题的聊天室不存在:
+    //      创建名为name的聊天室，如果没有传入name，则默认为当前时间戳, 最后将列表中用户加入聊天室
+    // 若对应创意主题的聊天室存在:
+    //      将列表中的用户加入聊天室，若已加入则会被忽略。传入的name会被忽略
+    // 若没有指定topicId, 则始终创建新聊天室
+    // return: 1|0 成功|失败
+    public Integer addToGroup(@Nullable Integer topicId, @Nullable String name, Integer[] userIdList, @Nullable Integer ownerId)
+    {
+        Integer status = 0;
+        if(userIdList.length<2)
+        {
+            return status;
+        }
+
+        try
+        {
+            Integer chatRoomId = null;
+            Date now = new Date();
+            if(topicId!=null)
+            {
+                // 检查聊天室是否已经存在
+                ChatRoomExample chatRoomExample = new ChatRoomExample();
+                chatRoomExample.createCriteria().andTopicIdEqualTo(topicId);
+
+                    // 若不存在
+                    List<ChatRoom> chatRoomList = chatRoomMapper.selectByExample(chatRoomExample);
+                    if (chatRoomList.size() != 1)
+                    {
+                        ChatRoom chatRoom = new ChatRoom();
+                        chatRoom.setName(Tool.delS(name) == null ? now.toString() : Tool.delS(name));
+                        chatRoom.setOwnerId(ownerId == null ? userIdList[0] : ownerId);
+                        chatRoom.setTopicId(topicId);
+                        chatRoom.setTime(now);
+
+                        // 创建聊天室
+                        status = chatRoomMapper.insertSelective(chatRoom);
+
+                        chatRoomId = chatRoom.getId();
+
+                        // 添加用户
+                        for (Integer userId : userIdList)
+                        {
+                            GroupMember groupMember = new GroupMember();
+                            groupMember.setTime(now);
+                            groupMember.setChatRoomId(chatRoomId);
+                            groupMember.setUserId(userId);
+                            status = groupMemberMapper.insertSelective(groupMember);
+                            if(status!=1)
+                            {
+                                // 删除成员
+                                GroupMemberExample groupMemberExample = new GroupMemberExample();
+                                groupMemberExample.createCriteria().andChatRoomIdEqualTo(chatRoomId);
+                                groupMemberMapper.deleteByExample(groupMemberExample);
+
+                                // 删除聊天室
+                                chatRoomMapper.deleteByPrimaryKey(chatRoomId);
+                                break;
+                            }
+                        }
+                    }
+                    // 若已存在
+                    else
+                    {
+                        chatRoomId = chatRoomList.get(0).getId();
+
+                        // 添加用户
+                        for (Integer userId : userIdList)
+                        {
+                            // 检查是否已经存在于团组中
+                            GroupMemberExample groupMemberExample = new GroupMemberExample();
+                            groupMemberExample.createCriteria().andChatRoomIdEqualTo(chatRoomId).andUserIdEqualTo(userId);
+                            if(groupMemberMapper.selectByExample(groupMemberExample).size()==1)
+                            {
+                                continue;
+                            }
+
+                            GroupMember groupMember = new GroupMember();
+                            groupMember.setTime(now);
+                            groupMember.setChatRoomId(chatRoomId);
+                            groupMember.setUserId(userId);
+                            status = groupMemberMapper.insertSelective(groupMember);
+                            if(status!=1)
+                            {
+                                break;
+                            }
+                        }
+                    }
+            }
+            else
+            {
+                ChatRoom chatRoom = new ChatRoom();
+                chatRoom.setName(Tool.delS(name) == null ? now.toString() : Tool.delS(name));
+                chatRoom.setOwnerId(ownerId == null ? userIdList[0] : ownerId);
+                chatRoom.setTopicId(topicId);
+                chatRoom.setTime(now);
+
+                // 创建聊天室
+                status = chatRoomMapper.insertSelective(chatRoom);
+
+                chatRoomId = chatRoom.getId();
+
+                // 添加用户
+                for (Integer userId : userIdList)
+                {
+                    GroupMember groupMember = new GroupMember();
+                    groupMember.setTime(now);
+                    groupMember.setChatRoomId(chatRoomId);
+                    groupMember.setUserId(userId);
+                    status = groupMemberMapper.insertSelective(groupMember);
+                    if(status!=1)
+                    {
+                        // 删除成员
+                        GroupMemberExample groupMemberExample = new GroupMemberExample();
+                        groupMemberExample.createCriteria().andChatRoomIdEqualTo(chatRoomId);
+                        groupMemberMapper.deleteByExample(groupMemberExample);
+
+                        // 删除聊天室
+                        chatRoomMapper.deleteByPrimaryKey(chatRoomId);
+                        break;
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return status;
     }
 }

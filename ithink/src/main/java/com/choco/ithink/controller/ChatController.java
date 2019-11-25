@@ -6,8 +6,10 @@ import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import com.choco.ithink.interfaces.ChatInterface;
 import com.choco.ithink.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.constraints.NotNull;
@@ -196,5 +198,23 @@ public class ChatController implements ChatInterface {
         canUpdate.put(key, false);
 
         return "data:" +  num.toString() + "\n\n";
+    }
+
+
+    // 请求地址 /chat/addToGroup
+    // param topicId: id
+    // param name: 聊天室名(可选。)
+    // param userIdList: 用户id列表
+    // do:
+    // 若对应创意主题的聊天室不存在:
+    //      创建名为name的聊天室，如果没有传入name，则默认为当前时间戳, 最后将列表中用户加入聊天室
+    // 若对应创意主题的聊天室存在:
+    //      将列表中的用户加入聊天室，若已加入则会被忽略。传入的name会被忽略
+    // return: 1|0 成功|失败
+    @RequestMapping("/addToGroup")
+    @ResponseJSONP
+    public Integer addToGroup(@Nullable Integer topicId, @Nullable String name, @RequestParam(value = "userIdList[]") Integer[] userIdList, @Nullable Integer ownerId)
+    {
+        return chatService.addToGroup(topicId, name, userIdList, ownerId);
     }
 }
