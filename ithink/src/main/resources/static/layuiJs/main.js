@@ -45,13 +45,13 @@ function getIdeas(pageSize){//得到创意列表
                     "                            <legend>"+data.data[i].title+"</legend>\n" +
                     "                            <div class=\"layui-field-box\">\n" +
                     "                                <p>"+subStringContent(data.data[i].content)+"...</p>\n" +
-                    "                                <p style=\"text-align: right\"><i data-type=\"viewOtherInfoLayui\" userId=\""+data.data[i].publisherId+"\" class=\"layui-icon layui-view-user-info\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+myTime(data.data[i].time)+"</i></p>\n" +
-                    "                                <p style=\"text-align: right\">\n" +
+                    "                                <p style=\"text-align: right;cursor:pointer;\"><i data-type=\"viewOtherInfoLayui\" userId=\""+data.data[i].publisherId+"\" class=\"layui-icon layui-view-user-info\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+myTime(data.data[i].time)+"</i></p>\n" +
+                    "                                <p style=\"text-align: right;cursor:pointer;\">\n" +
                     "                                    <a class='zan'><i class=\"layui-icon layui-icon-praise praise-topic topic-intro\" topicId='" + data.data[i].id + "'>顶一个</i></a>(<span class='likeNum-topic topic-intro' topicId='"+data.data[i].id+"'>"+data.data[i].like+"</span>)\n" +
                     "                                   <a class='cai'><i class=\"layui-icon layui-icon-tread tread-topic topic-intro\" topicId='" + data.data[i].id + "'>踩一下</i></a> \n" +
                     "                                   <a><i class=\"layui-icon layui-icon-rate rate-topic topic-intro\" topicId='" + data.data[i].id + "'>收藏</i></a>(<span class='collectNum-topic topic-intro' topicId='"+data.data[i].id+"'>"+data.data[i].collect+"</span>)\n" +
                     "                                </p>\n" +
-                    "                                <p style=\"text-align: right\"><a viewClass=\"view"+data.data[i].id+"\" class=\"view\"><i class=\"layui-icon\">查看详情 &#xe65b;</i></a></p>\n" +
+                    "                                <p style=\"text-align: right;cursor:pointer;\"><a viewClass=\"view"+data.data[i].id+"\" class=\"view\"><i class=\"layui-icon\">查看详情 &#xe65b;</i></a></p>\n" +
                     "                            </div>\n" +
                     "                        </fieldset>\n" +
                     "                    </div>";
@@ -92,13 +92,13 @@ function getSortIdeas(numSize){//热搜榜
                     "                            <legend>"+data.data[i].title+"</legend>\n" +
                     "                            <div class=\"layui-field-box\">\n" +
                     "                                <p>"+subStringContent(data.data[i].content)+"...</p>\n" +
-                    "                                <p style=\"text-align: right\"><i data-type=\"viewOtherInfoLayui\" userId=\""+data.data[i].publisherId+"\" class=\"layui-icon layui-view-user-info\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+time+"</i></p>\n" +
-                    "                                <p style=\"text-align: right\">\n" +
+                    "                                <p style=\"text-align: right;cursor:pointer;\"><i data-type=\"viewOtherInfoLayui\" userId=\""+data.data[i].publisherId+"\" class=\"layui-icon layui-view-user-info\">&#xe770;"+data.data[i].publisher+"</i><i class=\"layui-icon\">&#xe637;"+time+"</i></p>\n" +
+                    "                                <p style=\"text-align: right;cursor:pointer;\">\n" +
                     "                                    <a class='zan'><i class=\"layui-icon layui-icon-praise praise-topic topic-intro\" topicId='" + data.data[i].id + "'>顶一个</i></a>(<span class='likeNum-topic topic-intro' topicId='"+data.data[i].id+"'>"+data.data[i].like+"</span>)\n" +
                     "                                   <a class='cai'><i class=\"layui-icon layui-icon-tread tread-topic topic-intro\" topicId='" + data.data[i].id + "'>踩一下</i></a> \n" +
                     "                                   <a><i class=\"layui-icon layui-icon-rate rate-topic topic-intro\" topicId='" + data.data[i].id + "'>收藏</i></a>(<span class='collectNum-topic topic-intro' topicId='"+data.data[i].id+"'>"+data.data[i].collect+"</span>)\n" +
                     "                                </p>\n" +
-                    "                                <p style=\"text-align: right\"><a viewClass=\"view"+data.data[i].id+"\" class=\"view\"><i class=\"layui-icon\">查看详情 &#xe65b;</i></a></p>\n" +
+                    "                                <p style=\"text-align: right;cursor:pointer;\"><a viewClass=\"view"+data.data[i].id+"\" class=\"view\"><i class=\"layui-icon\">查看详情 &#xe65b;</i></a></p>\n" +
                     "                            </div>\n" +
                     "                        </fieldset>\n" +
                     "                    </div>";
