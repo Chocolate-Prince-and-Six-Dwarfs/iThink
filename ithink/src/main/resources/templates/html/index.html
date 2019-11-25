@@ -173,6 +173,10 @@
       height: 20%;
       margin: 30% 0 0 25%;
     }
+    .myButton{
+      border-radius: 10px;
+      width: 214px;
+    }
   </style>
 </head>
 
@@ -187,14 +191,14 @@
     <div class="layui-form-item">
       <label class="layui-form-label">邮箱</label>
       <div class="layui-input-inline">
-        <input type="email" id="login-email" placeholder="输入邮箱">
+        <input type="email" id="login-email" placeholder="输入邮箱" style="border-radius: 10px;height: 35px">
       </div>
     </div>
 
     <div class="layui-form-item">
       <label class="layui-form-label">密码</label>
       <div class="layui-input-inline">
-        <input type="password" id="login-pdw" placeholder="输入密码吧">
+        <input type="password" id="login-pdw" placeholder="输入密码吧" style="border-radius: 10px;height: 35px">
       </div>
     </div>
     <div class="layui-form-item">
@@ -213,21 +217,21 @@
     <div class="layui-form-item">
       <label class="layui-form-label">昵称</label>
       <div class="layui-input-inline">
-        <input type="text" id="username" name="title" required  lay-verify="required" placeholder="2-20位英文数字中文" autocomplete="off" class="layui-input">
+        <input type="text" id="username" name="title" required  lay-verify="required" placeholder="2-20位英文数字中文" autocomplete="off" class="layui-input myButton">
       </div>
     </div>
 
     <div class="layui-form-item">
       <label class="layui-form-label">密码</label>
       <div class="layui-input-inline">
-        <input type="password" id="resign-pwd" name="password" required lay-verify="required" placeholder="6-20位英文或数字" autocomplete="off" class="layui-input">
+        <input type="password" id="resign-pwd" name="password" required lay-verify="required" placeholder="6-20位英文或数字" autocomplete="off" class="layui-input myButton">
       </div>
     </div>
 
     <div class="layui-form-item">
       <label class="layui-form-label">邮箱</label>
       <div class="layui-input-inline">
-        <input type="email" id="resign-email" name="password" required lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+        <input type="email" id="resign-email" name="password" required lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input myButton">
       </div>
     </div>
 
@@ -240,7 +244,7 @@
           <label class="layui-form-label">生日</label>
           <div class="layui-input-inline">
 <!--            <input type="text" required lay-verify="required" class="layui-input" id="user_birthday" placeholder="yyyy-MM-dd">-->
-            <input type="text" required lay-verify="required" class="layui-input" id="user_birthday" readonly="true" placeholder="点击选择生日"/>
+            <input type="text" required lay-verify="required" class="layui-input myButton" id="user_birthday" readonly="true" placeholder="点击选择生日"/>
           </div>
         </div>
       </div>
@@ -249,7 +253,7 @@
     <div class="layui-form-item">
       <label class="layui-form-label">电话</label>
       <div class="layui-input-inline">
-        <input type="text" id="tel" name="password" required lay-verify="required" placeholder="留个联系方式吧" autocomplete="off" class="layui-input">
+        <input type="text" id="tel" name="password" required lay-verify="required" placeholder="留个联系方式吧" autocomplete="off" class="layui-input myButton">
       </div>
     </div>
     <div class="layui-form-item">
@@ -261,7 +265,7 @@
     </div>
     <div class="layui-form-item">
       <div class="layui-input-block">
-        <button class="layui-btn go" id="register" lay-submit lay-filter="formDemo">立即注册</button>
+        <button class="layui-btn go myButton" id="register" lay-submit lay-filter="formDemo">立即注册</button>
       </div>
     </div>
   </form>
