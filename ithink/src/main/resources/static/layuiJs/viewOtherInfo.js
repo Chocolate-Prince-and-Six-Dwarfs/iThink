@@ -68,7 +68,7 @@ layui.use(['laypage', 'layer', 'table'], function(){
     var userId=getUserId();
     //执行一个 table 实例
     table.render({
-        elem: '#demo'
+        elem: '#otherUserViewIdeaId'
         ,height: 420
         ,url:'user/getInfoByUserId' //数据接口
         ,where:{ id:userId ,opinion:'topic' }
@@ -89,38 +89,31 @@ layui.use(['laypage', 'layer', 'table'], function(){
             ,{field: 'experience', title: '发布者', width: '10%', style: 'color:black;font-weight:bold'}
             ,{field: 'like', title: '点赞', width:'10%', sort: true, style: 'color:black;font-weight:bold'}
             ,{field: 'collect', title: '收藏', width: '10%', sort: true, totalRow: true, style: 'color:black;font-weight:bold'}
-            ,{field: 'time', title: '发布时间', width:'20%', style: 'color:black;font-weight:bold'}
-            ,{fixed: 'right', width: '10%', align:'center', toolbar: '#barDemo', style: 'color:black;font-weight:bold'}
+            ,{field: 'time', title: '发布时间', width:'20%', style: 'color:black;font-weight:bold',templet: function(d){
+                    return myTime(d.time);
+                }}
+            ,{fixed: 'right', width: '10%', align:'center', toolbar: '#viewContent', style: 'color:black;font-weight:bold'}
         ]]
     });
 
     //监听行工具事件
-    table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+    table.on('tool(otherUserViewIdea)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
         var data = obj.data //获得当前行数据
             ,layEvent = obj.event; //获得 lay-event 对应的值
+        console.log(data);
         if(layEvent === 'detail'){
+            var active={
+                otherUserViewIdea:function () {
+                    var ideaId=data.id;
+                    window.location.href='/viewIdea?ideaId='+ encodeURI(encodeURI(ideaId));
+                }
+            }
+            var othis = $(this),type=$(this).data('type');
+            active[type] ? active[type].call(this, othis) : '';
             layer.msg('查看操作');
-            console(obj.data);
         }else{
             layer.msg('非法的操作');
             return false;
         }
     });
-
-    $.ajax({
-        url:"user/getInfoByUserId",
-        type:"post",
-        dataType: "json",
-        data:{
-            id: userId,
-            opinion:"topic",
-        },
-        success:function (data) {
-            console.log(data);
-        },
-        error:function () {
-            layer.msg("读取个人创意信息失败");
-        }
-    })
-
 });
