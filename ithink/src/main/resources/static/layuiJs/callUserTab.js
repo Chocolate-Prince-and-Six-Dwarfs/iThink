@@ -249,41 +249,57 @@ function callUserProfitProjects(element) {
         element.tabChange('userDemo','userProfitProjects');
     }else{
         element.tabAdd('userDemo',{
-            title: "获利项目"
-            ,content: "<div class=\"userProfitProjectsContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\"><div class=\"collection\">\n" +
-                "    <h3>我的获利</h3>\n" +
-                "    <hr>\n" +
-                "    <div class=\"layui-tab-content\">\n" +
-                "        <ul>\n" +
-                "            <li >\n" +
-                "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题标题标题标题</div>\n" +
-                "                <div>\n" +
-                "                    <span>2019-12-12结束</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;获利：100 元</span>\n" +
-                "\n" +
-                "                </div>\n" +
-                "            </li>\n" +
-                "            <hr>\n" +
-                "            <li >\n" +
-                "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题标题标题标题</div>\n" +
-                "                <div>\n" +
-                "                    <span>2019-12-12结束</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;获利：100 元</span>\n" +
-                "\n" +
-                "                </div>\n" +
-                "            </li>\n" +
-                "            <hr>\n" +
-                "            <li >\n" +
-                "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题标题标题标题</div>\n" +
-                "                <div>\n" +
-                "                    <span>2019-12-12结束</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;获利：100 元</span>\n" +
-                "\n" +
-                "                </div>\n" +
-                "            </li>\n" +
-                "        </ul>\n" +
-                "    </div>\n" +
-                "</div>\n</div>"
+            title: "投资人认证"
+            ,content: "                    <div class=\"UserProfitProjects\" style=\"width: 60%; position: relative; left:20%;right: 20%\">\n" +
+                "                        <fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 30px;\">\n" +
+                "                            <legend>投资人认证</legend>\n" +
+                "                        </fieldset>\n" +
+                "                            <form class=\"layui-form\">\n" +
+                "                                <div class=\"layui-form-item\">\n" +
+                "                                    <label class=\"layui-form-label\">真实姓名:</label>\n" +
+                "                                    <div class=\"layui-input-block\">\n" +
+                "                                        <input type=\"text\" id='layui-form-item-username' name=\"title\" required  lay-verify=\"required\" placeholder=\"请输入真实姓名\" autocomplete=\"off\" class=\"layui-input\">\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                                <div class=\"layui-form-item\">\n" +
+                "                                    <label class=\"layui-form-label\">身份证号码:</label>\n" +
+                "                                    <div class=\"layui-input-block\">\n" +
+                "                                        <input type=\"text\" id='idcard' name=\"tel\" required  lay-verify=\"required\" placeholder=\"身份证号码\" autocomplete=\"off\" class=\"layui-input\">\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                                <div class=\"layui-form-item\">\n" +
+                "                                    <label class=\"layui-form-label\">联系电话:</label>\n" +
+                "                                    <div class=\"layui-input-block\">\n" +
+                "                                        <input type=\"text\" name=\"major\" placeholder=\"联系方式\" autocomplete=\"off\" class=\"layui-input\">\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                                <div class=\"layui-form-item\">\n" +
+                "                                    <label class=\"layui-form-label\">所在公司:</label>\n" +
+                "                                    <div class=\"layui-input-block\">\n" +
+                "                                        <input type=\"text\" name=\"school\" placeholder=\"请输入公司\" autocomplete=\"off\" class=\"layui-input\">\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                                <div class=\"layui-form-item\">\n" +
+                "                                    <label class=\"layui-form-label\">职位:</label>\n" +
+                "                                    <div class=\"layui-input-block\">\n" +
+                "                                        <input type=\"text\" name=\"addr\" placeholder=\"请输入职位名\" autocomplete=\"off\" class=\"layui-input\">\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                                <div class=\"layui-form-item layui-form-text\">\n" +
+                "                                    <label class=\"layui-form-label\">自我描述:</label>\n" +
+                "                                    <div class=\"layui-input-block\">\n" +
+                "                                        <textarea id=\"userEdit\" name=\"desc\" placeholder=\"请输入内容\" class=\"layui-textarea\"></textarea>\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                                <div class=\"layui-form-item\">\n" +
+                "                                    <div class=\"layui-input-block\">\n" +
+                "                                        <button class=\"layui-btn layui-btn-normal\" id=\"userInfoForm\" style=\"background-color: #A4D3EE\"\n" +
+                "                                                lay-submit lay-filter=\"userForm\">提交</button>\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                            </form>\n" +
+                "                        </div>\n" +
+                "                </div>\n"
             ,id: "userProfitProjects"
         });
         element.tabChange('userDemo','userProfitProjects');
@@ -319,3 +335,4 @@ function callUserFocusOn(element) {
 
     }
 }
+
