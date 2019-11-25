@@ -7,6 +7,7 @@ import com.choco.ithink.DAO.mapper.BbsReplyMapper;
 import com.choco.ithink.DAO.mapper.CommentLikeMapper;
 import com.choco.ithink.DAO.mapper.UserMapper;
 import com.choco.ithink.pojo.*;
+import com.choco.ithink.tool.Tool;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -118,7 +119,7 @@ public class CommentService {
         // 构建实体
         BbsComment bbsComment = new BbsComment();
         bbsComment.setAchievementId(achievementId);
-        bbsComment.setCommentContent(content);
+        bbsComment.setCommentContent(Tool.delS(content));
         bbsComment.setFromUid(fromId);
         bbsComment.setCommentBuildtime(new Date());
         bbsComment.setToUid(toId);
@@ -312,5 +313,33 @@ public class CommentService {
         jsonObject.put("status", status);
 
         return jsonObject;
+    }
+
+    // param id: 评论id
+    // do: 删除评论
+    // return: 1|0 成功|失败
+    public Integer delete(Integer id)
+    {
+        Integer status = 0;
+
+        try
+        {
+            // 删除评论点赞和点踩
+            CommentLikeExample commentLikeExample = new CommentLikeExample();
+            commentLikeExample.createCriteria().andCommentIdEqualTo(id);
+            commentLikeMapper.deleteByExample(commentLikeExample);
+
+            // 删除评论
+            BbsCommentExample bbsCommentExample = new BbsCommentExample();
+            bbsCommentExample.createCriteria().andCommentIdEqualTo(id);
+            status = bbsCommentMapper.deleteByExample(bbsCommentExample);
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return status;
     }
 }

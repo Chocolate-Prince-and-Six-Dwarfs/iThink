@@ -72,8 +72,13 @@ function saveUserInfo(form,layer){//保存个人信息
 function releaseIdeaInfo(form,layer,layedit,editIndex){//发布创意
     $(document).off('click','#releaseIdea').on('click','#releaseIdea',function () {
         var fData=new FormData();
+        var topicTitle=htmlEscape($("#topicTitle").val());
+        if(topicTitle.length>=26){
+            layer.msg("创意标题过长");
+            return false;
+        }
         fData.append('userId',user_id);
-        fData.append('topicTitle',$("#topicTitle").val());
+        fData.append('topicTitle',topicTitle);
         fData.append('content',layedit.getContent(editIndex));
         if($("#topicTitle").val()==null||$("#topicTitle").val()==""){
             layer.msg("创意标题不能为空");
@@ -206,7 +211,7 @@ function getUserFans(userId) {
 function getUserNotice(userId){
     var source=new EventSource('/notify?id='+userId);
     source.onmessage = function (event) {
-         console.info(event.data);
+        console.info(event.data);
     };
 }
 

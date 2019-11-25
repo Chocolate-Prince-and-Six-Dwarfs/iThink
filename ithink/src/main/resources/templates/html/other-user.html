@@ -20,10 +20,10 @@
             width: 100%;
         }
         .mid-top{
-            width: 60%;
+            width: 80%;
             position: relative;
-            left:20%;
-            right: 20%;
+            left:10%;
+            right: 10%;
             background-color:#fff;
             color: #529ac3;
             font-weight: bold;
@@ -33,10 +33,10 @@
             margin-top: 3em;
         }
         .user-other-show{
-            width: 60%;
+            width: 80%;
             position: relative;
-            left:20%;
-            right:20%;
+            left:10%;
+            right:10%;
             background-color:#fff;
             border-radius: 10px;
             opacity: 0.5;
@@ -45,58 +45,70 @@
     </style>
 </head>
 <body class="layui-layout-body">
-<div class="layui-layout layui-layout-admin">
-    <div class="layui-header" style="background-color: #6CA6CD">
-        <ul class="layui-nav">
-            <li class="layui-nav-item">
-                <img src="/img/商标small.png" alt="">
-            </li>
+<div class="layui-body" style="left:0%">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header" style="background-color: #6CA6CD">
+            <ul class="layui-nav">
+                <li class="layui-nav-item">
+                    <img src="/img/商标small.png" alt="">
+                </li>
 
-            <li class="layui-nav-item">
-                <a href="/main">首页</a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="">发现</a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="">合作</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="mid">
-        <div class="mid-top">
-            <div class="user-head" style="text-align: center;padding-top: 1em"><img src="/img/头像small.png" class="user-other-img">用户名：<b class="user-other-name"></b></div>
-            <div class="user-other-intro" style="margin-top: 1em;text-align: center;"><div style="padding-bottom: 1em;">用户简介：<b class="user-intro-info"></b></div></div>
+                <li class="layui-nav-item">
+                    <a href="/main">首页</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">发现</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">合作</a>
+                </li>
+            </ul>
         </div>
-        <div class="user-other-show">
-            <div>
-                <p style="margin-left: 1em;padding-top: 1em">性别：<b class="sex-info"></b></p>
+
+        <div class="mid">
+            <div class="mid-top">
+                <div class="user-head" style="text-align: center;padding-top: 1em"><img src="/img/头像small.png" class="user-other-img">用户名：<b class="user-other-name"></b></div>
+                <div class="user-other-intro" style="margin-top: 1em;text-align: center;"><div style="padding-bottom: 1em;">用户简介：<b class="user-intro-info"></b></div></div>
             </div>
-            <div>
-                <p style="margin-top: 1em;margin-left: 1em">学校：<b class="school-info"></b></p>
-            </div>
-            <div>
-                <p style="margin-top: 1em;margin-left: 1em">生日：<b class="birthday-info"></b></p>
-            </div>
-            <div>
-                <p style="margin-top: 1em;margin-left: 1em">所在城市：<b class="addr-info"></b></p>
-            </div>
-            <div>
-                <p style="margin-top: 1em;margin-left: 1em">邮箱：<b class="email-info"></b></p>
-            </div>
-            <div>
-                <p style="margin-top: 1em;margin-left: 1em">信用积分：<b class="credit-info"></b></p>
-            </div>
-            <div>
-                <p style="margin-top: 1em;margin-left: 1em">行业：<b class="industry-info"></b></p>
-            </div>
-            <div>
-                <p style="margin-top: 1em;margin-left: 1em;padding-bottom: 1em">电话：<b class="tel-info"></b></p>
+            <div class="user-other-show">
+                <div>
+                    <p style="margin-left: 1em;padding-top: 1em">性别：<b class="sex-info"></b></p>
+                </div>
+                <div>
+                    <p style="margin-top: 1em;margin-left: 1em">学校：<b class="school-info"></b></p>
+                </div>
+                <div>
+                    <p style="margin-top: 1em;margin-left: 1em">生日：<b class="birthday-info"></b></p>
+                </div>
+                <div>
+                    <p style="margin-top: 1em;margin-left: 1em">所在城市：<b class="addr-info"></b></p>
+                </div>
+                <div>
+                    <p style="margin-top: 1em;margin-left: 1em">邮箱：<b class="email-info"></b></p>
+                </div>
+                <div>
+                    <p style="margin-top: 1em;margin-left: 1em">信用积分：<b class="credit-info"></b></p>
+                </div>
+                <div>
+                    <p style="margin-top: 1em;margin-left: 1em">行业：<b class="industry-info"></b></p>
+                </div>
+                <div>
+                    <p style="margin-top: 1em;margin-left: 1em;">电话：<b class="tel-info"></b></p>
+                </div>
+                <div>
+                    <p style="margin-top: 1em;margin-left: 1em;padding-bottom: 1em">个人发布的创意：</p>
+                </div>
+                <div>
+                    <table class="layui-hide" id="demo" lay-filter="test"></table>
+                    <script type="text/html" id="barDemo">
+                        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" style="color: black;">查看</a>
+                    </script>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <script >
     layui.config({
