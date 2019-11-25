@@ -267,6 +267,8 @@ public class UserController implements UserInterface {
         }
 
         // 拼接JSON
+        jsonObject.put("code",0);
+        jsonObject.put("msg","");
         jsonObject.put("count", count);
         jsonObject.put("data", data);
         return jsonObject;
