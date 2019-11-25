@@ -295,7 +295,15 @@ public class UserController implements UserInterface {
         Integer status = 0;
 
         // 检查有效性
-        Boolean nameAvailability = checkName(name);
+        Boolean nameAvailability;
+        if(name!=null)
+        {
+            nameAvailability = checkName(name);
+        }
+        else
+        {
+            nameAvailability = true;
+        }
         if(nameAvailability)
         {
             // 更新
