@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.*;
 import com.choco.ithink.pojo.*;
+import com.choco.ithink.tool.Tool;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,6 +26,8 @@ public class AchievementService {
     private AchievementCollectionMapper achievementCollectionMapper;
     @Resource
     private BbsCommentMapper bbsCommentMapper;
+    @Autowired
+    private CommentService commentService;
 
 
     // param userId: 用户id
@@ -394,7 +398,7 @@ public class AchievementService {
         BbsAchievement bbsAchievement = new BbsAchievement();
         bbsAchievement.setUserId(userId);
         bbsAchievement.setTopicId(topicId);
-        bbsAchievement.setAchievementContent(content);
+        bbsAchievement.setAchievementContent(Tool.delS(content));
         bbsAchievement.setAchievementBulidtime(new Date());
 
         // 插入数据库
@@ -406,5 +410,48 @@ public class AchievementService {
         {
             return null;
         }
+    }
+
+
+    // param id: 创意实现id
+    // do: 删除创意实现
+    // return: 1|0 成功|失败
+    public Integer delete(Integer id)
+    {
+        Integer status = 0;
+
+        try
+        {
+            // 删除创意实现点赞和点踩
+            AchievementLikeExample achievementLikeExample = new AchievementLikeExample();
+            achievementLikeExample.createCriteria().andAchievementIdEqualTo(id);
+            achievementLikeMapper.deleteByExample(achievementLikeExample);
+
+            // 删除创意实现的收藏
+            AchievementCollectionExample achievementCollectionExample = new AchievementCollectionExample();
+            achievementCollectionExample.createCriteria().andAchievementIdEqualTo(id);
+            achievementCollectionMapper.deleteByExample(achievementCollectionExample);
+
+            // 删除评论
+            BbsCommentExample bbsCommentExample = new BbsCommentExample();
+            bbsCommentExample.createCriteria().andAchievementIdEqualTo(id);
+            List<BbsComment> bbsCommentList = bbsCommentMapper.selectByExample(bbsCommentExample);
+            for (BbsComment bbsComment: bbsCommentList)
+            {
+                commentService.delete(bbsComment.getCommentId());
+            }
+
+            // 删除创意实现
+            BbsAchievementExample bbsAchievementExample = new BbsAchievementExample();
+            bbsAchievementExample.createCriteria().andAchievementIdEqualTo(id);
+            status = bbsAchievementMapper.deleteByExample(bbsAchievementExample);
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return status;
     }
 }

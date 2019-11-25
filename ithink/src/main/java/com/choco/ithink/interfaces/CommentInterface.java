@@ -59,4 +59,10 @@ public interface CommentInterface {
     //  }
     // }
     JSONObject getLike(Integer id, Integer userId);
+
+    // 请求地址: /comment/delete
+    // param id: 评论id
+    // do: 删除评论
+    // return: 1|0 成功|失败
+    Integer delete(Integer id);
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/idea")
@@ -419,5 +420,16 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
         jsonObject.put("count", count);
         jsonObject.put("data", data);
         return jsonObject;
+    }
+
+    // 请求地址: /idea/delete
+    // param id: 创意主题id
+    // do: 删除创意主题
+    // return: 1|0 成功|失败
+    @RequestMapping("/delete")
+    @ResponseBody
+    public Integer delete(Integer id)
+    {
+        return creativeIdeaService.delete(id);
     }
 }

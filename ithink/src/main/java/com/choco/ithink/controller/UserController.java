@@ -294,9 +294,14 @@ public class UserController implements UserInterface {
         JSONObject jsonObject = new JSONObject();
         Integer status = 0;
 
-        // 更新
-        status = userService.updateInfoById(id, head, name, sex, birthday, phone,
-                address, industry, school, introduction);
+        // 检查有效性
+        Boolean nameAvailability = checkName(name);
+        if(nameAvailability)
+        {
+            // 更新
+            status = userService.updateInfoById(id, head, name, sex, birthday, phone,
+                    address, industry, school, introduction);
+        }
 
         // 拼接字符串
         jsonObject.put("id", id);
