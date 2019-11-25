@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/layui/css/layui.css">
     <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="/layuiJs/search.js"></script>
+    <script type="text/javascript" src="/layuiJs/getTime.js"></script>
     <link rel="stylesheet"  href="/css/user-head.css">
     <style>
         body {
@@ -96,12 +97,12 @@
                     <p style="margin-top: 1em;margin-left: 1em;">电话：<b class="tel-info"></b></p>
                 </div>
                 <div>
-                    <p style="margin-top: 1em;margin-left: 1em;padding-bottom: 1em">个人发布的创意：</p>
+                    <p style="margin-top: 1em;margin-left: 1em;">个人发布的创意：</p>
                 </div>
                 <div>
-                    <table class="layui-hide" id="demo" lay-filter="test"></table>
-                    <script type="text/html" id="barDemo">
-                        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" style="color: black;">查看</a>
+                    <table class="layui-hide" id="otherUserViewIdeaId" lay-filter="otherUserViewIdea"></table>
+                    <script type="text/html" id="viewContent">
+                        <a class="layui-btn layui-btn-primary layui-btn-xs" data-type="otherUserViewIdea" lay-event="detail" style="color: black;">查看</a>
                     </script>
                 </div>
             </div>

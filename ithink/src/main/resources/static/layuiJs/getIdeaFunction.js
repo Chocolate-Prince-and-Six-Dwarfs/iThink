@@ -18,9 +18,10 @@ function getIdeaInfo(ideaId,appendDivName,ideaList){
                 var ach=data.achievements[i].achievement;
                 for(var j in data.achievements[i].comments){
                     var comment=data.achievements[i].comments[j].comment;
+                    <!--评论展示-->
                     comment_list+="<div class=\"imgdiv\"><img fromId=\""+comment.fromUid+"\" data-type=\"viewOtherInfo\" class=\"imgcss idea_achievement_comment_user"+comment.commentId+"\" src=\"/img/头像.png\"/></div>\n" +
                         "                                        <div class=\"conmment_details\">\n" +
-                        "                                            <span class=\"comment_name idea_achievement_comment_user_name" + comment.commentId + "\">" + comment.fromName + " </span>     <span class=\"idea_achievement_comment_user_time" + comment.commentId + "\">" + comment.time.substring(0, 10) + "</span>\n" +
+                        "                                            <span class=\"comment_name idea_achievement_comment_user_name" + comment.commentId + "\">" + comment.fromName + " </span>     <span class=\"idea_achievement_comment_user_time" + comment.commentId + "\">" + myTime(comment.time) + "</span>\n" +
                         "                                            <div class=\"comment_content idea_achievement_comment_user_content" + comment.commentId + "\">  " + comment.content + "</div>\n" +
                         "                                            <div class=\"del\">\n" +
                         "                                           <a><i class=\"icon layui-icon layui-icon-praise idea_achievement_comment_user_good" + comment.commentId + " praise-comment comment-detail\" commentId='" + comment.commentId + "'>赞一下</i></a>(<span class='likeNum-comment comment-detail' commentId='" + comment.commentId + "'>" + comment.like + "</span>)\n" +
@@ -35,8 +36,10 @@ function getIdeaInfo(ideaId,appendDivName,ideaList){
                     commentIdList.push(comment.commentId);
                     commentUserIdList.push(comment.fromUid);
                 }
+                <!--创意实现展示-->
+                var tmp=i+1;
                 achievements += "<fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 50px;\">\n" +
-                    "                                <legend>创意实现" + i + "</legend>\n" +
+                    "                                <legend>创意实现-" + tmp + "</legend>\n" +
                     "                            </fieldset>\n" +
                     "                            <div class=\"layui-card idea_achievement" + ach.id + "\">\n" +
                     "                                <div data-type=\"viewOtherInfoLayui\" userId=\""+ach.userId+"\" class=\"layui-card-header layui-view-user-info idea_achievement_title" + ach.userId + "\"></div>\n" +
@@ -81,7 +84,7 @@ function getIdeaInfo(ideaId,appendDivName,ideaList){
                 "                        </div>\n" +
                 "                        <p style=\"text-align: right\">\n" +
                 "                            <a><i data-type=\"viewOtherInfoLayui\" userId=\""+data.topic.publisherId+"\" class=\"layui-icon layui-view-user-info\">&#xe770;" + data.topic.publisher + "</i></a>\n" +
-                "                            <a><i class=\"layui-icon\">&#xe637;" + data.topic.time.substring(0, 10) + "</i></a>\n" +
+                "                            <a><i class=\"layui-icon\">&#xe637;" + myTime(data.topic.time) + "</i></a>\n" +
                 "                            <a><i class=\"layui-icon layui-icon-praise praise-topic topic-detail\" topicId='" + data.topic.id + "'>顶一个</i></a>(<span class='likeNum-topic topic-detail' topicId='" + data.topic.id + "'>" + data.topic.like + "</span>)\n" +
                 "                            <a><i class=\"layui-icon layui-icon-tread tread-topic topic-detail\" topicId='" + data.topic.id + "'>踩一下</i></a>\n" +
                 "                             <a><i class=\"layui-icon layui-icon-rate rate-topic topic-detail\" topicId='" + data.topic.id + "'>收藏</i></a>(<span class='collectNum-topic topic-detail' topicId='" + data.topic.id + "'>" + data.topic.collect + "</span>)\n" +
@@ -105,8 +108,6 @@ function getIdeaInfo(ideaId,appendDivName,ideaList){
                     var type = "comment";
                     var className = "comment-detail";
                     var processId = commentIdList[i];
-                    //console.log(processId);
-                    //console.log(user_id);
                     precess(type, className, processId, user_id);
                 }
                 for(var i=0;i<commentIdList.length;++i){
@@ -188,11 +189,7 @@ function releaseArticle(layedit,layer,form,editIndex,id,ideaList) {//发布创�
             contentType: false,
             success:function () {
                 layer.msg("发布创意实现成功");
-                $(ideaList).show();
-                $("#refreshIdeas").show();
-                $(".viewIdea").empty();
-                form.render();
-                //window.location.reload();
+                window.location.reload();
             },
             error:function () {
                 layer.msg("发布创意实现失败");
@@ -215,21 +212,7 @@ function commentShow() {//评论显示与否
         //$(".idea_achievement_comment"+achid).css('display',isShow=='none'?'':'none');
     })
 }
-function getNowDate() {//得到当前时间
-    var date = new Date();
-    var seperator1 = "-";
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var strDate = date.getDate();
-    if (month >= 1 && month <= 9) {
-        month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-    }
-    var currentdate = year + seperator1 + month + seperator1 + strDate;
-    return currentdate;
-}
+
 function comment(layer) {
     $(document).off('click','.idea-comment-button').on('click','.idea-comment-button',function () {
         var thisClass=$(this).attr('class');
@@ -259,7 +242,8 @@ function comment(layer) {
                 toId:toId,
             },
             success:function (data) {
-                var currentdate=getNowDate();
+                var now=new Date();
+                var currentdate=formatDateTime(now);
                 if(data.status==1){
                     var name=$("#userName").text();
                     var imgData=$("#userImg").attr("src");
@@ -291,7 +275,22 @@ function comment(layer) {
         });
     });
 }
-
+function getAchievementUserName(userId) {//获得用户名
+    $.ajax({
+        url:"/user/getById",
+        type:"post",
+        dataType: "json",
+        data:{
+            id: userId,
+        },
+        success:function (data) {
+            $(".idea_achievement_title"+userId).text("发布者："+data.name);
+        },
+        error:function () {
+            console.log("读取用户信息失败！");
+        }
+    });
+}
 function change(type, className, id, user_id) {
     var request = "";
     if(type === "topic")
