@@ -72,8 +72,13 @@ function saveUserInfo(form,layer){//保存个人信息
 function releaseIdeaInfo(form,layer,layedit,editIndex){//发布创意
     $(document).off('click','#releaseIdea').on('click','#releaseIdea',function () {
         var fData=new FormData();
+        var topicTitle=htmlEscape($("#topicTitle").val());
+        if(topicTitle.length>=11){
+            layer.msg("创意标题过长");
+            return false;
+        }
         fData.append('userId',user_id);
-        fData.append('topicTitle',$("#topicTitle").val());
+        fData.append('topicTitle',topicTitle);
         fData.append('content',layedit.getContent(editIndex));
         if($("#topicTitle").val()==null||$("#topicTitle").val()==""){
             layer.msg("创意标题不能为空");
@@ -147,6 +152,9 @@ function getUserIdeas(layer,userId) {
                     "                    <span>时间:"+data.data[i].time.substring(0,10)+"</span>\n" +
                     "                    <span style=\"margin-left: 10px\">收藏数:"+data.data[i].collect+"</span>\n" +
                     "                    <span style=\"margin-left: 10px\">点赞数:"+data.data[i].like+"</span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary\">修改创意</button></span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary\" >删除创意</button></span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary\">生成团组</button></span>\n" +
                     "                </div>\n" +
                     "            </li>\n" +
                     "            <hr>";

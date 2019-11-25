@@ -6,7 +6,7 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
     getUserId();//user_id已保存
     getUserInfo(user_id,form);//获取头像
     search(layer);//搜索
-    getSortIdeas(20);//热搜榜
+    getSortIdeas(10);//热搜榜
     refresh(5);
     viewIdea(".viewIdea",".ideaList");//查看创意详情
     comment(layer);//评论
@@ -188,7 +188,7 @@ function refresh(pageSize) {
             "                    </div>\n" +
             "                    <div id=\"cutPage\"></div>";
         $("#layui-tab-2").append(text1);
-        getSortIdeas(20);//热搜榜
+        getSortIdeas(10);//热搜榜
         viewIdea(".viewIdea",".sortIdeaList");//查看创意详情
         $(".sortIdeaList").show();
         $(".viewIdea").empty();
