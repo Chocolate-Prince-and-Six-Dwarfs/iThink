@@ -6,10 +6,14 @@
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="/layui/css/layui.css">
     <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/layuiJs/getIdeaFunction.js"></script>
     <script type="text/javascript" src="/layuiJs/htmlEscape.js"></script>
+    <script type="text/javascript" src="/layuiJs/getData.js"></script>
+    <script type="text/javascript" src="/layuiJs/getIdeaFunction.js"></script>
     <script type="text/javascript" src="/layuiJs/getTime.js"></script>
     <style>
+        body{
+            background-color: #fffff0;
+        }
         .imgdiv{
             margin:10px auto
         }
@@ -21,9 +25,43 @@
     </style>
 </head>
 <body>
+<div class="layui-layout layui-layout-admin" style="width: 125%;margin: auto">
+    <div class="layui-header" style="background-color: #1C1C1C">
+        <ul class="layui-nav">
+            <li class="layui-nav-item">
+                <img src="/img/商标small.png" alt="">
+            </li>
+
+            <li class="layui-nav-item">
+                <a href="/main">首页</a>
+            </li>
+            <li class="layui-nav-item" style="margin-left: 10px;">
+                <label>
+                    <input type="text" placeholder="搜索内容" class="layui-input" id="search-input"/>
+                </label>
+            </li>
+            <li class="layui-nav-item" style="margin-left: 3px;">
+                <a class="layui-icon" id="search" data-type="searchInfo"  style="font-size: 23px;">&#xe615;</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="user#userDemo=userNotices" class="layui-icon" style="font-size: 23px; ">&#xe667;</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/user#userDemo=userInfo"><img src="/img/头像small.png" id="userImg" class="layui-nav-img" alt=""><b id="userName">我</b></a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/user#userDemo=userInfo">个人中心</a></dd>
+                    <dd><a href="/user#userDemo=userNotices">我的通知</a></dd>
+                    <dd><a href="/user/logout">退出</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+
 <div class="viewIdea">
 
 </div>
+
 <div class="ideaList">
 
 </div>
