@@ -12,9 +12,6 @@
   <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript" src="/layuiJs/htmlEscape.js"></script>
   <style>
-    body{
-
-    }
     .top{
       background-color: #4096bf;
       width: 100%;
@@ -96,13 +93,13 @@
       padding: 0.5em;
       border-radius: 25px;
       background-color: #b1b1b178;
-      width:400px;
+      width: 400px;
       position: absolute;
-      margin-top: 100px;
+      margin-top: 200px;
       margin-left: 50px;
       left: 35%;
       z-index:2 ;
-      font-family:"幼圆" ;
+      font-family:"幼圆";
       font-size: 18px;
       font-weight: bold;
       display: none;
@@ -117,7 +114,7 @@
       background-color: #fff9ec;
       border-radius: 34px;
       padding: 1px;
-      border: 0px;
+      border: 0;
       width: 2em;
       height:2em;
       margin-top: 1em;
@@ -127,6 +124,54 @@
       border-radius: 5px;
       margin-left: -10px;
       width: 200px;
+    }
+
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    html,body{
+      height: 100%;
+    }
+
+    .newmid {
+      background-image: url("/img/introduce.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+      width: 100%;
+      height: 750px;
+    }
+    .btndiv{
+      width: 15%;
+      height: 30%;
+      background-color: rgba(255, 255, 255, 0.3);
+      float: left;
+      margin: 20% 0 0 8%;
+    }
+    .navigationBtnD {
+      background-color: #015478;
+      border: none;
+      border-radius: 5px;
+      color: #95f204;
+      text-align: center;
+      font-size: 18px;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      width: 50%;
+      height: 20%;
+      margin: 10% 0 0 25%;
+    }
+
+    .navigationBtnZ {
+      background-color: #015478;
+      border: none;
+      border-radius: 5px;
+      color: #95f204;
+      text-align: center;
+      font-size: 18px;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      width: 50%;
+      height: 20%;
+      margin: 30% 0 0 25%;
     }
   </style>
 </head>
@@ -157,9 +202,7 @@
       <button type="submit" class="layui-btn go" id="login" >登录</button>
       </div>
     </div>
-
   </form>
-
 
   <!--注册-->
   <form class="layui-form" action="" id="form2">
@@ -222,12 +265,13 @@
       </div>
     </div>
   </form>
-  <div class="top">
+
+  <!--<div class="top">
     <div class="layui-anim layui-anim-up layui-anim-scale left">
       <p class="navigationTitleP">iThink</p>
     </div>
     <div class="layui-anim layui-anim-scaleSpring" style="width:28%;position: relative;right: 20%; font-family:'幼圆'; font-size: 20px; font-weight: bold; color: #fff;">
-      <p >欢迎来到iThink</p>
+      <p>欢迎来到iThink</p>
       <p>不要我觉得 我要你觉得</p>
     </div>
     <div class="right">
@@ -249,9 +293,16 @@
         <p class="layui-anim layui-anim-up ">来iThink寻找你想要的想法</p>
       </div>
     </div>
-
   </div>
-  <div class="foot"></div>
+
+  <div class="foot"></div>-->
+
+  <div class="newmid">
+    <div class="btndiv">
+      <button type="button" id="btn1" class="navigationBtnD" style="margin-bottom: 1em">登录</button>
+      <button type="button" id="btn2" class="navigationBtnZ" style="margin-bottom: 1em">注册</button>
+    </div>
+  </div>
 </div>
 </body>
 <script>
