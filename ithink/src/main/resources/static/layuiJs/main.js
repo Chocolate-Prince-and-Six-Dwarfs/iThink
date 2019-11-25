@@ -86,7 +86,8 @@ function getSortIdeas(numSize){//热搜榜
             $(".sortIdeaList").empty();
             //sortLikenumInt(data);
             for(var i in data.data){
-                var time=formatTime(data.data[i].time,"Y-M-D");
+                //console.log(data.data[i].time);
+                var time=formatTime(data.data[i].time,"Y-M-D h:m:s");
                 var idea="<div style=\"padding: 15px;\" class=\"idea"+data.data[i].id+"\">\n" +
                     "                        <fieldset class=\"layui-elem-field\">\n" +
                     "                            <legend>"+data.data[i].title+"</legend>\n" +

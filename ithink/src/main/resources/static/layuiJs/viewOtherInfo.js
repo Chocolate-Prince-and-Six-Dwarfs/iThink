@@ -117,3 +117,9 @@ layui.use(['laypage', 'layer', 'table'], function(){
     });
 });
 
+function followOthers(layer) {
+    $.ajax({
+
+    });
+}
+
