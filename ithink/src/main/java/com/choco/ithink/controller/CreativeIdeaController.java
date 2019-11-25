@@ -432,18 +432,4 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
     {
         return creativeIdeaService.delete(id);
     }
-
-    // 请求地址: /idea/update
-    // param id: 创意主题id
-    // param topicTitle: 对应的创意标题
-    // param userId: 用户id
-    // param content: 创意主题内容
-    // do: 更新创意主题
-    // return: 创意主题id, 失败返回null
-    @RequestMapping("/update")
-    @ResponseBody
-    public Integer update(Integer id,String topicTitle, Integer userId, String content)
-    {
-        return creativeIdeaService.update(id, topicTitle, userId, content);
-    }
 }

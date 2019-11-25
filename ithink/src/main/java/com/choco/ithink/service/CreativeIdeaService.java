@@ -645,13 +645,6 @@ public class CreativeIdeaService {
                 achievementService.delete(bbsAchievement.getAchievementId());
             }
 
-            // 删除搜索仓库的文档
-            List<BbsTopic> tmpList = new ArrayList<BbsTopic>();
-            BbsTopic bbsTopic = new BbsTopic();
-            bbsTopic.setTopicId(id);
-            tmpList.add(bbsTopic);
-            delBbsTopic(tmpList);
-
             // 删除创意主题
             BbsTopicExample bbsTopicExample = new BbsTopicExample();
             bbsTopicExample.createCriteria().andTopicIdEqualTo(id);
@@ -664,40 +657,5 @@ public class CreativeIdeaService {
         }
 
         return status;
-    }
-
-
-    // 请求地址: /idea/update
-    // param id: 创意主题id
-    // param topicTitle: 对应的创意标题
-    // param userId: 用户id
-    // param content: 创意主题内容
-    // do: 更新创意主题
-    // return: 创意主题id, 失败返回null
-    public Integer update(Integer id,String topicTitle, Integer userId, String content)
-    {
-        // 构建实体
-        BbsTopic bbsTopic = new BbsTopic();
-        bbsTopic.setTopicId(id);
-        bbsTopic.setTopicTitle(Tool.delS(topicTitle));
-        bbsTopic.setUserId(userId);
-        bbsTopic.setTopicContent(Tool.delS(content));
-        // 待修改
-        bbsTopic.setTopicCreativecapsule(1);
-        bbsTopic.setTopicBuildtime(new Date());
-
-        // 插入数据库
-        if(bbsTopicMapper.updateByPrimaryKeySelective(bbsTopic) == 1)
-        {
-            List<BbsTopic> tmpList = new ArrayList<BbsTopic>();
-            tmpList.add(bbsTopic);
-            delBbsTopic(tmpList);
-            saveBbsTopic(tmpList);
-            return bbsTopic.getTopicId();
-        }
-        else
-        {
-            return null;
-        }
     }
 }
