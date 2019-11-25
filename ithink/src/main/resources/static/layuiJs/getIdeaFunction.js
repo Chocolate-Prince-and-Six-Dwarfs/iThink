@@ -8,7 +8,7 @@ function getIdeaInfo(ideaId,appendDivName,ideaList){
         },
         success:function (data) {
             //console.log(data);
-            var retButton="<button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\" id=\"ret\"><i class=\"layui-icon\">&#xe65c;返回</i></button>";
+            //var retButton="<button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\" id=\"ret\"><i class=\"layui-icon\">&#xe65c;返回</i></button>";
             var achievements="";
             var commentIdList = [];
             var commentUserIdList=[];
@@ -37,24 +37,26 @@ function getIdeaInfo(ideaId,appendDivName,ideaList){
                     commentUserIdList.push(comment.fromUid);
                 }
                 <!--创意实现展示-->
-                var tmp=i+1;
-                achievements += "<fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 50px;\">\n" +
-                    "                                <legend>创意实现-" + tmp + "</legend>\n" +
-                    "                            </fieldset>\n" +
-                    "                            <div class=\"layui-card idea_achievement" + ach.id + "\">\n" +
-                    "                                <div data-type=\"viewOtherInfoLayui\" userId=\""+ach.userId+"\" class=\"layui-card-header layui-view-user-info idea_achievement_title" + ach.userId + "\"></div>\n" +
+                achievements += "                            <div class=\"layui-card idea_achievement" + ach.id + "\">\n" +
+                    "                                <div data-type=\"viewOtherInfoLayui\" style=\"font-weight: bold\" userId=\""+ach.userId+"\" class=\"layui-card-header layui-view-user-info idea_achievement_title" + ach.userId + "\"></div>\n" +
                     "                                <div class=\"layui-card-body idea_achievement_content" + ach.id + "\">\n" +
                     "                                    " + ach.content + "\n" +
                     "                                </div>\n" +
                     "                            </div>\n" +
-                    "                            <div style=\"text-align: right\"><a class=\"comment-idea\" isShow=\"false\" achid=\""+ach.id+"\"><i class=\"layui-icon\">&#xe611;评论</i></a></div>\n"+
+                    "                            <div style=\"margin-left:90%;margin-bottom:1em\"><a class=\"comment-idea\" isShow=\"false\" achid=\""+ach.id+"\"><i class=\"layui-icon\">&#xe611;评论</i></a></div>\n"+
                     "                            <div class=\"idea_achievement_comment idea_achievement_comment"+ach.id+"\" style=\"width: 90%; position: relative; left:10%;display: none\">\n" +
-                    "                                <input type=\"text\" name=\"title\" required lay-verify=\"required\" placeholder=\"请输入评论内容\" autocomplete=\"off\" class=\"layui-input idea-comment-content idea_achievement_comment_content"+ach.id+"\">\n" +
-                    "                                <p style=\"text-align: right\"><button type=\"button\" toId=\""+ach.userId+"\" class=\"layui-btn layui-btn-primary idea-comment-button idea_achievement_comment_button"+ach.id+"\">发布评论</button></p>\n" +
+
+                    "                                <div class=\"layui-input-item\"><div class=\"layui-inline\"><input type=\"text\" name=\"title\" required lay-verify=\"required\" " +
+                    "                                       placeholder=\"请输入评论内容\" autocomplete=\"off\" class=\"layui-input layui-inline idea-comment-content idea_achievement_comment_content"+ach.id+"\" style=\"width:500px\">" +
+                    "                                                                </div>\n" +
+                    "                                <div class=\"layui-inline\"><button style=\"margin-left: 1em\" type=\"button\" toId=\""+ach.userId+"\" class=\"layui-btn layui-btn-normal idea-comment-button " +
+                    "                                       idea_achievement_comment_button"+ach.id+"\">发布评论</button></div>" +
+                    "                                </div>\n" +
+
                     "                                <div class=\"idea_achievement_comment_list"+ach.id+"\">\n" +
 
-                    "                                    <h3 >全部评论</h3>\n" +
-                    "                                    <hr>\n" +
+                    "                                    <h3 style=\"margin-bottom: 1em;margin-top: 1em\">全部评论</h3>\n" +
+                    "                                    <hr style=\"margin-bottom: 1em\">\n" +
                     "                                    <div class=\"comment idea_achievement_comment_user_list" + ach.id + "\">\n" +
                     comment_list +
                     "                                    </div>\n" +
@@ -64,16 +66,16 @@ function getIdeaInfo(ideaId,appendDivName,ideaList){
             }
 
             var releaseArticle="<div class=\"releaseIdeaArticle\">\n" +
-                "                            <div style=\"width: 60%; position: relative; left:20%;margin-top: 30px\">\n" +
+                "                            <div style=\"width: 70%; position: relative; left:15%;margin-top: 30px\">\n" +
                 "                                <textarea id=\"releaseIdeaArticleContent\" style=\"display: none;\"></textarea>\n" +
                 "                            </div>\n" +
-                "                            <div style=\"text-align: center\">\n" +
+                "                            <div style=\"margin-top:1em;text-align: center\">\n" +
                 "                                <button type=\"button\" class=\"layui-btn layui-btn-primary releaseIdeaArticleButton\">发布创意实现</button>\n" +
                 "                            </div>\n" +
                 "                        </div>";//发布创意
 
-            var ideaDetails="<div style=\"padding: 15px;\"><fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 30px;\">\n" +
-                "                        <legend>创意详情</legend>\n" +
+            var ideaDetails="<div style=\"padding: 15px;width:80%;position: relative;left:10%;\"><fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 30px;\">\n" +
+                "                        <legend style=\"font-weight: bold\">创意详情</legend>\n" +
                 "                    </fieldset>\n" +
                 "                    <div class=\"layui-col-md12\">\n" +
                 "                        <div class=\"layui-card\">\n" +
@@ -89,10 +91,14 @@ function getIdeaInfo(ideaId,appendDivName,ideaList){
                 "                            <a><i class=\"layui-icon layui-icon-tread tread-topic topic-detail\" topicId='" + data.topic.id + "'>踩一下</i></a>\n" +
                 "                             <a><i class=\"layui-icon layui-icon-rate rate-topic topic-detail\" topicId='" + data.topic.id + "'>收藏</i></a>(<span class='collectNum-topic topic-detail' topicId='" + data.topic.id + "'>" + data.topic.collect + "</span>)\n" +
                 "                        </p>\n" +
-                "                        <div class=\"idea_achievements\" style=\"width: 95%; position: relative; left:5%;\">\n"+
-                releaseArticle+achievements+
+                "                        <div class=\"idea_achievements\" style=\"width: 75%; position: relative; left:15%;\">\n"+
+                releaseArticle+
+                "                            <fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 50px;\">\n" +
+                "                                <legend style=\"font-weight: bold\">创意实现</legend>\n" +
+                "                            </fieldset>\n"+
+                achievements+
                 "                        </div></div>";
-            $(appendDivName).append(retButton);
+            //$(appendDivName).append(retButton);
             $(appendDivName).append(ideaDetails);
             releaseArticleEdit("releaseIdeaArticleContent",ideaId,ideaList);
 
