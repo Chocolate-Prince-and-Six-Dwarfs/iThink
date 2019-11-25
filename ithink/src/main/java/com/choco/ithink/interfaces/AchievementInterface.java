@@ -97,4 +97,14 @@ public interface AchievementInterface {
     // do: 删除创意实现
     // return: 1|0 成功|失败
     Integer delete(Integer id);
+
+
+    // 请求地址: /ach/update
+    // param id: 创意实现id
+    // param userId: 用户id
+    // param topicId: 对应的创意主题id
+    // param content: 创意实现内容
+    // do: 发布创意实现
+    // return: 创意实现id, 失败返回null
+    Integer update(Integer id, Integer userId, Integer topicId, String content);
 }

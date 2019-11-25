@@ -240,4 +240,14 @@ public interface CreativeIdeaInterface {
     // do: 删除创意主题
     // return: 1|0 成功|失败
     Integer delete(Integer id);
+
+
+    // 请求地址: /idea/update
+    // param id: 创意主题id
+    // param topicTitle: 对应的创意标题
+    // param userId: 用户id
+    // param content: 创意主题内容
+    // do: 更新创意主题
+    // return: 创意主题id, 失败返回null
+    Integer update(Integer id,String topicTitle, Integer userId, String content);
 }
