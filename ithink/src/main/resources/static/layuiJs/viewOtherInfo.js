@@ -74,8 +74,9 @@ layui.use(['laypage', 'layer', 'table'], function(){
         ,where:{ id:userId ,opinion:'topic' }
         ,method:'post'
         ,response: {
-            statusName: '' //规定数据状态的字段名称，默认：code
-            ,msgName: '' //规定状态信息的字段名称，默认：msg
+            statusName: 'code' //规定数据状态的字段名称，默认：code
+            ,statusCode: 0 //规定成功的状态码，默认：0
+            ,msgName: 'msg' //规定状态信息的字段名称，默认：msg
             ,countName: 'count' //规定数据总数的字段名称，默认：count
             ,dataName: 'data' //规定数据列表的字段名称，默认：data
         }
@@ -83,16 +84,13 @@ layui.use(['laypage', 'layer', 'table'], function(){
         ,page: false //开启分页
         ,style: "color: block;"
         ,cols: [[ //表头
-            {field: 'title', title: '创意名称', width:80, fixed: 'left', style: 'color:black;'}
-            ,{field: 'content', title: '创意详情', width:80, style: 'color:black;'}
-            ,{field: 'experience', title: '创意发布者', width: 90, style: 'color:black;'}
-            ,{field: 'like', title: '点赞数', width:80, sort: true, style: 'color:black;'}
-            ,{field: 'collect', title: '收藏', width: 80, sort: true, totalRow: true, style: 'color:black;'}
-            ,{field: 'city', title: '城市', width:150, style: 'color:black;'}
-            ,{field: 'sign', title: '签名', width: 200, style: 'color:black;'}
-            ,{field: 'classify', title: '职业', width: 100, style: 'color:black;'}
-            ,{field: 'wealth', title: '财富', width: 135, sort: true, totalRow: true, style: 'color:black;'}
-            ,{fixed: 'right', width: 165, align:'center', toolbar: '#barDemo', style: 'color:black;'}
+            {field: 'title', title: '创意名称', width:'15%', fixed: 'left', style: 'color:black;'}
+            ,{field: 'content', title: '创意详情', width:'25%', style: 'color:black;'}
+            ,{field: 'experience', title: '发布者', width: '10%', style: 'color:black;'}
+            ,{field: 'like', title: '点赞', width:'10%', sort: true, style: 'color:black;'}
+            ,{field: 'collect', title: '收藏', width: '10%', sort: true, totalRow: true, style: 'color:black;'}
+            ,{field: 'time', title: '发布时间', width:'20%', style: 'color:black;'}
+            ,{fixed: 'right', width: '10%', align:'center', toolbar: '#barDemo', style: 'color:black;'}
         ]]
     });
 
