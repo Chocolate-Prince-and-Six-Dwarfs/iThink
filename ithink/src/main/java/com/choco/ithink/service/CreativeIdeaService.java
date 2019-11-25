@@ -41,8 +41,10 @@ public class CreativeIdeaService {
     private TopicCollectionMapper topicCollectionMapper;
     @Resource
     private BbsAchievementMapper bbsAchievementMapper;
+//    @Autowired
+//    private ElasticsearchTemplate elasticsearchTemplate;
     @Autowired
-    private ElasticsearchTemplate elasticsearchTemplate;
+    private AchievementService achievementService;
 
 
     // param bbsTopicList: mybatis查询数据库得到的实体列表
@@ -612,5 +614,48 @@ public class CreativeIdeaService {
         {
             return jsonArray;
         }
+    }
+
+
+    // param id: 创意主题id
+    // do: 删除创意主题
+    // return: 1|0 成功|失败
+    public Integer delete(Integer id)
+    {
+        Integer status = 0;
+
+        try
+        {
+            // 删除创意主题点赞和点踩
+            TopicLikeExample topicLikeExample = new TopicLikeExample();
+            topicLikeExample.createCriteria().andTopicIdEqualTo(id);
+            topicLikeMapper.deleteByExample(topicLikeExample);
+
+            // 删除创意主题的收藏
+            TopicCollectionExample topicCollectionExample = new TopicCollectionExample();
+            topicCollectionExample.createCriteria().andTopicIdEqualTo(id);
+            topicCollectionMapper.deleteByExample(topicCollectionExample);
+
+            // 删除创意实现
+            BbsAchievementExample bbsAchievementExample1 = new BbsAchievementExample();
+            bbsAchievementExample1.createCriteria().andAchievementIdEqualTo(id);
+            List<BbsAchievement> bbsAchievementList = bbsAchievementMapper.selectByExample(bbsAchievementExample1);
+            for (BbsAchievement bbsAchievement: bbsAchievementList)
+            {
+                achievementService.delete(bbsAchievement.getAchievementId());
+            }
+
+            // 删除创意主题
+            BbsTopicExample bbsTopicExample = new BbsTopicExample();
+            bbsTopicExample.createCriteria().andTopicIdEqualTo(id);
+            status = bbsTopicMapper.deleteByExample(bbsTopicExample);
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return status;
     }
 }

@@ -8,6 +8,7 @@ import com.choco.ithink.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/comment")
@@ -116,5 +117,16 @@ public class CommentController implements CommentInterface {
         jsonObject.put("id", id);
         jsonObject.put("data", data);
         return jsonObject;
+    }
+
+    // 请求地址: /comment/delete
+    // param id: 评论id
+    // do: 删除评论
+    // return: 1|0 成功|失败
+    @RequestMapping("/delete")
+    @ResponseBody
+    public Integer delete(Integer id)
+    {
+        return commentService.delete(id);
     }
 }

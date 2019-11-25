@@ -314,4 +314,32 @@ public class CommentService {
 
         return jsonObject;
     }
+
+    // param id: 评论id
+    // do: 删除评论
+    // return: 1|0 成功|失败
+    public Integer delete(Integer id)
+    {
+        Integer status = 0;
+
+        try
+        {
+            // 删除评论点赞和点踩
+            CommentLikeExample commentLikeExample = new CommentLikeExample();
+            commentLikeExample.createCriteria().andCommentIdEqualTo(id);
+            commentLikeMapper.deleteByExample(commentLikeExample);
+
+            // 删除评论
+            BbsCommentExample bbsCommentExample = new BbsCommentExample();
+            bbsCommentExample.createCriteria().andCommentIdEqualTo(id);
+            status = bbsCommentMapper.deleteByExample(bbsCommentExample);
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return status;
+    }
 }
