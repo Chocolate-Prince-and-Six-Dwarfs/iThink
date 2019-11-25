@@ -211,7 +211,7 @@ function getUserFans(userId) {
 function getUserNotice(userId){
     var source=new EventSource('/notify?id='+userId);
     source.onmessage = function (event) {
-         console.info(event.data);
+        console.info(event.data);
     };
 }
 
