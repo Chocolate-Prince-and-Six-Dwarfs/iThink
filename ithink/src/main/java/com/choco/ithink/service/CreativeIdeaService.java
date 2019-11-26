@@ -542,7 +542,8 @@ public class CreativeIdeaService {
         {
             List<BbsTopic> tmpList = new ArrayList<BbsTopic>();
             tmpList.add(bbsTopic);
-            saveBbsTopic(tmpList);
+            Thread saveThread = new Thread(() -> saveBbsTopic(tmpList), "saveThread_" + new Date().toString());
+            saveThread.start();
             return bbsTopic.getTopicId();
         }
         else
@@ -650,7 +651,8 @@ public class CreativeIdeaService {
             BbsTopic bbsTopic = new BbsTopic();
             bbsTopic.setTopicId(id);
             tmpList.add(bbsTopic);
-            delBbsTopic(tmpList);
+            Thread delThread = new Thread(() -> delBbsTopic(tmpList), "delThread_" + new Date().toString());
+            delThread.start();
 
             // 删除创意主题
             BbsTopicExample bbsTopicExample = new BbsTopicExample();
@@ -690,8 +692,10 @@ public class CreativeIdeaService {
         {
             List<BbsTopic> tmpList = new ArrayList<BbsTopic>();
             tmpList.add(bbsTopic);
-            delBbsTopic(tmpList);
-            saveBbsTopic(tmpList);
+            Thread delThread = new Thread(() -> delBbsTopic(tmpList), "delThread_" + new Date().toString());
+            delThread.start();
+            Thread saveThread = new Thread(() -> saveBbsTopic(tmpList), "saveThread_" + new Date().toString());
+            saveThread.start();
             return bbsTopic.getTopicId();
         }
         else
