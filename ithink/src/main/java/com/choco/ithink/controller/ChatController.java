@@ -217,4 +217,58 @@ public class ChatController implements ChatInterface {
     {
         return chatService.addToGroup(topicId, name, userIdList, ownerId);
     }
+
+
+    // 请求地址 /chat/kickFromGroup
+    // param requestId: 发起踢人请求的id
+    // param kickId: 被踢人id
+    // param chatRoomId: 聊天室id
+    // do: 检查权限，若有权限，则踢人（自己发起踢出自己的请求则是退群, 群主退群会直接解散群）
+    // return: 1|0 成功|失败
+    @RequestMapping("/kickFromGroup")
+    @ResponseJSONP
+    public Integer kickFromGroup(Integer requestId, Integer kickId, Integer chatRoomId)
+    {
+        return chatService.kickFromGroup(requestId, kickId, chatRoomId);
+    }
+
+
+    // 请求地址 /chat/getUserListByChatRoomId
+    // param chatRoomId: 聊天室id
+    // do: 查找聊天室成员信息
+    // return
+    // 成功:
+    // chatRoomId: ,
+    // userList:
+    // [
+    //  {
+    //      id: ,
+    //      name: ,
+    //      sex: ,
+    //      email: ,
+    //      birthday: ,
+    //      phone: ,
+    //      credit: 信誉积分,
+    //      head: 头像
+    //      address: ,
+    //      industry: 职业,
+    //      school: ,
+    //      introduction
+    //  },
+    //  ...
+    // ]
+    @RequestMapping("/getUserListByChatRoomId")
+    @ResponseJSONP
+    public JSONObject getUserListByChatRoomId(Integer chatRoomId)
+    {
+        JSONObject jsonObject = new JSONObject();
+
+        JSONArray userList = chatService.getUserListByChatRoomId(chatRoomId);
+
+        // 拼接json
+        jsonObject.put("chatRoomId", chatRoomId);
+        jsonObject.put("userList", userList);
+
+        return jsonObject;
+    }
 }

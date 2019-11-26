@@ -65,9 +65,10 @@ public interface ChatInterface {
     JSONObject getGroupChatRecord(Integer id);
 
 
+    // 请求地址 /chat/addToGroup
     // param topicId: 创意主题id(可选)
     // param name: 聊天室名(可选。)
-    // param userIdList: 用户id列表
+    // param userIdList: 用户id列表(长度至少为2, 添加单个用户进群时可在列表中加入群主id以满足长度要求)
     // param ownerId: 群主id (可选，默认为列表中第一个用户id)
     // do:
     // 若对应创意主题的聊天室不存在:
@@ -77,4 +78,40 @@ public interface ChatInterface {
     // 若没有指定topicId, 则始终创建新聊天室
     // return: 1|0 成功|失败
     Integer addToGroup(@Nullable Integer topicId, @Nullable String name, Integer[] userIdList, @Nullable Integer ownerId);
+
+
+    // 请求地址 /chat/kickFromGroup
+    // param requestId: 发起踢人请求的id
+    // param kickId: 被踢人id
+    // param chatRoomId: 聊天室id
+    // do: 检查权限，若有权限，则踢人（自己发起踢出自己的请求则是退群, 群主退群会直接解散群）
+    // return: 1|0 成功|失败
+    Integer kickFromGroup(Integer requestId, Integer kickId, Integer chatRoomId);
+
+
+    // 请求地址 /chat/getUserListByChatRoomId
+    // param chatRoomId: 聊天室id
+    // do: 查找聊天室成员信息
+    // return
+    // 成功:
+    // chatRoomId: ,
+    // userList:
+    // [
+    //  {
+    //      id: ,
+    //      name: ,
+    //      sex: ,
+    //      email: ,
+    //      birthday: ,
+    //      phone: ,
+    //      credit: 信誉积分,
+    //      head: 头像
+    //      address: ,
+    //      industry: 职业,
+    //      school: ,
+    //      introduction
+    //  },
+    //  ...
+    // ]
+    JSONObject getUserListByChatRoomId(Integer chatRoomId);
 }

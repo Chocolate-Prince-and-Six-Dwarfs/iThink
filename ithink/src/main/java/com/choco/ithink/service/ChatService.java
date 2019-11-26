@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.*;
 import com.choco.ithink.pojo.*;
 import com.choco.ithink.tool.Tool;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,8 @@ public class ChatService {
     private BbsTopicMapper bbsTopicMapper;
     @Resource
     private ChatRoomMapper chatRoomMapper;
+    @Autowired
+    private UserService userService;
 
     // param id: 用户id
     // do: 查询上次更新聊天记录的时间
@@ -388,5 +391,112 @@ public class ChatService {
         }
 
         return status;
+    }
+
+
+    // param requestId: 发起踢人请求的id
+    // param kickId: 被踢人id
+    // param chatRoomId: 聊天室id
+    // do: 检查权限，若有权限，则踢人（自己发起踢出自己的请求则是退群, 群主退群会直接解散群）
+    // return: 1|0 成功|失败
+    public Integer kickFromGroup(Integer requestId, Integer kickId, Integer chatRoomId)
+    {
+        Integer status = 0;
+        // 检查请求者是否是群主
+        ChatRoom chatRoom = chatRoomMapper.selectByPrimaryKey(chatRoomId);
+        Integer ownerId = chatRoom.getOwnerId();
+        // 是群主
+        try {
+            if (requestId == ownerId)
+            {
+                // 检查是否是主动退群
+                // 主动退群
+                if (requestId == kickId)
+                {
+                    // 删除所有群成员
+                    GroupMemberExample groupMemberExample = new GroupMemberExample();
+                    groupMemberExample.createCriteria().andChatRoomIdEqualTo(chatRoomId);
+                    groupMemberMapper.deleteByExample(groupMemberExample);
+
+                    // 删除群
+                    chatRoomMapper.deleteByPrimaryKey(chatRoomId);
+                    status = 1;
+                }
+                // 踢人
+                else
+                {
+                    // 踢人
+                    GroupMemberExample groupMemberExample = new GroupMemberExample();
+                    groupMemberExample.createCriteria().andChatRoomIdEqualTo(chatRoomId).andUserIdEqualTo(kickId);
+                    groupMemberMapper.deleteByExample(groupMemberExample);
+                    status = 1;
+                }
+            }
+            // 不是群主
+            else {
+                // 检查是否是主动退群
+                // 主动退群
+                if (requestId == kickId)
+                {
+                    // 退群
+                    GroupMemberExample groupMemberExample = new GroupMemberExample();
+                    groupMemberExample.createCriteria().andChatRoomIdEqualTo(chatRoomId).andUserIdEqualTo(kickId);
+                    groupMemberMapper.deleteByExample(groupMemberExample);
+                    status = 1;
+                }
+                // 踢人
+                else
+                    {
+                    // 非群主没有权限踢出其他成员
+                    status = 0;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            status = 0;
+        }
+        finally
+        {
+            return  status;
+        }
+    }
+
+
+    // param chatRoomId: 聊天室id
+    // do: 查找聊天室成员信息
+    // return
+    // 成功:
+    // [
+    //  {
+    //      id: ,
+    //      name: ,
+    //      sex: ,
+    //      email: ,
+    //      birthday: ,
+    //      phone: ,
+    //      credit: 信誉积分,
+    //      head: 头像
+    //      address: ,
+    //      industry: 职业,
+    //      school: ,
+    //      introduction
+    //  },
+    //  ...
+    // ]
+    public JSONArray getUserListByChatRoomId(Integer chatRoomId)
+    {
+        JSONArray jsonArray = new JSONArray();
+        // 查找组内用户id
+        GroupMemberExample groupMemberExample = new GroupMemberExample();
+        groupMemberExample.createCriteria().andChatRoomIdEqualTo(chatRoomId);
+        List<GroupMember> groupMemberList = groupMemberMapper.selectByExample(groupMemberExample);
+        for(GroupMember groupMember: groupMemberList)
+        {
+            jsonArray.add(userService.getById(groupMember.getUserId()));
+        }
+
+        return jsonArray;
     }
 }

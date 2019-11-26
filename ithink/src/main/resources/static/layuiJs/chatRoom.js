@@ -38,7 +38,8 @@ class ChatRoom
         container.attr("id", "chat-room-container");
         container.css("width", this.width);
         container.css("position", "fixed");
-        container.css("right", "3px");
+        container.css("right", "0.2px");
+        container.css("top", "10%");
         container.css("display", "flex");
         container.css("flex-direction", "column");
         container.css("flex-wrap", "wrap");
@@ -48,6 +49,7 @@ class ChatRoom
         container.css("transition", "height 0.5s");
         //container.css("overflow", "scroll");
         container.css("margin", "2em");
+        //container.css("z-index", "100");
 
         // 构建打开关闭的按钮
         let button = $("<button>");
@@ -152,6 +154,16 @@ class ChatRoom
     {
         $(parent).append(this.element);
 
+        this._init()
+    }
+
+    prependTo(parent)
+    {
+        $(parent).prepend(this.element);
+    }
+
+    _init()
+    {
         let thisObject= this;
 
         // 初始化团组信息
