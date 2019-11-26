@@ -1,6 +1,6 @@
 package com.choco.ithink.pojo;
 
-public class FollowersNamelist {
+public class FollowersNamelistKey {
     private Integer followId;
 
     private Integer userId;

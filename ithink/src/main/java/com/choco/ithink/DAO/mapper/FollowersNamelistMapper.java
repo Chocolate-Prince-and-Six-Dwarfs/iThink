@@ -1,7 +1,7 @@
 package com.choco.ithink.DAO.mapper;
 
-import com.choco.ithink.pojo.FollowersNamelist;
 import com.choco.ithink.pojo.FollowersNamelistExample;
+import com.choco.ithink.pojo.FollowersNamelistKey;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -10,21 +10,15 @@ public interface FollowersNamelistMapper {
 
     int deleteByExample(FollowersNamelistExample example);
 
-    int deleteByPrimaryKey(Integer followId);
+    int deleteByPrimaryKey(FollowersNamelistKey key);
 
-    int insert(FollowersNamelist record);
+    int insert(FollowersNamelistKey record);
 
-    int insertSelective(FollowersNamelist record);
+    int insertSelective(FollowersNamelistKey record);
 
-    List<FollowersNamelist> selectByExample(FollowersNamelistExample example);
+    List<FollowersNamelistKey> selectByExample(FollowersNamelistExample example);
 
-    FollowersNamelist selectByPrimaryKey(Integer followId);
+    int updateByExampleSelective(@Param("record") FollowersNamelistKey record, @Param("example") FollowersNamelistExample example);
 
-    int updateByExampleSelective(@Param("record") FollowersNamelist record, @Param("example") FollowersNamelistExample example);
-
-    int updateByExample(@Param("record") FollowersNamelist record, @Param("example") FollowersNamelistExample example);
-
-    int updateByPrimaryKeySelective(FollowersNamelist record);
-
-    int updateByPrimaryKey(FollowersNamelist record);
+    int updateByExample(@Param("record") FollowersNamelistKey record, @Param("example") FollowersNamelistExample example);
 }
