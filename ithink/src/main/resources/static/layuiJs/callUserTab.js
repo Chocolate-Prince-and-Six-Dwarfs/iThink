@@ -258,13 +258,13 @@ function callUserProfitProjects(element) {
                 "                                <div class=\"layui-form-item\">\n" +
                 "                                    <label class=\"layui-form-label\">真实姓名:</label>\n" +
                 "                                    <div class=\"layui-input-block\">\n" +
-                "                                        <input type=\"text\" id='layui-form-item-username' name=\"title\" required  lay-verify=\"required\" placeholder=\"请输入真实姓名\" autocomplete=\"off\" class=\"layui-input\">\n" +
+                "                                        <input type=\"text\" id=\"investorName\" name=\"title\" required  lay-verify=\"required\" placeholder=\"请输入真实姓名\" autocomplete=\"off\" class=\"layui-input\">\n" +
                 "                                    </div>\n" +
                 "                                </div>\n" +
                 "                                <div class=\"layui-form-item\">\n" +
                 "                                    <label class=\"layui-form-label\">身份证号码:</label>\n" +
                 "                                    <div class=\"layui-input-block\">\n" +
-                "                                        <input type=\"text\" id='idcard' name=\"tel\" required  lay-verify=\"required\" placeholder=\"身份证号码\" autocomplete=\"off\" class=\"layui-input\">\n" +
+                "                                        <input type=\"text\" id=\"investorIdcard\" name=\"tel\" required  lay-verify=\"required\" placeholder=\"身份证号码\" autocomplete=\"off\" class=\"layui-input\">\n" +
                 "                                    </div>\n" +
                 "                                </div>\n" +
                 "                                <div class=\"layui-form-item\">\n" +
@@ -288,13 +288,13 @@ function callUserProfitProjects(element) {
                 "                                <div class=\"layui-form-item layui-form-text\">\n" +
                 "                                    <label class=\"layui-form-label\">自我描述:</label>\n" +
                 "                                    <div class=\"layui-input-block\">\n" +
-                "                                        <textarea id=\"userEdit\" name=\"desc\" placeholder=\"请输入内容\" class=\"layui-textarea\"></textarea>\n" +
+                "                                        <textarea name=\"desc\" placeholder=\"请输入内容\" class=\"layui-textarea\"></textarea>\n" +
                 "                                    </div>\n" +
                 "                                </div>\n" +
                 "                                <div class=\"layui-form-item\">\n" +
                 "                                    <div class=\"layui-input-block\">\n" +
-                "                                        <button class=\"layui-btn layui-btn-normal\" id=\"userInfoForm\" style=\"background-color: #A4D3EE\"\n" +
-                "                                                lay-submit lay-filter=\"userForm\">提交</button>\n" +
+                "                                        <button class=\"layui-btn layui-btn-normal investorInfoBut\" style=\"background-color: #A4D3EE\"\n" +
+                "                                                lay-submit>提交</button>\n" +
                 "                                    </div>\n" +
                 "                                </div>\n" +
                 "                            </form>\n" +

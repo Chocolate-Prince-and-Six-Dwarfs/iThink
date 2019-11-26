@@ -86,7 +86,7 @@ layui.use(['laypage', 'layer', 'table'], function(){
         ,cols: [[ //表头
             {field: 'title', title: '创意名称', width:'15%', fixed: 'left', style: 'color:black;font-weight:bold'}
             ,{field: 'content', title: '创意详情', width:'25%', style: 'color:black;font-weight:bold'}
-            ,{field: 'experience', title: '发布者', width: '10%', style: 'color:black;font-weight:bold'}
+            ,{field: 'publisher', title: '发布者', width: '10%', style: 'color:black;font-weight:bold'}
             ,{field: 'like', title: '点赞', width:'10%', sort: true, style: 'color:black;font-weight:bold'}
             ,{field: 'collect', title: '收藏', width: '10%', sort: true, totalRow: true, style: 'color:black;font-weight:bold'}
             ,{field: 'time', title: '发布时间', width:'20%', style: 'color:black;font-weight:bold',templet: function(d){

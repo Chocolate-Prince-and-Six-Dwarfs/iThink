@@ -57,4 +57,10 @@ public class IndexController {
     {
         return "viewIdea";
     }
+
+    @RequestMapping("/changeIdea")
+    public String changeIdea()
+    {
+        return "changeIdea";
+    }
 }

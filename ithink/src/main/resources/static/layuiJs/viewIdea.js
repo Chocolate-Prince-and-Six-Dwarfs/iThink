@@ -3,6 +3,7 @@ layui.define(['element','jquery','layer'],function (exports) {
         ,$=layui.jquery
         ,layer=layui.layer;
     getUserId();
+    getUserInfo(user_id);
     var ideaId=getIdeaId();
     getIdeaInfo(ideaId,".viewIdea",".ideaList");
     comment(layer);//评论
@@ -30,6 +31,23 @@ function getUserId() {
         },
         error:function () {
             console.log("读取用户Id失败.")
+        }
+    });
+}
+function getUserInfo(userId) {
+    $.ajax({
+        url:"/user/getById",
+        type:"post",
+        dataType: "json",
+        data:{
+            id: userId,
+        },
+        success:function (data) {
+            $("#userImg").attr("src","data:image/png;base64,"+data.head);
+            $("#userName").text(data.name);
+        },
+        error:function () {
+            console.log("读取用户信息失败！");
         }
     });
 }

@@ -69,43 +69,6 @@ function saveUserInfo(form,layer){//保存个人信息
     })
 }
 
-function releaseIdeaInfo(form,layer,layedit,editIndex){//发布创意
-    $(document).off('click','#releaseIdea').on('click','#releaseIdea',function () {
-        var fData=new FormData();
-        var topicTitle=htmlEscape($("#topicTitle").val());
-        if(topicTitle.length>=26){
-            layer.msg("创意标题过长");
-            return false;
-        }
-        fData.append('userId',user_id);
-        fData.append('topicTitle',topicTitle);
-        fData.append('content',layedit.getContent(editIndex));
-        if($("#topicTitle").val()==null||$("#topicTitle").val()==""){
-            layer.msg("创意标题不能为空");
-            return false;
-        }
-        if(layedit.getContent(editIndex)==null||layedit.getContent(editIndex)==""){
-            layer.msg("创意内容不能为空");
-            return false;
-        }
-        $("#topicTitle").val("");
-        layedit.setContent(editIndex, "",false);
-        $.ajax({
-            url:"/idea/publish",
-            type:"post",
-            data:fData,
-            processData: false,
-            contentType: false,
-            success:function () {
-                layer.msg("发布成功");
-            },
-            error:function () {
-                layer.msg("发布创意失败");
-            }
-        });
-    })
-}
-
 function checkGender(mValue,form){
     var genderRadio = document.getElementsByName("sex");
     for(var i=0;i<genderRadio.length;i++){
@@ -148,13 +111,13 @@ function getUserIdeas(layer,userId) {
                     "                <div>\n" +
                     "                    <span>"+subStringIdeaContent(data.data[i].content)+"...</span>\n" +
                     "                </div>\n" +
-                    "                <div style=\"text-align: right\">\n" +
+                    "                <div style=\"text-align: right\" class=\"ideaDivBut\">\n" +
                     "                    <span>时间:"+data.data[i].time.substring(0,10)+"</span>\n" +
                     "                    <span style=\"margin-left: 10px\">收藏数:"+data.data[i].collect+"</span>\n" +
                     "                    <span style=\"margin-left: 10px\">点赞数:"+data.data[i].like+"</span>\n" +
-                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary\">修改创意</button></span>\n" +
-                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary\" >删除创意</button></span>\n" +
-                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary\">生成团组</button></span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button data-type=\"changeIdea\" class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary changeIdea\" ideaId=\""+data.data[i].id+"\">修改创意</button></span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary deleteIdea\" ideaId=\""+data.data[i].id+"\">删除创意</button></span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary createGroup\" ideaId=\""+data.data[i].id+"\">生成团组</button></span>\n" +
                     "                </div>\n" +
                     "            </li>\n" +
                     "            <hr>";

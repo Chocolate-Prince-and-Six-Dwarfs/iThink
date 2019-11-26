@@ -8,11 +8,12 @@ layui.define(['laypage','layer', 'form','jquery','element'], function(exports){
     search(layer);//搜索
     getUserInfo(user_id,form);//获取用户数据
     saveUserInfo(form,layer);//保存个人信息
-    $(document).off('click','#userInfoForm').on('click','#userInfoForm',function () {
-        if(($('#layui-form-item-username').val()!=='')&&($('#idcard').val()!=='')){
+    $(document).off('click','#investorInfoBut').on('click','#investorInfoBut',function () {
+        if(($('#investorName').val()!=='')&&($('#investorIdcard').val()!=='')){
             layer.msg("申请成功");
         }
     });
+    deleteAndChangeIdea(layer);
     form.render();
 
     switch(location.hash) {
@@ -203,4 +204,109 @@ function addEdit(editId){
         releaseIdeaInfo(form,layer,layedit,editIndex);
     });
 }
+var ideaId;
+function deleteAndChangeIdea(layer){
+    $(document).off('click','.deleteIdea').on('click','.deleteIdea',function () {
+        var id=$(this).attr('ideaId');
+        var loading=layer.load(2);
+        $.ajax({
+            url:"/idea/delete",
+            type:"post",
+            dataType: "json",
+            data:{
+                id:id,
+            },
+            success:function (data) {
+                if(data==1){
+                    layer.close(loading);
+                    layer.msg("删除成功");
+                    window.location.reload();
+                }else{
+                    layer.close(loading);
+                    layer.msg("删除失败");
+                    return false;
+                }
+            },
+            error:function () {
+                layer.close(loading);
+                layer.msg("删除失败!");
+            }
+        });
+    });
+    $(document).off('click','.changeIdea').on('click','.changeIdea',function(){
+        ideaId=$(this).attr('ideaId');
+        layer.open({
+            type: 2,
+            area: ['60%', '70%'],
+            title:"修改创意",
+            fixed: false, //不固定
+            maxmin: true,
+            anim:5,
+            isOutAnim:true,
+            resize:false,
+            btn:['修改创意','返回'],
+            btnAlign: 'c',
+            content: '/changeIdea',
+            success:function(layero, index){
+                //var body = layer.getChildFrame('body',index);
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                var ideaId=parent.ideaId;
+                //console.log(id);
+                iframeWin.addIframeEdit(ideaId);
+            },
+            yes:function (index, layero) {
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                var ideaId=parent.ideaId;
+                var userId=parent.user_id;
+                iframeWin.update(ideaId,userId,layer,index);
+            },
+            cancel:function (index) {
+                if(confirm('确定要关闭么')){ //只有当点击confirm框的确定时，该层才会关闭
+                    layer.close(index);
+                }
+                return false;
+            }
+        });
+    });
+}
 
+function releaseIdeaInfo(form,layer,layedit,editIndex){//发布创意
+    $(document).off('click','#releaseIdea').on('click','#releaseIdea',function () {
+        var fData=new FormData();
+        var topicTitle=htmlEscape($("#topicTitle").val());
+        if(topicTitle.length>=26){
+            layer.msg("创意标题过长");
+            return false;
+        }
+        fData.append('userId',user_id);
+        fData.append('topicTitle',topicTitle);
+        fData.append('content',layedit.getContent(editIndex));
+        if($("#topicTitle").val()==null||$("#topicTitle").val()==""){
+            layer.msg("创意标题不能为空");
+            return false;
+        }
+        if(layedit.getContent(editIndex)==null||layedit.getContent(editIndex)==""){
+            layer.msg("创意内容不能为空");
+            return false;
+        }
+        $("#topicTitle").val("");
+        layedit.setContent(editIndex, "",false);
+        var loading=layer.load(2);
+        $.ajax({
+            url:"/idea/publish",
+            type:"post",
+            data:fData,
+            processData: false,
+            contentType: false,
+            success:function (data) {
+                layer.close(loading);
+                layer.msg("发布成功");
+                window.location.href="/viewIdea?ideaId="+data;
+            },
+            error:function () {
+                layer.close(loading);
+                layer.msg("发布创意失败");
+            }
+        });
+    });
+}

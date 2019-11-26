@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>更改创意</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet"  href="/layui/css/layui.css">
+    <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
+</head>
+<body>
+<div class="changeIdeaContent" style="width: 80%;left: 10%;right: 10%;position:relative;">
+    <div class="ideaInput">
+        <input required lay-verify="required" id="ideaTitle" type="text" placeholder="请输入标题" class="layui-input">
+        <textarea lay-verify="required" id="ideaContent" style="display: none;"></textarea>
+    </div>
+</div>
+</body>
+<script>
+    function addIframeEdit(ideaId){
+        layui.use('layedit', function(){
+            var layedit = layui.layedit;
+            var index=layedit.build("ideaContent",{tool: ['strong','italic','underline','del','|','left','center','right','link','unlink','face']}); //建立编辑器
+            getIdeaTitleAndContent(layedit,index,ideaId);
+        });
+    }
+
+    function getIdeaTitleAndContent(layedit,index,ideaId) {
+        console.log("ideaId:"+ideaId);
+        $.ajax({
+            url:"/idea/detail",
+            type:"post",
+            dataType: "json",
+            data:{
+                id:ideaId,
+            },
+            success:function (data) {
+                console.log(data);
+            },
+            error:function () {
+                console.log("读取创意信息失败");
+            }
+        })
+    }
+</script>
+</html>
