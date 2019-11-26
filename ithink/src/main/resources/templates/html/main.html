@@ -37,12 +37,12 @@
             <li class="layui-nav-item">
                 <a href="/main">首页</a>
             </li>
-            <!--<li class="layui-nav-item">
-                <a href="">发现</a>
+            <li class="layui-nav-item">
+                <a href="/user#userDemo=userReleaseIdea">发布创意</a>
             </li>
             <li class="layui-nav-item">
-                <a href="">合作</a>
-            </li>-->
+                <a href="/user#userDemo=userIdeasCapsule">创意胶囊</a>
+            </li>
             <li class="layui-nav-item" style="margin-left: 10px;">
                 <label>
                     <input type="text" placeholder="搜索内容" class="layui-input" id="search-input"/>
@@ -59,25 +59,16 @@
                 <dl class="layui-nav-child">
                     <dd><a href="/user#userDemo=userInfo">个人中心</a></dd>
                     <dd><a href="/user#userDemo=userNotices">我的通知</a></dd>
+                    <dd><a href="/user#userDemo=userIdeas">我的创意</a></dd>
+                    <dd><a href="/user#userDemo=userGroups">我的团组</a></dd>
                     <dd><a href="/user/logout">退出</a></dd>
                 </dl>
             </li>
         </ul>
     </div>
 
-    <div class="layui-side" style="background-color: #696969">
-        <div class="layui-side-scroll">
-            <!--左侧导航区域-->
-            <ul class="layui-nav layui-nav-tree"  lay-filter="operation"  style="background-color: #696969">
-                <li class="layui-nav-item"><a href="/user#userDemo=userReleaseIdea">发布创意</a></li>
-                <li class="layui-nav-item"><a href="/user#userDemo=userIdeas">我的创意</a></li>
-                <li class="layui-nav-item"><a href="/user#userDemo=userIdeasCapsule">创意胶囊</a></li>
-                <li class="layui-nav-item"><a href="/user#userDemo=userGroups">我的团组</a></li>
-            </ul>
-        </div>
-    </div>
 
-    <div class="layui-body" style="background-color: #FFFFF0;">
+    <div class="layui-body" style="background-color: #FFFFF0;left:10%;width:80%">
         <!-- 内容主体区域 -->
         <div class="layui-tab" lay-filter="mainTab">
             <ul class="layui-tab-title">
@@ -181,7 +172,7 @@
         </div>
     </div>
 
-    <div class="layui-footer">
+    <div class="layui-footer" style="left: 0%">
         <!-- 底部固定区域 -->
         @iThink版权所有
     </div>
