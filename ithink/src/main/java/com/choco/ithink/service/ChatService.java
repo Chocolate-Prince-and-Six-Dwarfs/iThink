@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.*;
 import com.choco.ithink.pojo.*;
 import com.choco.ithink.tool.Tool;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,8 @@ public class ChatService {
     private BbsTopicMapper bbsTopicMapper;
     @Resource
     private ChatRoomMapper chatRoomMapper;
+    @Autowired
+    private UserService userService;
 
     // param id: 用户id
     // do: 查询上次更新聊天记录的时间
@@ -458,5 +461,42 @@ public class ChatService {
         {
             return  status;
         }
+    }
+
+
+    // param chatRoomId: 聊天室id
+    // do: 查找聊天室成员信息
+    // return
+    // 成功:
+    // [
+    //  {
+    //      id: ,
+    //      name: ,
+    //      sex: ,
+    //      email: ,
+    //      birthday: ,
+    //      phone: ,
+    //      credit: 信誉积分,
+    //      head: 头像
+    //      address: ,
+    //      industry: 职业,
+    //      school: ,
+    //      introduction
+    //  },
+    //  ...
+    // ]
+    public JSONArray getUserListByChatRoomId(Integer chatRoomId)
+    {
+        JSONArray jsonArray = new JSONArray();
+        // 查找组内用户id
+        GroupMemberExample groupMemberExample = new GroupMemberExample();
+        groupMemberExample.createCriteria().andChatRoomIdEqualTo(chatRoomId);
+        List<GroupMember> groupMemberList = groupMemberMapper.selectByExample(groupMemberExample);
+        for(GroupMember groupMember: groupMemberList)
+        {
+            jsonArray.add(userService.getById(groupMember.getUserId()));
+        }
+
+        return jsonArray;
     }
 }

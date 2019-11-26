@@ -231,4 +231,44 @@ public class ChatController implements ChatInterface {
     {
         return chatService.kickFromGroup(requestId, kickId, chatRoomId);
     }
+
+
+    // 请求地址 /chat/getUserListByChatRoomId
+    // param chatRoomId: 聊天室id
+    // do: 查找聊天室成员信息
+    // return
+    // 成功:
+    // chatRoomId: ,
+    // userList:
+    // [
+    //  {
+    //      id: ,
+    //      name: ,
+    //      sex: ,
+    //      email: ,
+    //      birthday: ,
+    //      phone: ,
+    //      credit: 信誉积分,
+    //      head: 头像
+    //      address: ,
+    //      industry: 职业,
+    //      school: ,
+    //      introduction
+    //  },
+    //  ...
+    // ]
+    @RequestMapping("/getUserListByChatRoomId")
+    @ResponseJSONP
+    public JSONObject getUserListByChatRoomId(Integer chatRoomId)
+    {
+        JSONObject jsonObject = new JSONObject();
+
+        JSONArray userList = chatService.getUserListByChatRoomId(chatRoomId);
+
+        // 拼接json
+        jsonObject.put("chatRoomId", chatRoomId);
+        jsonObject.put("userList", userList);
+
+        return jsonObject;
+    }
 }
