@@ -217,4 +217,18 @@ public class ChatController implements ChatInterface {
     {
         return chatService.addToGroup(topicId, name, userIdList, ownerId);
     }
+
+
+    // 请求地址 /chat/kickFromGroup
+    // param requestId: 发起踢人请求的id
+    // param kickId: 被踢人id
+    // param chatRoomId: 聊天室id
+    // do: 检查权限，若有权限，则踢人（自己发起踢出自己的请求则是退群, 群主退群会直接解散群）
+    // return: 1|0 成功|失败
+    @RequestMapping("/kickFromGroup")
+    @ResponseJSONP
+    public Integer kickFromGroup(Integer requestId, Integer kickId, Integer chatRoomId)
+    {
+        return chatService.kickFromGroup(requestId, kickId, chatRoomId);
+    }
 }
