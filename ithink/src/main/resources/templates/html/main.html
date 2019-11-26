@@ -23,12 +23,18 @@
             min-width: 800px;
             min-height: 300px;
         }
+        .ul1{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
     </style>
 </head>
 <body class="layui-layout-body">
 
 <div class="layui-layout layui-layout-admin" style="width: 125%;margin: auto">
-    <div class="layui-header" style="background-color: #1C1C1C">
+    <div class="layui-header" style="background-color: #000000d4">
         <ul class="layui-nav">
             <li class="layui-nav-item">
                 <img src="/img/商标small.png" alt="">
@@ -68,19 +74,18 @@
     </div>
 
 
-    <div class="layui-body" style="background-color: #FFFFF0;left:10%;width:80%">
+    <div class="layui-body" style="background-color: #eeeeee;left: 0%">
         <!-- 内容主体区域 -->
         <div class="layui-tab" lay-filter="mainTab">
-            <ul class="layui-tab-title">
+            <ul class="layui-tab-title ul1">
                 <li class="layui-this refreshData1">创意推荐</li>
                 <li class="refreshData2">热搜榜</li>
-                <!--<li>测试div</li>-->
                 <li>聊天室</li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show" id="layui-tab-1" lay-id="lay-main-1">
                     <div ><button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="refreshIdeas"><i class="layui-icon">&#xe669;刷新</i></button></div >
-                    <div class="ideaList">
+                    <div class="ideaList" style="width:80%;left:10%;right: 10%;position: relative">
                         <div style="padding: 15px;">
                         </div>
                     </div>
@@ -89,14 +94,14 @@
                 </div>
 
                 <div class="layui-tab-item" id="layui-tab-2">
-                    <div class="sortIdeaList">
+                    <div class="sortIdeaList" style="width:80%;left:10%;right: 10%;position: relative">
                     </div>
                     <div class="viewIdea viewSortIdea-empty">
                     </div>
                     <div id="cutPage"></div>
                 </div>
 
-                <div class="layui-tab-item">
+                <div class="layui-tab-item" style="width:80%;left:10%;right: 10%;position: relative">
                     <div class="test">
                     </div>
                 </div>
