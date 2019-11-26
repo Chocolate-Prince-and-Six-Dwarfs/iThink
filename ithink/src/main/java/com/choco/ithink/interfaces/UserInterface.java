@@ -198,4 +198,11 @@ public interface UserInterface {
     // ]
     // }
     JSONObject getCapsuleById(Integer id);
+
+    // 请求地址 /user/follow
+    // param userId: 用户id
+    // param followId: 被关注id
+    // do: 添加关注（已关注则取消关注）
+    // return: 操作完成后的关注状态 1|0 已关注|未关注
+    Integer follow(Integer userId, Integer followId);
 }

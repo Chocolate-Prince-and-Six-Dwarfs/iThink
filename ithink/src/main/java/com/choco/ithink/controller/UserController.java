@@ -431,4 +431,17 @@ public class UserController implements UserInterface {
         jsonObject.put("data", data);
         return jsonObject;
     }
+
+
+    // 请求地址 /user/follow
+    // param userId: 用户id
+    // param followId: 被关注id
+    // do: 添加关注
+    // return 1|0 关注|未关注
+    @RequestMapping("/follow")
+    @ResponseBody
+    public Integer follow(Integer userId, Integer followId)
+    {
+        return userService.follow(userId, followId);
+    }
 }

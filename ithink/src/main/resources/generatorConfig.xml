@@ -64,9 +64,7 @@
 <!--        <table tableName="group_namelist" domainObjectName="GroupNamelist">-->
 <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
 <!--        </table>-->
-<!--        <table tableName="followers_namelist" domainObjectName="FollowersNamelist">-->
-<!--            <generatedKey column="follow_id" sqlStatement="MySql" identity="true"/>-->
-<!--        </table>-->
+<!--        <table tableName="followers_namelist" domainObjectName="FollowersNamelist" />-->
 <!--        <table tableName="user_otherinfo" domainObjectName="UserOtherInfo" >-->
 <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
 <!--        </table>-->

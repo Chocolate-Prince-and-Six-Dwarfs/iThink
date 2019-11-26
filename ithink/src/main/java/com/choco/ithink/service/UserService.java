@@ -267,7 +267,7 @@ public class UserService {
         // 查找关系表
         FollowersNamelistExample followersNamelistExample = new FollowersNamelistExample();
         followersNamelistExample.createCriteria().andFollowIdEqualTo(userId);
-        List<FollowersNamelist> followersNamelists =  followersNamelistMapper.selectByExample(followersNamelistExample);
+        List<FollowersNamelistKey> followersNamelists =  followersNamelistMapper.selectByExample(followersNamelistExample);
 
         // 根据关系表中找到的id查找用户列表
         JSONArray jsonArray = new JSONArray();
@@ -483,5 +483,33 @@ public class UserService {
         }
 
         return jsonArray;
+    }
+
+
+    // param userId: 用户id
+    // param followId: 被关注id
+    // do: 添加关注
+    // return 1|0 关注|未关注
+    public Integer follow(Integer userId, Integer followId)
+    {
+        // 检查是否已经关注
+        FollowersNamelistExample followersNamelistExample = new FollowersNamelistExample();
+        followersNamelistExample.createCriteria().andFollowIdEqualTo(followId).andUserIdEqualTo(userId);
+        List<FollowersNamelistKey> followersNamelistKeyList = followersNamelistMapper.selectByExample(followersNamelistExample);
+        // 已关注
+        if(followersNamelistKeyList.size()!=0)
+        {
+            // 取消关注
+            followersNamelistMapper.deleteByExample(followersNamelistExample);
+            return 0;
+        }
+        else
+        {
+            // 关注
+            FollowersNamelistKey followersNamelistKey = new FollowersNamelistKey();
+            followersNamelistKey.setFollowId(followId);
+            followersNamelistKey.setUserId(userId);
+            return followersNamelistMapper.insert(followersNamelistKey);
+        }
     }
 }
