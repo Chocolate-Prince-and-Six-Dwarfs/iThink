@@ -237,7 +237,7 @@ function deleteAndChangeIdea(layer){
         ideaId=$(this).attr('ideaId');
         layer.open({
             type: 2,
-            area: ['60%', '70%'],
+            area: ['70%', '90%'],
             title:"修改创意",
             fixed: false, //不固定
             maxmin: true,
@@ -259,9 +259,16 @@ function deleteAndChangeIdea(layer){
                 var ideaId=parent.ideaId;
                 var userId=parent.user_id;
                 iframeWin.update(ideaId,userId,layer,index);
+                setTimeout(function(){ window.location.reload(); }, 1500);
+            },
+            btn2:function(index){
+                if(confirm('确定要关闭么?(如果关闭不会保存您的修改)')){ //只有当点击confirm框的确定时，该层才会关闭
+                    layer.close(index);
+                }
+                return false;
             },
             cancel:function (index) {
-                if(confirm('确定要关闭么')){ //只有当点击confirm框的确定时，该层才会关闭
+                if(confirm('确定要关闭么?(如果关闭不会保存您的修改)')){ //只有当点击confirm框的确定时，该层才会关闭
                     layer.close(index);
                 }
                 return false;

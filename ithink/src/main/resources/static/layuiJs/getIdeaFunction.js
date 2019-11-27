@@ -259,7 +259,7 @@ function comment(layer) {
                         "                                            <div class=\"comment_content idea_achievement_comment_user_content"+data.id+"\">  "+content+"</div>\n" +
                         "                                            <div class=\"del\">\n" +
                         "                                           <a><i class=\"icon layui-icon layui-icon-praise idea_achievement_comment_user_good" + data.id + " praise-comment comment-detail\" commentId='" + data.id + "'>赞一下</i></a>(<span class='likeNum-comment comment-detail' commentId='" + data.id + "'>0</span>)\n" +
-                        "                                           <a><i class=\"layui-icon layui-icon-tread tread-comment comment-detail\" commentId='" + data.id + "'>踩一下0</i></a>\n" +
+                        "                                           <a><i class=\"layui-icon layui-icon-tread tread-comment comment-detail\" commentId='" + data.id + "'>踩一下</i></a>\n" +
                         "                                            </div>\n" +
                         "                                            <div class=\"idea_achievement_comment_reply"+data.id+"\"><!--回复-->\n" +
                         "\n" +

@@ -2,7 +2,11 @@ layui.define(['element','jquery','layer'],function (exports) {
     var element=layui.element
         ,$=layui.jquery
         ,layer=layui.layer;
-    var userId=getUserId();
+    getUserLoginId();
+    var userId=getUserId();//其他人信息的id
+    if(userId==userLoginId){
+        $("#followButDiv").empty();
+    }
     //console.log(userId);
     getOtherUserInfo(userId);
     exports('viewOtherInfo',{}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
@@ -25,7 +29,7 @@ function getOtherUserInfo(userId) {
             id:userId,
         },
         success:function (data) {
-            //console.log(data);
+            //console.log("userInfo:"+data);
             $(".user-other-img").attr("src","data:image/png;base64,"+data.head);
             $(".user-other-name").append(data.name);
             if(data.introduction==null||data.introduction==""){
@@ -116,10 +120,45 @@ layui.use(['laypage', 'layer', 'table'], function(){
         }
     });
 });
-
-function followOthers(layer) {
+var userLoginId;
+function getUserLoginId() {
     $.ajax({
-
+        url:"/user/getLoginId",
+        type:"post",
+        async:false,
+        success:function (data) {
+            userLoginId=data;
+        },
+        error:function () {
+            console.log("读取用户Id失败.")
+        }
     });
 }
+$(document).off("click","#follow").on("click","#follow",function () {
+    var userOtherId=getUserId();
+    console.log("other:"+userOtherId+"---login:"+userLoginId);
+    $.ajax({
+        url:"user/follow",
+        type:"post",
+        data:{
+            userId:userLoginId,
+            followId:userOtherId,
+        },
+        success:function (data) {
+            if(data==1){
+                $("#follow").text("已关注");
+            }else {
+                $("#follow").text("关注");
+            }
+        },
+        error:function () {
+            console.log("网络错误，关注失败");
+        }
+    });
+});
+// 请求地址 /user/follow
+// param userId: 用户id
+// param followId: 被关注id
+// do: 添加关注（已关注则取消关注）
+// return: 操作完成后的关注状态 1|0 已关注|未关注
 

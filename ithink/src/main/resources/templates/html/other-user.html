@@ -83,8 +83,8 @@
             <div class="mid-top">
                 <div class="user-head" style="text-align: center;padding-top: 1em"><img src="/img/头像small.png" class="user-other-img">用户名：<b class="user-other-name"></b></div>
                 <div class="user-other-intro" style="margin-top: 1em;text-align: center;"><div style="padding-bottom: 1em;">用户简介：<b class="user-intro-info"></b></div></div>
-                <div>
-                    <button id="follow">关注该用户</button>
+                <div id="followButDiv">
+                    <button id="follow">关注</button>
                 </div>
             </div>
             <div class="user-other-show">
@@ -125,9 +125,7 @@
         </div>
     </div>
 </div>
-
-
-<script >
+<script>
     layui.config({
         base: '/layuiJs/' //你存放新模块的目录，注意，不是layui的模块目录
     }).use('viewOtherInfo'); //加载入口
