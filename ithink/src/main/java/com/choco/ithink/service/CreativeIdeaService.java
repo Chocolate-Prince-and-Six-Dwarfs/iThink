@@ -591,8 +591,8 @@ public class CreativeIdeaService {
         JSONArray jsonArray = list2JSON(bbsTopicList);
         List<JSONObject> list = JSONArray.parseArray(jsonArray.toJSONString(), JSONObject.class);
         list.sort((o1, o2) -> {
-            int a = o1.getInteger("collect") * 5 + o1.getInteger("like") + o1.getInteger("dislike");
-            int b = o2.getInteger("collect") * 5 + o2.getInteger("like") + o2.getInteger("dislike");
+            int a = o1.getInteger("collect") * 5 + o1.getInteger("like") - o1.getInteger("dislike");
+            int b = o2.getInteger("collect") * 5 + o2.getInteger("like") - o2.getInteger("dislike");
             if (a < b) {
                 return 1;
             } else if (a == b) {
