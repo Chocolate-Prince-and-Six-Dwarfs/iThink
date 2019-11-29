@@ -80,6 +80,7 @@
 <!--        <table tableName="group_chat_record" domainObjectName="GroupChatRecord" />-->
 <!--        <table tableName="group_member" domainObjectName="GroupMember" />-->
 <!--        <table tableName="chat_update_time" domainObjectName="ChatUpdateTime" />-->
+<!--        <table tableName="private_chat" domainObjectName="PrivateChat" />-->
         <!-- 不生成example类的写法
         <table tableName="" domainObjectName="" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"

@@ -29,6 +29,8 @@ public class ChatService {
     private ChatRoomMapper chatRoomMapper;
     @Autowired
     private UserService userService;
+    @Resource
+    private PrivateChatMapper privateChatMapper;
 
     // param id: 用户id
     // do: 查询上次更新聊天记录的时间
@@ -130,14 +132,14 @@ public class ChatService {
                 fromName = fromList.get(0).getUserName();
             }
             // 被回复团组
-//
-//            userExample.createCriteria().andUserIdEqualTo(groupChatRecordList.get(i).getToId());
-//            List<User> toList = userMapper.selectByExample(userExample);
-//            String toName = "";
-//            if(toList.size()==1)
-//            {
-//                toName = toList.get(0).getUserName();
-//            }
+            ChatRoomExample chatRoomExample = new ChatRoomExample();
+            chatRoomExample.createCriteria().andIdEqualTo(groupChatRecordList.get(i).getToId());
+            List<ChatRoom> toList = chatRoomMapper.selectByExample(chatRoomExample);
+            String toName = "";
+            if(toList.size()==1)
+            {
+                toName = toList.get(0).getName();
+            }
 
 
 
@@ -148,7 +150,7 @@ public class ChatService {
             jsonObject.put("fromId", groupChatRecordList.get(i).getFromId());
             jsonObject.put("fromName", fromName);
             jsonObject.put("toId", groupChatRecordList.get(i).getToId());
-            //jsonObject.put("toName", toName);
+            jsonObject.put("toName", toName);
             jsonArray.add(jsonObject);
         }
 
@@ -276,10 +278,10 @@ public class ChatService {
             return status;
         }
 
+        Integer chatRoomId = null;
+        Date now = new Date();
         try
         {
-            Integer chatRoomId = null;
-            Date now = new Date();
             if(topicId!=null)
             {
                 // 检查聊天室是否已经存在
@@ -390,6 +392,11 @@ public class ChatService {
             e.printStackTrace();
         }
 
+        if(status!=0)
+        {
+            return chatRoomId;
+        }
+
         return status;
     }
 
@@ -417,6 +424,16 @@ public class ChatService {
                     GroupMemberExample groupMemberExample = new GroupMemberExample();
                     groupMemberExample.createCriteria().andChatRoomIdEqualTo(chatRoomId);
                     groupMemberMapper.deleteByExample(groupMemberExample);
+
+                    // 删除私聊
+                    PrivateChatExample privateChatExample = new PrivateChatExample();
+                    privateChatExample.createCriteria().andChatRoomIdEqualTo(chatRoomId);
+                    privateChatMapper.deleteByExample(privateChatExample);
+
+                    // 删除聊天记录
+                    GroupChatRecordExample groupChatRecordExample = new GroupChatRecordExample();
+                    groupChatRecordExample.createCriteria().andToIdEqualTo(chatRoomId);
+                    groupChatRecordMapper.deleteByExample(groupChatRecordExample);
 
                     // 删除群
                     chatRoomMapper.deleteByPrimaryKey(chatRoomId);

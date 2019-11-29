@@ -3,8 +3,13 @@ package com.choco.ithink.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
+import com.choco.ithink.DAO.mapper.ChatRoomMapper;
+import com.choco.ithink.DAO.mapper.PrivateChatMapper;
 import com.choco.ithink.interfaces.ChatInterface;
+import com.choco.ithink.pojo.PrivateChat;
+import com.choco.ithink.pojo.PrivateChatExample;
 import com.choco.ithink.service.ChatService;
+import com.choco.ithink.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,6 +29,12 @@ import java.util.concurrent.TimeUnit;
 public class ChatController implements ChatInterface {
     @Autowired
     private ChatService chatService;
+    @Autowired
+    private UserService userService;
+    @Resource
+    private ChatRoomMapper chatRoomMapper;
+    @Resource
+    private PrivateChatMapper privateChatMapper;
 
     private List<Integer> waitingForClosingConnection = new ArrayList<Integer>();
     private List<Integer> connectionList = new ArrayList<Integer>();
@@ -50,9 +62,10 @@ public class ChatController implements ChatInterface {
         JSONArray groupChatRecord = new JSONArray();
         do
         {
-            if(waitingForClosingConnection.contains(userId))
+            //waitingForClosingConnection.contains(userId) ||
+            if(!connectionList.contains(userId))
             {
-                waitingForClosingConnection.remove(userId);
+                //waitingForClosingConnection.remove(userId);
                 return "data:" + "{}" + "\n\n";
             }
             groupChatRecord = chatService.getGroupChatRecordAfter(userId, lastUpdateTIme);
@@ -132,7 +145,7 @@ public class ChatController implements ChatInterface {
             canUpdate.put(key, true);
         }
         connectionList.remove(userId);
-        waitingForClosingConnection.add(userId);
+        //waitingForClosingConnection.add(userId);
     }
 
     // 请求地址 /chat/getGroupChatRecord
@@ -185,19 +198,19 @@ public class ChatController implements ChatInterface {
     // return: 持续推送聊天信息
     @RequestMapping(value = "/getOnlineNum", produces = "text/event-stream;charset=UTF-8")
     @ResponseBody
-    public String getOnlineNum(@NotNull Integer id) throws InterruptedException {
-        JSONObject jsonObject = new JSONObject();
+    public String getOnlineNum(@NotNull Integer userId) throws InterruptedException {
+        //JSONObject jsonObject = new JSONObject();
 
-        String key = id.toString();
-        Integer num = 0;
-        while(!canUpdate.getBoolean(key));
-        num = connectionNum.getInteger(key);
+        //String key = id.toString();
+        //Integer num = 0;
+//        while(!canUpdate.getBoolean(key) && connectionList.contains(userId));
+        //num = connectionNum.getInteger(key);
 
         // 更新flag置否
         TimeUnit.SECONDS.sleep(3);
-        canUpdate.put(key, false);
+//        canUpdate.put(key, false);
 
-        return "data:" +  num.toString() + "\n\n";
+        return "data:" +  connectionNum.toString() + "\n\n";
     }
 
 
@@ -210,12 +223,64 @@ public class ChatController implements ChatInterface {
     //      创建名为name的聊天室，如果没有传入name，则默认为当前时间戳, 最后将列表中用户加入聊天室
     // 若对应创意主题的聊天室存在:
     //      将列表中的用户加入聊天室，若已加入则会被忽略。传入的name会被忽略
-    // return: 1|0 成功|失败
+    // return: id|0 成功|失败
     @RequestMapping("/addToGroup")
     @ResponseJSONP
     public Integer addToGroup(@Nullable Integer topicId, @Nullable String name, @RequestParam(value = "userIdList[]") Integer[] userIdList, @Nullable Integer ownerId)
     {
         return chatService.addToGroup(topicId, name, userIdList, ownerId);
+    }
+
+    // 请求地址 /chat/addToPrivate
+    // param userId1: 用户1的id
+    // param userId2: 用户2的id
+    // do: 添加一个私聊群组(即固定两人的群组)
+    // return: id|0 成功|失败
+    @RequestMapping("/addToPrivate")
+    @ResponseJSONP
+    public Integer addToPrivate(Integer userId1, Integer userId2)
+    {
+        if(userId1 == userId2)
+        {
+            return 0;
+        }
+        // 检查是否已经存在私聊
+        try
+        {
+            PrivateChatExample privateChatExample = new PrivateChatExample();
+            privateChatExample.createCriteria().andUserId1EqualTo(userId1).andUserId2EqualTo(userId2);
+            privateChatExample.createCriteria().andUserId1EqualTo(userId2).andUserId2EqualTo(userId1);
+            List<PrivateChat> privateChatList = privateChatMapper.selectByExample(privateChatExample);
+            // 已经存在
+            if (privateChatList.size() > 0)
+            {
+                return privateChatList.get(0).getChatRoomId();
+            }
+            // 不存在
+            else
+            {
+                // 创建聊天室
+                String userName1 = userService.getById(userId1).getString("name");
+                String userName2 = userService.getById(userId2).getString("name");
+                String chatRoomName = (userName1 + "/" + userName2).length() > 20 ? (userName1 + "/" + userName2).substring(0, 20) : (userName1 + "/" + userName2);
+                Integer[] userIdList = {userId1, userId2};
+                Integer chatRoomId = chatService.addToGroup(null, chatRoomName, userIdList, null);
+
+                // 创建私聊记录
+                PrivateChat privateChat = new PrivateChat();
+                privateChat.setChatRoomId(chatRoomId);
+                privateChat.setUserId1(userId1);
+                privateChat.setUserId2(userId2);
+                privateChatMapper.insertSelective(privateChat);
+
+                return chatRoomId;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 

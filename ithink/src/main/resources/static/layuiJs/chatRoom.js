@@ -68,7 +68,7 @@ class ChatRoom
         // 填充
         //console.log(this.openText);
         button.text(this._openText);
-        button.on("click", function () {
+        button.off("click").on("click", function () {
             //console.log("click");
             // 旋转按钮
             let rotateSign = false;
@@ -154,23 +154,22 @@ class ChatRoom
     {
         $(parent).append(this.element);
 
-        this._init()
+        this._init();
+
+        this._startSSE();
     }
 
     prependTo(parent)
     {
         $(parent).prepend(this.element);
+
+        this._init();
+
+        this._startSSE();
     }
 
-    _init()
+    _startSSE()
     {
-        let thisObject= this;
-
-        // 初始化团组信息
-        this._initGroup();
-
-        this._auth();
-
         // 创建SSE
         //console.log(this._userId);
         this._sse = new EventSource('/chat/connect?userId=' + this._userId);
@@ -184,8 +183,39 @@ class ChatRoom
             thisObject._appendData(event.data);
         };
 
+        // 创建SSE
+        //console.log(this._userId);
+        let sse = new EventSource('/chat/getOnlineNum?userId=' + this._userId);
+        sse.onmessage = function(event)
+        {
+            //console.log("收到信息" + thisObject._userId + "，状态" + thisObject._sse.readyState);
+            if(event.data === "{}")
+            {
+                return;
+            }
+            let data = $.parseJSON(event.data);
+            for(let i in data)
+            {
+                if($("#chat-room-group-online-" + i).length === 0)
+                {
+                    continue;
+                }
+                $("#chat-room-group-online-" + i).text("本群在线人数: " + data[i]);
+            }
+        };
+    }
+
+    _init()
+    {
+        let thisObject= this;
+
+        // 初始化团组信息
+        this._initGroup();
+
+        this._auth();
+
         // 设置关闭时行为
-        $(window).on("beforeunload", function () {
+        $(window).off("beforeunload").on("beforeunload", function () {
             thisObject._saveCache();
             //thisObject._sse.close();
             //console.log("关闭" + thisObject._userId + "，状态" + thisObject._sse.readyState);
@@ -195,6 +225,11 @@ class ChatRoom
 
     _close()
     {
+        this._sse.close();
+        // for(let i = 0; i<this._onlineUpdateSSE.length; ++i)
+        // {
+        //     this._onlineUpdateSSE[i].close();
+        // }
         $.ajax(
             {
                 url: "/chat/close",
@@ -236,12 +271,22 @@ class ChatRoom
 
     show()
     {
-        $("#chat-room-frame").show();
+        // 更改frame可见性
+        let node = $("#chat-room-frame");
+        //console.log(node);
+        if(node.is(':hidden')){　　//如果node是隐藏的则显示
+            $("#chat-room-button").click();
+        }
     }
 
     hide()
     {
-        $("#chat-room-frame").hide();
+        // 更改frame可见性
+        let node = $("#chat-room-frame");
+        //console.log(node);
+        if(!node.is(':hidden')){　　//如果node是显示的则隐藏
+            $("#chat-room-button").click();
+        }
     }
 
     _loadCache(id)
@@ -310,6 +355,14 @@ class ChatRoom
         }
     }
 
+    refresh()
+    {
+        this._saveCache();
+        this._close();
+        $("#chat-room-frame").empty();
+        this._init();
+    }
+
     _appendData(data)
     {
         let tmpData = $.parseJSON(data);
@@ -326,6 +379,15 @@ class ChatRoom
                 // {
                 //
                 // }
+                if($("#chat-room-group-chat-content-" + tmp[j].toId).length === 0)
+                {
+                    let tmpGroupInfo = new Object();
+                    tmpGroupInfo.id = tmp[j].toId;
+                    tmpGroupInfo.name = tmp[j].toName;
+                    let groupEle = this._createGroupElement(tmpGroupInfo, this._userId);
+                    $("#chat-room-frame").append(groupEle);
+                    $("#chat-room-frame").animate({scrollTop:$("#chat-room-frame")[0].scrollHeight},'500');
+                }
                 $("#chat-room-group-chat-content-" + tmp[j].toId).append(this._createMessage(tmp[j], this._userId));
                 $("#chat-room-group-chat-content-" + tmp[j].toId).animate({scrollTop:$("#chat-room-group-chat-content-" + tmp[j].toId)[0].scrollHeight},'500');
                 $.ajax({
@@ -637,20 +699,20 @@ class ChatRoom
         groupOnlineNum.css("font-size", "0.75em");
         groupOnlineNum.text("本群在线人数: 0");
 
-        // 创建SSE
-        //console.log(this._userId);
-        let sse = new EventSource('/chat/getOnlineNum?id=' + id);
-        sse.onmessage = function(event)
-        {
-            //console.log("收到信息" + thisObject._userId + "，状态" + thisObject._sse.readyState);
-            if(event.data === "{}")
-            {
-                return;
-            }
-            $("#chat-room-group-online-" + id).text("本群在线人数: " + event.data);
-        };
+        // // 创建SSE
+        // //console.log(this._userId);
+        // let sse = new EventSource('/chat/getOnlineNum?userId=' + this._userId + '&id=' + id);
+        // sse.onmessage = function(event)
+        // {
+        //     //console.log("收到信息" + thisObject._userId + "，状态" + thisObject._sse.readyState);
+        //     if(event.data === "{}")
+        //     {
+        //         return;
+        //     }
+        //     $("#chat-room-group-online-" + id).text("本群在线人数: " + event.data);
+        // };
 
-        this._onlineUpdateSSE.push(sse);
+        // this._onlineUpdateSSE.push(sse);
 
         return groupOnlineNum;
 
@@ -672,7 +734,7 @@ class ChatRoom
         groupClose.css("outline", "none");
         groupClose.css("font-size", "12px");
         groupClose.text("+");
-        groupClose.on("click", function () {
+        groupClose.off("click").on("click", function () {
             // 旋转按钮
             let rotateSign = false;
             $(this).animate({}, function () {
@@ -735,7 +797,7 @@ class ChatRoom
         groupSync.css("outline", "none");
         groupSync.css("font-size", "12px");
         groupSync.text("聊天记录");
-        groupSync.on("click", function () {
+        groupSync.off("click").on("click", function () {
 
             // 更改group可见性
             let node = $("#chat-room-group-chat-" + id);
@@ -855,7 +917,7 @@ class ChatRoom
         groupChatSend.css("color", "rgba(255,255,255,0.7)");
         groupChatSend.text("发送消息");
 
-        groupChatSend.on("click", function ()
+        groupChatSend.off("click").on("click", function ()
         {
             let message = $("#chat-room-group-chat-input-" + id).val();
             //console.log(message);
@@ -901,7 +963,7 @@ class ChatRoom
 
 
         // 绑定回车
-        groupChatInput.on("keydown", function(event){
+        groupChatInput.off("keydown").on("keydown", function(event){
             let code = event.keyCode;
             if(code === 13){ //这是键盘的enter监听事件
                 //绑定焦点，有可能不成功，需要多试试一些标签

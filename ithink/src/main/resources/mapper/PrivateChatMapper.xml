@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.choco.ithink.DAO.mapper.PrivateChatMapper" >
+  <resultMap id="BaseResultMap" type="com.choco.ithink.pojo.PrivateChat" >
+    <id column="user_id_1" property="userId1" jdbcType="INTEGER" />
+    <id column="user_id_2" property="userId2" jdbcType="INTEGER" />
+    <result column="chat_room_id" property="chatRoomId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_id_1, user_id_2, chat_room_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.choco.ithink.pojo.PrivateChatExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from private_chat
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.choco.ithink.pojo.PrivateChatKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from private_chat
+    where user_id_1 = #{userId1,jdbcType=INTEGER}
+      and user_id_2 = #{userId2,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.choco.ithink.pojo.PrivateChatKey" >
+    delete from private_chat
+    where user_id_1 = #{userId1,jdbcType=INTEGER}
+      and user_id_2 = #{userId2,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.choco.ithink.pojo.PrivateChatExample" >
+    delete from private_chat
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.choco.ithink.pojo.PrivateChat" >
+    insert into private_chat (user_id_1, user_id_2, chat_room_id
+      )
+    values (#{userId1,jdbcType=INTEGER}, #{userId2,jdbcType=INTEGER}, #{chatRoomId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.choco.ithink.pojo.PrivateChat" >
+    insert into private_chat
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId1 != null" >
+        user_id_1,
+      </if>
+      <if test="userId2 != null" >
+        user_id_2,
+      </if>
+      <if test="chatRoomId != null" >
+        chat_room_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId1 != null" >
+        #{userId1,jdbcType=INTEGER},
+      </if>
+      <if test="userId2 != null" >
+        #{userId2,jdbcType=INTEGER},
+      </if>
+      <if test="chatRoomId != null" >
+        #{chatRoomId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.choco.ithink.pojo.PrivateChatExample" resultType="java.lang.Integer" >
+    select count(*) from private_chat
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update private_chat
+    <set >
+      <if test="record.userId1 != null" >
+        user_id_1 = #{record.userId1,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId2 != null" >
+        user_id_2 = #{record.userId2,jdbcType=INTEGER},
+      </if>
+      <if test="record.chatRoomId != null" >
+        chat_room_id = #{record.chatRoomId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update private_chat
+    set user_id_1 = #{record.userId1,jdbcType=INTEGER},
+      user_id_2 = #{record.userId2,jdbcType=INTEGER},
+      chat_room_id = #{record.chatRoomId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.choco.ithink.pojo.PrivateChat" >
+    update private_chat
+    <set >
+      <if test="chatRoomId != null" >
+        chat_room_id = #{chatRoomId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where user_id_1 = #{userId1,jdbcType=INTEGER}
+      and user_id_2 = #{userId2,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.choco.ithink.pojo.PrivateChat" >
+    update private_chat
+    set chat_room_id = #{chatRoomId,jdbcType=INTEGER}
+    where user_id_1 = #{userId1,jdbcType=INTEGER}
+      and user_id_2 = #{userId2,jdbcType=INTEGER}
+  </update>
+</mapper>

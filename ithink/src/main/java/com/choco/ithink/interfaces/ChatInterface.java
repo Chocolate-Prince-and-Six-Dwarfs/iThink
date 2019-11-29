@@ -76,8 +76,16 @@ public interface ChatInterface {
     // 若对应创意主题的聊天室存在:
     //      将列表中的用户加入聊天室，若已加入则会被忽略。传入的name会被忽略
     // 若没有指定topicId, 则始终创建新聊天室
-    // return: 1|0 成功|失败
+    // return: id|0 成功|失败
     Integer addToGroup(@Nullable Integer topicId, @Nullable String name, Integer[] userIdList, @Nullable Integer ownerId);
+
+
+    // 请求地址 /chat/addToPrivate
+    // param userId1: 用户1的id
+    // param userId2: 用户2的id
+    // do: 添加或者获取一个私聊群组(即固定两人的群组)
+    // return: id|0 成功|失败
+    Integer addToPrivate(Integer userId1, Integer userId2);
 
 
     // 请求地址 /chat/kickFromGroup
