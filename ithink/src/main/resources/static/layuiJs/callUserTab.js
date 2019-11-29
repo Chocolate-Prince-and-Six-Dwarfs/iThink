@@ -12,7 +12,7 @@ function callUserNotices(element){
             ,id: "userNotices"
         });
         element.tabChange('userDemo','userNotices');
-        //getUserNotice(user_id);
+        getUserNotice(user_id);
     }
 }
 function callUserReleaseIdea(element){
