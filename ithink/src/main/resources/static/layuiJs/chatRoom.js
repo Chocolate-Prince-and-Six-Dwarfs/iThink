@@ -155,8 +155,6 @@ class ChatRoom
         $(parent).append(this.element);
 
         this._init();
-
-        this._startSSE();
     }
 
     prependTo(parent)
@@ -165,11 +163,11 @@ class ChatRoom
 
         this._init();
 
-        this._startSSE();
     }
 
     _startSSE()
     {
+        let thisObject= this;
         // 创建SSE
         //console.log(this._userId);
         this._sse = new EventSource('/chat/connect?userId=' + this._userId);
@@ -221,6 +219,9 @@ class ChatRoom
             //console.log("关闭" + thisObject._userId + "，状态" + thisObject._sse.readyState);
             thisObject._close();
         });
+
+
+        this._startSSE();
     }
 
     _close()
