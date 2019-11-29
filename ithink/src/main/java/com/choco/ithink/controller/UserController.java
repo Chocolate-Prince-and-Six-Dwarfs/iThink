@@ -444,4 +444,17 @@ public class UserController implements UserInterface {
     {
         return userService.follow(userId, followId);
     }
+
+
+    // 请求地址 /user/getFollow
+    // param userId: 用户id
+    // param followId: 被关注id
+    // do: 检查是否已经关注
+    // return:  1|0 已关注|未关注
+    @RequestMapping("/getFollow")
+    @ResponseBody
+    public Integer getFollow(Integer userId, Integer followId)
+    {
+        return userService.getFollow(userId, followId);
+    }
 }

@@ -512,4 +512,25 @@ public class UserService {
             return followersNamelistMapper.insert(followersNamelistKey);
         }
     }
+
+    // param userId: 用户id
+    // param followId: 被关注id
+    // do: 检查是否已经关注
+    // return:  1|0 已关注|未关注
+    public Integer getFollow(Integer userId, Integer followId)
+    {
+        // 检查是否已经关注
+        FollowersNamelistExample followersNamelistExample = new FollowersNamelistExample();
+        followersNamelistExample.createCriteria().andFollowIdEqualTo(followId).andUserIdEqualTo(userId);
+        List<FollowersNamelistKey> followersNamelistKeyList = followersNamelistMapper.selectByExample(followersNamelistExample);
+        // 已关注
+        if(followersNamelistKeyList.size()!=0)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 }
