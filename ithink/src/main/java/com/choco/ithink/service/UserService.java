@@ -412,15 +412,18 @@ public class UserService {
             UserOtherInfoExample userOtherInfoExample = new UserOtherInfoExample();
             userOtherInfoExample.createCriteria().andUserIdEqualTo(userList.get(i).getUserId());
             List<UserOtherInfo> userOtherInfoList = userOtherInfoMapper.selectByExample(userOtherInfoExample);
-            if(userOtherInfoList.size()!=1)
+            String address = "";
+            String industry = "";
+            String school = "";
+            String introduction = "";
+            if(userOtherInfoList.size()==1)
             {
-                continue;
+                UserOtherInfo userOtherInfo = userOtherInfoList.get(0);
+                address = userOtherInfo.getUserAddress();
+                industry = userOtherInfo.getUserIndustry();
+                school = userOtherInfo.getUserSchool();
+                introduction = userOtherInfo.getUserSelfintroduction();
             }
-            UserOtherInfo userOtherInfo = userOtherInfoList.get(0);
-            String address = userOtherInfo.getUserAddress();
-            String industry = userOtherInfo.getUserIndustry();
-            String school = userOtherInfo.getUserSchool();
-            String introduction = userOtherInfo.getUserSelfintroduction();
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", userList.get(i).getUserId());
