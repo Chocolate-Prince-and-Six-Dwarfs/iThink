@@ -15,6 +15,7 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
     var chatRoom = new ChatRoom(user_id);
     chatRoom.setLayuiLayer(layer);
     chatRoom.appendTo(".layui-body");
+    getUserNoticeInMain(user_id);
     exports('main', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
 layui.use('element',function () {

@@ -177,6 +177,13 @@ function getUserNotice(userId){
         console.info(event.data);
     };
 }
+function getUserNoticeInMain(userId){
+    var source=new EventSource('/notify?id='+userId);
+    source.onmessage = function (event) {
+        console.info(event.data);
+        //if(event.data)
+    };
+}
 
 function subStringIdeaContent(ideaContent){ //截取部分创意内容
     ideaContent = ideaContent.replace(/(\n)/g, "");
