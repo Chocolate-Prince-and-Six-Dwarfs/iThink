@@ -22,6 +22,7 @@ class ChatRoom
 
         this._userId = userId;
         this._layer = null;
+        this._cacheVersion = "1";
 
         this.width = "80%";
         this._openText = "+";
@@ -324,7 +325,7 @@ class ChatRoom
     _loadCache(id)
     {
         // 加载缓存
-        let cache = localStorage.getItem(id + ":userId=" + this._userId);
+        let cache = localStorage.getItem(id + "?userId=" + this._userId + "&version=" + this._cacheVersion);
         cache = $(cache);
         // for(let i=0; i<cache.length; ++i)
         // {
@@ -341,8 +342,29 @@ class ChatRoom
         // }
         //console.log(cache);
         $("#" + id).append(cache);
+        let imgList = $("img[fromId]");
+        for(let i=0; i<imgList.length; ++i)
+        {
+            let id = imgList.eq(i).attr("fromId");
+            imgList.eq(i).off("click").on("click", function ()
+            {
+                window.open('/otherUser?userId='+ encodeURI(encodeURI(id)));
+            });
+        }
+
+        let userList = $("div[fromId]");
+        for(let i=0; i<userList.length; ++i)
+        {
+            let id = userList.eq(i).attr("fromId");
+            userList.eq(i).off("click").on("click", function ()
+            {
+                window.open('/otherUser?userId='+ encodeURI(encodeURI(id)));
+            });
+        }
         $("#" + id).animate({scrollTop:$("#" + id)[0].scrollHeight},'500');
     }
+
+
 
     _saveCache()
     {
@@ -383,7 +405,7 @@ class ChatRoom
             // let numId = parseInt(idReg.exec(id)[0]);
             let cache = contentElements.eq(i).html();
             //console.log("生成缓存: " + cache);
-            localStorage.setItem(id + ":userId=" + this._userId, cache);
+            localStorage.setItem(id + "?userId=" + this._userId + "&version=" + this._cacheVersion, cache);
         }
     }
 
@@ -452,6 +474,14 @@ class ChatRoom
                         console.log("读取用户信息失败！");
                     }
                 });
+
+                // $("img[fromId=" + data.id + "]" ).off("click").on("click", function () {
+                //     $(window).open('/otherUser?userId='+ encodeURI(encodeURI(tmp[j].fromId)));
+                // });
+                //
+                // $("div[fromId=" + data.id + "]" ).off("click").on("click", function () {
+                //     $(window).open('/otherUser?userId='+ encodeURI(encodeURI(tmp[j].fromId)));
+                // });
             }
         }
     }
@@ -515,10 +545,16 @@ class ChatRoom
         user.attr("id", "chat-room-group-chat-content-record-message-user-" + data.id);
         //user.css("min-width", "0px");
         //user.css("max-width", "80%");
+        user.attr("fromId", data.fromId);
+        user.attr("title", "点击查看用户信息");
+        user.css("cursor", "pointer");
         user.css("font-size", "0.75em");
         //user.css("margin-right", "inherit");
         //user.css("margin-left", "inherit");
         user.text(data.fromName);
+        user.off("click").on("click", function () {
+            window.open('/otherUser?userId='+ encodeURI(encodeURI(data.fromId)));
+        });
 
         let time = $("<div>");
         time.attr("id", "chat-room-group-chat-content-record-message-time-" + data.id);
@@ -576,18 +612,29 @@ class ChatRoom
         let head = $("<img>");
         head.attr("id", "chat-room-group-chat-content-message-img-" + data.id);
         head.attr("fromId", data.fromId);
+        head.attr("title", "点击查看用户信息");
+        head.css("cursor", "pointer");
         //head.addClass("imgcss");
         head.css("height", "2em");
         head.css("width", "2em");
+        head.off("click").on("click", function () {
+            window.open('/otherUser?userId='+ encodeURI(encodeURI(data.fromId)));
+        });
 
         let user = $("<div>");
         user.attr("id", "chat-room-group-chat-content-message-user-" + data.id);
+        user.attr("fromId", data.fromId);
+        user.attr("title", "点击查看用户信息");
+        user.css("cursor", "pointer");
         //user.css("min-width", "0px");
         //user.css("max-width", "80%");
         user.css("font-size", "0.75em");
         //user.css("margin-right", "inherit");
         //user.css("margin-left", "inherit");
         user.text(data.fromName);
+        user.off("click").on("click", function () {
+            window.open('/otherUser?userId='+ encodeURI(encodeURI(data.fromId)));
+        });
 
         let time = $("<div>");
         time.attr("id", "chat-room-group-chat-content-message-time-" + data.id);
