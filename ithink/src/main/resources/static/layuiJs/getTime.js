@@ -27,3 +27,8 @@ function formatDateTime (date) {
     var  s = this.addZero(time.getSeconds());
     return Y + M + D + h + m + s;
 }
+
+function getMSDate(date) {
+    var d = new Date(date);
+    return (d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds());
+}

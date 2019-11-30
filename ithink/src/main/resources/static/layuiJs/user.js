@@ -22,30 +22,39 @@ layui.define(['laypage','layer', 'form','jquery','element'], function(exports){
             break;
         case("#userDemo=userReleaseIdea"):
             callUserReleaseIdea(element);
+            callUserNotices(element);
             break;
         case("#userDemo=userIdeas"):
             callUserIdeas(element,layer);
+            callUserNotices(element);
             break;
         case("#userDemo=userIdeasCapsule"):
             callUserIdeasCapsules(element);
+            callUserNotices(element);
             break;
         case("#userDemo=userGroups"):
             callUserGroups(element);
+            callUserNotices(element);
             break;
         case("#userDemo=userCollections"):
             callUserCollections(element);
+            callUserNotices(element);
             break;
         case("#userDemo=userParticipate"):
             callUserParticipate(element);
+            callUserNotices(element);
             break;
         case("#userDemo=userProfitProjects"):
             callUserProfitProjects(element);
+            callUserNotices(element);
             break;
         case("#userDemo=userFans"):
             callUserFans(element);
+            callUserNotices(element);
             break;
         case("#userDemo=userFocusOn"):
             callUserFocusOn(element);
+            callUserNotices(element);
             break;
         default:
             break;
