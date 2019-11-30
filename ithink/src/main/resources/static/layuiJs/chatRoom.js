@@ -112,6 +112,7 @@ class ChatRoom
             //console.log(node);
             if(node.is(':hidden')){　　//如果node是隐藏的则显示node元素，否则隐藏
                 $("#chat-room-dot").hide(200);
+                $("#chat-room-dot").attr("status", "hidden");
                 node.show(500);
             }else{
                 let btnList = $("button[id*='chat-room-group-close-']");
@@ -133,6 +134,7 @@ class ChatRoom
         // 创建消息提示圆点备用位置
         let dot = $("<span>");
         dot.attr("id", "chat-room-dot");
+        dot.attr("status", "hidden");
         // 测试用
         dot.addClass("layui-badge-dot");
         dot.hide();
@@ -361,6 +363,39 @@ class ChatRoom
                 window.open('/otherUser?userId='+ encodeURI(encodeURI(id)));
             });
         }
+
+        // 恢复未读消息状态
+        // 添加圆点
+        let mainDot = $("#chat-room-dot");
+        //console.log(mainDot);
+        if(localStorage.getItem("mainDot?userId=" + this._userId) === "hidden")
+        {
+            mainDot.hide(200);
+            mainDot.attr("status", "hidden");
+        }
+        else if(localStorage.getItem("mainDot?userId=" + this._userId) === "shown")
+        {
+            mainDot.show(200);
+            mainDot.attr("status", "shown");
+        }
+
+        let reg = new RegExp("(?<=chat-room-group-chat-content-)[1-9]{1,}[0-9]{0,}");
+        let numId = reg.exec(id);
+
+        let subDot = $("#chat-room-group-dot-" + numId);
+        //console.log("#chat-room-group-dot-" + numId);
+        //console.log(subDot);
+        if(localStorage.getItem("subDot-" + numId + "?userId=" + this._userId) === "hidden")
+        {
+            subDot.hide();
+            subDot.attr("status", "hidden");
+        }
+        else if(localStorage.getItem("subDot-" + numId + "?userId=" + this._userId) === "shown")
+        {
+            subDot.show();
+            subDot.attr("status", "shown");
+        }
+
         $("#" + id).animate({scrollTop:$("#" + id)[0].scrollHeight},'500');
     }
 
@@ -394,6 +429,37 @@ class ChatRoom
         // }
         // // 设置聊天记录缓存
         // $.cookie(recordCookieName, record + "," + data, {path: "/"});
+
+
+        // 保存未读消息状态
+        // 保存圆点
+        let mainDot = $("#chat-room-dot");
+        if(mainDot.attr("status") === "hidden")
+        {
+            localStorage.setItem("mainDot?userId=" + this._userId, "hidden");
+        }
+        else if(mainDot.attr("status") === "shown")
+        {
+            localStorage.setItem("mainDot?userId=" + this._userId, "shown");
+        }
+
+        // let idReg = new RegExp("(?<=chat-room-group-chat-content-)[1-9]{1,}[0-9]{0,}");
+        // let numId = idReg.exec(id);
+        let subDotList = $("span[id*='chat-room-group-dot-']");
+        //console.log(subDotList);
+        let reg = new RegExp("(?<=chat-room-group-dot-)[1-9]{1,}[0-9]{0,}");
+        for(let i=0; i<subDotList.length; ++i)
+        {
+            let id = reg.exec(subDotList.eq(i).attr("id"));
+            if(subDotList.eq(i).attr("status") === "hidden")
+            {
+                localStorage.setItem("subDot-" + id + "?userId=" + this._userId, "hidden");
+            }
+            else if(subDotList.eq(i).attr("status") === "shown")
+            {
+                localStorage.setItem("subDot-" + id + "?userId=" + this._userId, "shown");
+            }
+        }
 
         // 生成缓存
         let contentElements = $("[id*='chat-room-group-chat-content-'][cached='true']");
@@ -446,17 +512,18 @@ class ChatRoom
                 $("#chat-room-group-chat-content-" + tmp[j].toId).animate({scrollTop:$("#chat-room-group-chat-content-" + tmp[j].toId)[0].scrollHeight},'500');
 
                 // 根据开关情况添加圆点
-                // 更改frame可见性
                 let mainFrame = $("#chat-room-frame");
                 if(mainFrame.is(':hidden'))
                 {　　
                     $("#chat-room-dot").show(200);
+                    $("#chat-room-dot").attr("status", "shown");
                 }
 
                 let groupFrame = $("#chat-room-group-chat-" + tmp[j].toId);
                 if(groupFrame.is(':hidden'))
                 {
                     $("#chat-room-group-dot-" + tmp[j].toId).show(200);
+                    $("#chat-room-group-dot-" + tmp[j].toId).attr("status", "shown");
                 }
 
                 $.ajax({
@@ -870,6 +937,7 @@ class ChatRoom
             //console.log(node);
             if(node.is(':hidden')){　　//如果node是隐藏的则显示node元素，否则隐藏
                 $("#chat-room-group-dot-" + id).hide(200);
+                $("#chat-room-group-dot-" + id).attr("status", "hidden");
                 node.show(500);
                 $("#chat-room-group-chat-content-" + id).animate({scrollTop:$("#chat-room-group-chat-content-" + id)[0].scrollHeight},'500');
             }else{
@@ -881,6 +949,7 @@ class ChatRoom
         // 创建消息提示圆点备用位置
         let dot = $("<span>");
         dot.attr("id", "chat-room-group-dot-" + id);
+        dot.attr("status", "hidden");
         // 测试用
         dot.addClass("layui-badge-dot");
         dot.hide();
