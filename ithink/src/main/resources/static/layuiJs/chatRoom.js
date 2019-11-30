@@ -51,6 +51,12 @@ class ChatRoom
         container.css("margin", "2em");
         //container.css("z-index", "100");
 
+        // 构建按钮组
+        let btnGroup = $("<div>");
+        btnGroup.css("display", "inline-flex");
+        btnGroup.css("flex-direction", "row");
+        btnGroup.css("align-items", "flex-start");
+
         // 构建打开关闭的按钮
         let button = $("<button>");
         button.attr("id", "chat-room-button");
@@ -104,11 +110,32 @@ class ChatRoom
             let node = $("#chat-room-frame");
             //console.log(node);
             if(node.is(':hidden')){　　//如果node是隐藏的则显示node元素，否则隐藏
+                $("#chat-room-dot").hide(200);
                 node.show(500);
             }else{
+                let btnList = $("button[id*='chat-room-group-close-']");
+                let reg = new RegExp("(?<=chat-room-group-close-)[1-9]{1,}[0-9]{0,}");
+                for(let i=0; i<btnList.length; ++i)
+                {
+                    let id = reg.exec(btnList.eq(i).attr("id"));
+                    let content = $("#chat-room-group-chat-" + id);
+                    if(!content.is(':hidden'))
+                    {
+                        btnList.eq(i).click();
+                    }
+                }
                 node.hide(500);
             }
         });
+
+
+        // 创建消息提示圆点备用位置
+        let dot = $("<span>");
+        dot.attr("id", "chat-room-dot");
+        // 测试用
+        dot.addClass("layui-badge-dot");
+        dot.hide();
+
 
         // 创建主体框
         let frame = $("<div>");
@@ -138,7 +165,11 @@ class ChatRoom
 
 
         // 构建填充
-        container.append(button);
+        // btnGroup
+        btnGroup.append(button);
+        btnGroup.append(dot);
+        // container
+        container.append(btnGroup);
         container.append("<br/>");
         container.append(frame);
 
@@ -391,6 +422,21 @@ class ChatRoom
                 }
                 $("#chat-room-group-chat-content-" + tmp[j].toId).append(this._createMessage(tmp[j], this._userId));
                 $("#chat-room-group-chat-content-" + tmp[j].toId).animate({scrollTop:$("#chat-room-group-chat-content-" + tmp[j].toId)[0].scrollHeight},'500');
+
+                // 根据开关情况添加圆点
+                // 更改frame可见性
+                let mainFrame = $("#chat-room-frame");
+                if(mainFrame.is(':hidden'))
+                {　　
+                    $("#chat-room-dot").show(200);
+                }
+
+                let groupFrame = $("#chat-room-group-chat-" + tmp[j].toId);
+                if(groupFrame.is(':hidden'))
+                {
+                    $("#chat-room-group-dot-" + tmp[j].toId).show(200);
+                }
+
                 $.ajax({
                     url:"/user/getById",
                     type:"post",
@@ -721,6 +767,12 @@ class ChatRoom
 
     _createGroupClose(id)
     {
+        // 构建按钮组
+        let btnGroup = $("<div>");
+        btnGroup.css("display", "inline-flex");
+        btnGroup.css("flex-direction", "row");
+        btnGroup.css("align-items", "flex-start");
+
         let groupClose;
         groupClose = $("<button>");
         groupClose.attr("id", "chat-room-group-close-" + id);
@@ -770,13 +822,26 @@ class ChatRoom
             let node = $("#chat-room-group-chat-" + id);
             //console.log(node);
             if(node.is(':hidden')){　　//如果node是隐藏的则显示node元素，否则隐藏
+                $("#chat-room-group-dot-" + id).hide(200);
                 node.show(500);
                 $("#chat-room-group-chat-content-" + id).animate({scrollTop:$("#chat-room-group-chat-content-" + id)[0].scrollHeight},'500');
             }else{
                 node.hide(500);
             }
         });
-        return groupClose;
+
+
+        // 创建消息提示圆点备用位置
+        let dot = $("<span>");
+        dot.attr("id", "chat-room-group-dot-" + id);
+        // 测试用
+        dot.addClass("layui-badge-dot");
+        dot.hide();
+
+        btnGroup.append(groupClose);
+        btnGroup.append(dot);
+
+        return btnGroup;
     }
 
     _createGroupSync(id)
