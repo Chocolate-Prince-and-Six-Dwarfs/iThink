@@ -50,7 +50,7 @@ public interface UserInterface {
 
     // 请求地址： user/getInfoByUserId
     // param id: 用户id
-    // param opinion: 选项 ("topic"|"comment"|"follow")
+    // param opinion: 选项 ("topic"|"comment"|"fans"|"follows")
     // do: 查找用户的相关数据
     // return: 根据选项返回以下内容
     //  topic
@@ -100,6 +100,24 @@ public interface UserInterface {
     //  {
     //      userId: 1,
     //      opinion: "fans",
+    //      count: 2 （查找到的数据条数）,
+    //      data:
+    //      [
+    //          {
+    //              id: 1
+    //              head: 头像,
+    //              name: "用户名"
+    //          },
+    //          {
+    //              同上
+    //          },
+    //          ......
+    //      ]
+    //  }
+    //  follows
+    //  {
+    //      userId: 1,
+    //      opinion: "follows",
     //      count: 2 （查找到的数据条数）,
     //      data:
     //      [

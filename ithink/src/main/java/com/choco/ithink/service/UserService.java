@@ -260,7 +260,7 @@ public class UserService {
     }
 
     // param userId: 用户id
-    // do: 查找用户的关注列表
+    // do: 查找用户的粉丝列表
     // return: 用户列表
     public JSONArray getFansById(Integer userId)
     {
@@ -275,6 +275,34 @@ public class UserService {
         {
             UserExample userExample = new UserExample();
             userExample.createCriteria().andUserIdEqualTo(followersNamelists.get(i).getUserId());
+            User user = userMapper.selectByExampleWithBLOBs(userExample).get(0);
+
+            // 拼接json
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", user.getUserId());
+            jsonObject.put("head", user.getUserAvatar());
+            jsonObject.put("name", user.getUserName());
+            jsonArray.add(jsonObject);
+        }
+        return jsonArray;
+    }
+
+    // param userId: 用户id
+    // do: 查找用户的关注列表
+    // return: 用户列表
+    public JSONArray getFollowsById(Integer userId)
+    {
+        // 查找关系表
+        FollowersNamelistExample followersNamelistExample = new FollowersNamelistExample();
+        followersNamelistExample.createCriteria().andUserIdEqualTo(userId);
+        List<FollowersNamelistKey> followersNamelists =  followersNamelistMapper.selectByExample(followersNamelistExample);
+
+        // 根据关系表中找到的id查找用户列表
+        JSONArray jsonArray = new JSONArray();
+        for(int i=0; i<followersNamelists.size(); ++i)
+        {
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andUserIdEqualTo(followersNamelists.get(i).getFollowId());
             User user = userMapper.selectByExampleWithBLOBs(userExample).get(0);
 
             // 拼接json
