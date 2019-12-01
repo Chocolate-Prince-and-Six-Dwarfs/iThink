@@ -251,4 +251,27 @@ public interface CreativeIdeaInterface {
     // do: 更新创意主题
     // return: 创意主题id, 失败返回null
     Integer update(Integer id,String topicTitle, Integer userId, String content);
+
+
+    // 请求地址: /idea/getAchievementUserList
+    // param id: 创意主题id
+    // do: 查找该创意主题下创意实现的作者列表
+    // return:
+    //  {
+    //      id: 1,
+    //      count: 2 （查找到的数据条数）,
+    //      data:
+    //      [
+    //          {
+    //              id: 1
+    //              head: 头像,
+    //              name: "用户名"
+    //          },
+    //          {
+    //              同上
+    //          },
+    //          ......
+    //      ]
+    //  }
+    JSONObject getAchievementUserList(Integer id);
 }
