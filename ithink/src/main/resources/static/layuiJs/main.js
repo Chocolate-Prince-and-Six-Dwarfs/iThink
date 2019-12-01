@@ -15,6 +15,7 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
     var chatRoom = new ChatRoom(user_id);
     chatRoom.setLayuiLayer(layer);
     chatRoom.appendTo(".layui-body");
+    getUserNotice(user_id);
     exports('main', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
 layui.use('element',function () {
@@ -166,3 +167,71 @@ function refresh(pageSize) {
         getIdeas(pageSize);
     });
 }
+
+// function getUserNotice(userId){
+//     source=new EventSource('/notify?id='+userId);
+//     $(".userNoticesContent").empty();
+//     var text="<h2  style=\"text-align: center;font-weight: bold\">我的新消息</h2>\n" +
+//         "    <div class=\"layui-tab-content\">\n" +
+//         "        <ul class=\"userNoticesContentUL\"><hr>\n" +
+//         "            \n" +
+//         "        </ul>\n" +
+//         "    </div>";
+//     $(".userNoticesContent").append(text);
+//     source.onmessage = function (event) {
+//         var d=JSON.parse("["+event.data+"]");
+//         var notice="";
+//
+//         console.log(d);
+//
+//         var ach=d[0].achievementLike;
+//         if(ach!=""&&ach!=null&&ach!="[]"){
+//             var info1="";
+//             if(ach[0][0]["type"]==true){
+//                 info1="赞";
+//             }else{
+//                 info1="踩";
+//             }
+//             notice="<li>" +getNoticeUserName(ach[0][0]["userId"])+
+//                 " 在"+getMSDate(ach[0][0]["time"])+"给你的创意实现：\"" +getNoticeAchievementContent(ach[0][0]["achievementId"])+"\"点了一个"+info1+
+//                 "</li><hr>";
+//             $(".userNoticesContentUL").append(notice);
+//         }
+//
+//         var top=d[0]["topicLike"];
+//         if(top!=""&&top!=null&&top!="[]"){
+//             var info2="";
+//             if(top[0][0]["type"]==true){
+//                 info2="赞";
+//             }else{
+//                 info2="踩";
+//             }
+//             notice="<li>" +getNoticeUserName(top[0][0]["userId"])+
+//                 " 在"+getMSDate(top[0][0]["time"])+"给你的创意：\"" +getNoticeTopicName(top[0][0]["topicId"])+"\"点了一个"+info2+
+//                 "</li><hr>";
+//             $(".userNoticesContentUL").append(notice);
+//         }
+//
+//         var com=d[0]["commentLike"];
+//         if(com!=""&&com!=null&&com!="[]"){
+//             var info3="";
+//             if(com[0][0]["type"]==true){
+//                 info3="赞";
+//             }else{
+//                 info3="踩";
+//             }
+//             notice="<li>" +getNoticeUserName(com[0][0]["userId"])+
+//                 " 在"+getMSDate(com[0][0]["time"])+"创意实现：\"" +getNoticeAchievementContent(com[0][0]["commentId"])+"\"下你的评论上点了一个"+info3+
+//                 "</li><hr>";
+//             $(".userNoticesContentUL").append(notice);
+//         }
+//
+//         var toc=d[0]["topicCollect"];
+//         if(toc!=""&&toc!=null&&toc!="[]"){
+//             notice="<li>" +getNoticeUserName(toc[0][0]["userId"])+
+//                 " 在"+getMSDate(toc[0][0]["time"])+"收藏了你的创意：\"" +getNoticeTopicName(toc[0][0]["topicId"])+"\""+
+//                 "</li><hr>";
+//             $(".userNoticesContentUL").append(notice);
+//         }
+//     };
+// }

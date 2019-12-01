@@ -1,4 +1,5 @@
 var user_id;
+var source;
 function getUserId() {
     $.ajax({
         url:"/user/getLoginId",
@@ -252,7 +253,7 @@ function getNoticeAchievementContent(achievementId) {
 }
 
 function getUserNotice(userId){
-    var source=new EventSource('/notify?id='+userId);
+    source=new EventSource('/notify?id='+userId);
     $(".userNoticesContent").empty();
     var text="<h2  style=\"text-align: center;font-weight: bold\">我的新消息</h2>\n" +
         "    <div class=\"layui-tab-content\">\n" +
