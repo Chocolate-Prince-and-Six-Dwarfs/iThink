@@ -702,4 +702,33 @@ public class CreativeIdeaService {
             return null;
         }
     }
+
+
+    // param id: 创意主题id
+    // do: 查找创意主题下创意实现用户列表
+    // return: 用户列表
+    public JSONArray getAchievementUserList(Integer id)
+    {
+        // 查找创意实现列表
+        BbsAchievementExample bbsAchievementExample = new BbsAchievementExample();
+        bbsAchievementExample.createCriteria().andTopicIdEqualTo(id);
+        List<BbsAchievement> bbsAchievementList = bbsAchievementMapper.selectByExample(bbsAchievementExample);
+
+        // 根据关系表中找到的id查找用户列表
+        JSONArray jsonArray = new JSONArray();
+        for(int i=0; i<bbsAchievementList.size(); ++i)
+        {
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andUserIdEqualTo(bbsAchievementList.get(i).getUserId());
+            User user = userMapper.selectByExampleWithBLOBs(userExample).get(0);
+
+            // 拼接json
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", user.getUserId());
+            jsonObject.put("head", user.getUserAvatar());
+            jsonObject.put("name", user.getUserName());
+            jsonArray.add(jsonObject);
+        }
+        return jsonArray;
+    }
 }

@@ -445,4 +445,47 @@ public class CreativeIdeaController implements CreativeIdeaInterface {
     {
         return creativeIdeaService.update(id, topicTitle, userId, content);
     }
+
+
+    // 请求地址: /idea/getAchievementUserList
+    // param id: 创意主题id
+    // do: 查找该创意主题下创意实现的作者列表
+    // return:
+    //  {
+    //      id: 1,
+    //      count: 2 （查找到的数据条数）,
+    //      data:
+    //      [
+    //          {
+    //              id: 1
+    //              head: 头像,
+    //              name: "用户名"
+    //          },
+    //          {
+    //              同上
+    //          },
+    //          ......
+    //      ]
+    //  }
+    @RequestMapping("/getAchievementUserList")
+    @ResponseBody
+    public JSONObject getAchievementUserList(Integer id)
+    {
+        // 初始化
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", id);
+        Integer count = 0;
+        JSONArray data = new JSONArray();
+
+        // 获取数据
+        data = creativeIdeaService.getAchievementUserList(id);
+        count = data.size();
+
+        // 拼接JSON
+        jsonObject.put("code",0);
+        jsonObject.put("msg","");
+        jsonObject.put("count", count);
+        jsonObject.put("data", data);
+        return jsonObject;
+    }
 }
