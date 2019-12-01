@@ -32,11 +32,8 @@ public class ChatController implements ChatInterface {
     @Autowired
     private UserService userService;
     @Resource
-    private ChatRoomMapper chatRoomMapper;
-    @Resource
     private PrivateChatMapper privateChatMapper;
 
-    private List<Integer> waitingForClosingConnection = new ArrayList<Integer>();
     private List<Integer> connectionList = new ArrayList<Integer>();
     private JSONObject connectionNum = new JSONObject();
     private JSONObject canUpdate = new JSONObject();
@@ -62,10 +59,8 @@ public class ChatController implements ChatInterface {
         JSONArray groupChatRecord = new JSONArray();
         do
         {
-            //waitingForClosingConnection.contains(userId) ||
             if(!connectionList.contains(userId))
             {
-                //waitingForClosingConnection.remove(userId);
                 return "data:" + "{}" + "\n\n";
             }
             groupChatRecord = chatService.getGroupChatRecordAfter(userId, lastUpdateTIme);
@@ -145,7 +140,6 @@ public class ChatController implements ChatInterface {
             canUpdate.put(key, true);
         }
         connectionList.remove(userId);
-        //waitingForClosingConnection.add(userId);
     }
 
     // 请求地址 /chat/getGroupChatRecord
@@ -187,7 +181,6 @@ public class ChatController implements ChatInterface {
             } else {
                 connectionNum.put(key, 1);
             }
-            canUpdate.put(key, true);
         }
         connectionList.add(userId);
     }
@@ -198,17 +191,9 @@ public class ChatController implements ChatInterface {
     // return: 持续推送聊天信息
     @RequestMapping(value = "/getOnlineNum", produces = "text/event-stream;charset=UTF-8")
     @ResponseBody
-    public String getOnlineNum(@NotNull Integer userId) throws InterruptedException {
-        //JSONObject jsonObject = new JSONObject();
-
-        //String key = id.toString();
-        //Integer num = 0;
-//        while(!canUpdate.getBoolean(key) && connectionList.contains(userId));
-        //num = connectionNum.getInteger(key);
-
-        // 更新flag置否
+    public String getOnlineNum(@NotNull Integer userId) throws InterruptedException
+    {
         TimeUnit.SECONDS.sleep(3);
-//        canUpdate.put(key, false);
 
         return "data:" +  connectionNum.toString() + "\n\n";
     }

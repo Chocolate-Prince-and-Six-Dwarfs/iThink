@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.lang.Nullable;
 
-import javax.servlet.http.HttpServletRequest;
 
 public interface ChatInterface {
     // 请求地址 /chat/connect

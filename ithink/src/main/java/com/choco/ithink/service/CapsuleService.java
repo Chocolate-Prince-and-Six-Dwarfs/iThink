@@ -6,7 +6,6 @@ import com.choco.ithink.DAO.mapper.CreativeCapsuleMapper;
 import com.choco.ithink.DAO.mapper.UserMapper;
 import com.choco.ithink.pojo.CreativeCapsule;
 import com.choco.ithink.pojo.CreativeCapsuleExample;
-import com.choco.ithink.pojo.User;
 import com.choco.ithink.pojo.UserExample;
 import com.choco.ithink.tool.Tool;
 import org.springframework.lang.Nullable;

@@ -2,7 +2,6 @@ package com.choco.ithink.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
-import com.choco.ithink.DAO.mapper.BbsCommentMapper;
 import com.choco.ithink.interfaces.CommentInterface;
 import com.choco.ithink.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;

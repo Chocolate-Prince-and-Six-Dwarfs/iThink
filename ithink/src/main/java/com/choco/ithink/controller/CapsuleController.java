@@ -2,9 +2,7 @@ package com.choco.ithink.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
-import com.choco.ithink.DAO.mapper.CreativeCapsuleMapper;
 import com.choco.ithink.interfaces.CapsuleInterface;
-import com.choco.ithink.pojo.CreativeCapsule;
 import com.choco.ithink.service.CapsuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;

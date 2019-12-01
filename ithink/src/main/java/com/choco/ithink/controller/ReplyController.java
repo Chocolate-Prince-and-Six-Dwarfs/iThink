@@ -3,7 +3,6 @@ package com.choco.ithink.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import com.choco.ithink.interfaces.ReplyInterface;
-import com.choco.ithink.service.CommentService;
 import com.choco.ithink.service.ReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

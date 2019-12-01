@@ -1,6 +1,5 @@
 package com.choco.ithink.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import com.choco.ithink.interfaces.AchievementInterface;

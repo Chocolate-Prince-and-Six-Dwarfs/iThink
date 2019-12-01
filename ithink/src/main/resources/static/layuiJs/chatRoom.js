@@ -329,21 +329,9 @@ class ChatRoom
         // 加载缓存
         let cache = localStorage.getItem(id + "?userId=" + this._userId + "&version=" + this._cacheVersion);
         cache = $(cache);
-        // for(let i=0; i<cache.length; ++i)
-        // {
-        //     if(parseInt(cache.eq(i).attr("user-id")) === this._userId)
-        //     {
-        //         cache.eq(i).css("margin-left", "auto");
-        //         cache.eq(i).css("margin-right", "0.2em");
-        //     }
-        //     else
-        //     {
-        //         cache.eq(i).css("margin-left", null);
-        //         cache.eq(i).css("margin-right", null);
-        //     }
-        // }
-        //console.log(cache);
         $("#" + id).append(cache);
+
+        // 重新绑定事件
         let imgList = $("img[fromId]");
         for(let i=0; i<imgList.length; ++i)
         {
@@ -432,7 +420,7 @@ class ChatRoom
 
 
         // 保存未读消息状态
-        // 保存圆点
+        // 保存圆点状态
         let mainDot = $("#chat-room-dot");
         if(mainDot.attr("status") === "hidden")
         {
@@ -467,8 +455,6 @@ class ChatRoom
         for(let i=0; i<contentElements.length; ++i)
         {
             let id = contentElements.eq(i).attr("id");
-            // let idReg = new RegExp("(?<=chat-room-group-chat-content-)[1-9]{1,}[0-9]{0,}");
-            // let numId = parseInt(idReg.exec(id)[0]);
             let cache = contentElements.eq(i).html();
             //console.log("生成缓存: " + cache);
             localStorage.setItem(id + "?userId=" + this._userId + "&version=" + this._cacheVersion, cache);
