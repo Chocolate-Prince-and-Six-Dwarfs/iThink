@@ -53,7 +53,7 @@ function saveUserInfo(form,layer){//保存个人信息
         formData.append('introduction',$(".user_desc").val());
         formData.append('sex',$('input:radio[name="sex"]:checked').val());
         $.ajax({
-            url:"user/updateInfo",
+            url:"/user/updateInfo",
             type:"post",
             dataType: "json",
             data:formData,
@@ -84,7 +84,7 @@ function checkGender(mValue,form){
 
 function getUserIdeas(layer,userId) {
     $.ajax({
-        url:"user/getInfoByUserId",
+        url:"/user/getInfoByUserId",
         type:"post",
         dataType: "json",
         data:{
@@ -134,7 +134,7 @@ function getUserIdeas(layer,userId) {
 
 function getUserFans(userId) {
     $.ajax({
-        url:"user/getInfoByUserId",
+        url:"/user/getInfoByUserId",
         type:"post",
         dataType: "json",
         data:{
@@ -175,7 +175,7 @@ function getUserFans(userId) {
 function getNoticeUserName(userId) {
     var content;
     $.ajax({
-        url:"user/getById",
+        url:"/user/getById",
         type:"post",
         dataType: "json",
         async:false,
@@ -195,7 +195,7 @@ function getNoticeUserName(userId) {
 function getNoticeTopicName(topicId) {
     var content;
     $.ajax({
-        url:"idea/detail",
+        url:"/idea/detail",
         type:"post",
         dataType: "json",
         async:false,
@@ -215,7 +215,7 @@ function getNoticeTopicName(topicId) {
 function getNoticeCommentContent(commentId) {
     var content;
     $.ajax({
-        url:"comment/getById",
+        url:"/comment/getById",
         type:"post",
         dataType: "json",
         async:false,
@@ -318,6 +318,23 @@ function getUserNotice(userId){
             $(".userNoticesContentUL").append(notice);
         }
     };
+
+    $(window).on("beforeunload", function () {
+        $.ajax({
+            url:"/stopNotify",
+            type:"post",
+            async:false,
+            data:{
+                "id":user_id,
+            },
+            success:function () {
+                console.log("关闭通知成功");
+            },
+            error:function () {
+                console.log("关闭通知失败");
+            }
+        });
+    })
 }
 
 function subStringIdeaContent(ideaContent){ //截取部分创意内容
