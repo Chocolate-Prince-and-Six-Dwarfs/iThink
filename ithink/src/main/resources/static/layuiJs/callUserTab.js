@@ -126,124 +126,17 @@ function callUserCollections(element) {
     }else{
         element.tabAdd('userDemo',{
             title: "我的收藏"
-            ,content: "<div class=\"userCollectionsContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\"><div class=\"collection\">\n" +
-                "    <h3>我的收藏</h3>\n" +
-                "    <hr>\n" +
-                "    <div class=\"layui-tab-content\">\n" +
-                "        <ul>\n" +
-                "            <li >\n" +
-                "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题标题标题标题</div>\n" +
-                "                <div>\n" +
-                "                    <img src=\"/img/头像small.png\" alt=\"\">\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100点赞</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100收藏</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100评论</span>\n" +
-                "                </div>\n" +
-                "            </li>\n" +
-                "            <hr>\n" +
-                "            <li >\n" +
-                "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题标题标题标题</div>\n" +
-                "                <div>\n" +
-                "                    <img src=\"/img/头像small.png\" alt=\"\">\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100点赞</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100收藏</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100评论</span>\n" +
-                "                </div>\n" +
-                "            </li>\n" +
-                "            <hr>\n" +
-                "            <li >\n" +
-                "                <div class=\"title\">&nbsp;&nbsp;&nbsp;标题标题标题标题</div>\n" +
-                "                <div>\n" +
-                "                    <img src=\"/img/头像small.png\" alt=\"\">\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100点赞</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100收藏</span>\n" +
-                "                    <span>&nbsp;&nbsp;&nbsp;100评论</span>\n" +
-                "                </div>\n" +
-                "            </li>\n" +
-                "        </ul>\n" +
-                "    </div>\n" +
-                "</div>\n</div>"
+            ,content: "<div class=\"userCollectionsContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\">" +
+                "<div style=\"text-align: center\">" +
+                "<h1 style=\"font-weight: bold\">空空如也<i class=\"layui-icon layui-icon-face-cry\" style=\"font-size: 50px; color: #696969;\"></i></h1>" +
+                "</div>" +
+                "</div>"
             ,id: "userCollections"
         });
         element.tabChange('userDemo','userCollections');
     }
 }
-/*function callUserParticipate(element) {
-    if($(".layui-tab-title li[lay-id='userParticipate']").length>0){
-        element.tabChange('userDemo','userParticipate');
-    }else{
-        element.tabAdd('userDemo',{
-            title: "我的参与"
-            ,content: "<div class=\"userParticipateContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\"><div class=\"right\">\n" +
-                "    <div class=\"layui-tab layui-tab-card\">\n" +
-                "        <ul class=\"layui-tab-title layui-bg-cyan\">\n" +
-                "            <li class=\"layui-this\">我的项目</li>\n" +
-                "            <li>别人的项目</li>\n" +
-                "\n" +
-                "        </ul>\n" +
-                "        <div class=\"layui-tab-content \">\n" +
-                "            <div class=\"layui-tab-item layui-show\">\n" +
-                "                <div class=\"collection\">\n" +
-                "                    <ul style=\"border: 1px solid #c0c0c0;\">\n" +
-                "                        <li >\n" +
-                "                            <div class=\"title\">&nbsp;&nbsp;&nbsp;标题 </div>\n" +
-                "                            <div>\n" +
-                "                                <p>\n" +
-                "                                    <span class=\"state\">正在进行中...</span>\n" +
-                "                                    <span>&nbsp;&nbsp;&nbsp;100参与中</span>\n" +
-                "                                    <button>进入团组</button>\n" +
-                "                                </p>\n" +
-                "                            </div>\n" +
-                "                        </li>\n" +
-                "                        <hr>\n" +
-                "                        <li >\n" +
-                "                            <div class=\"title\">&nbsp;&nbsp;&nbsp;标题 </div>\n" +
-                "                            <div>\n" +
-                "                                <p>\n" +
-                "                                    <span class=\"state\">已结束！！！</span>\n" +
-                "                                    <span>&nbsp;&nbsp;&nbsp;100参与中</span>\n" +
-                "                                </p>\n" +
-                "                            </div>\n" +
-                "                        </li>\n" +
-                "                    </ul>\n" +
-                "                </div>\n" +
-                "            </div>\n" +
-                "            <div class=\"layui-tab-item\">\n" +
-                "                <div class=\"collection\">\n" +
-                "                    <ul style=\"border: 1px solid #c0c0c0;\">\n" +
-                "                        <li >\n" +
-                "                            <div class=\"title\">&nbsp;&nbsp;&nbsp;标题 </div>\n" +
-                "                            <div>\n" +
-                "                                <p>\n" +
-                "                                    <img src=\"/img/头像small.png\" alt=\"\">\n" +
-                "                                    <span class=\"state\">正在进行中...</span>\n" +
-                "                                    <span>&nbsp;&nbsp;&nbsp;100参与中</span>\n" +
-                "                                    <button>进入团组</button>\n" +
-                "                                </p>\n" +
-                "                            </div>\n" +
-                "                        </li>\n" +
-                "                        <hr>\n" +
-                "                        <li >\n" +
-                "                            <div class=\"title\">&nbsp;&nbsp;&nbsp;标题 </div>\n" +
-                "                            <div>\n" +
-                "                                <p>\n" +
-                "                                    <img src=\"/img/头像small.png\" alt=\"\">\n" +
-                "                                    <span class=\"state\">已结束！！！</span>\n" +
-                "                                    <span>&nbsp;&nbsp;&nbsp;100参与中</span>\n" +
-                "                                </p>\n" +
-                "                            </div>\n" +
-                "                        </li>\n" +
-                "                    </ul>\n" +
-                "                </div>\n" +
-                "            </div>\n" +
-                "        </div>\n" +
-                "    </div>\n" +
-                "</div>\n</div>"
-            ,id: "userParticipate"
-        });
-        element.tabChange('userDemo','userParticipate');
-    }
-}*/
+
 function callUserProfitProjects(element) {
     if($(".layui-tab-title li[lay-id='userProfitProjects']").length>0){
         element.tabChange('userDemo','userProfitProjects');
@@ -319,6 +212,7 @@ function callUserFans(element) {
             ,id: "userFans"
         });
         element.tabChange('userDemo','userFans');
+
         getUserFans(user_id);
     }
 }
@@ -328,11 +222,14 @@ function callUserFocusOn(element) {
     }else{
         element.tabAdd('userDemo',{
             title: "我的关注"
-            ,content: "<div class=\"userFocusOnContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\">我的关注</div>"
+            ,content: "<div class=\"userFocusOnContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\">" +
+                "<div style=\"text-align: center\">" +
+                "<h1 style=\"font-weight: bold\">空空如也（该模块未加载）<i class=\"layui-icon layui-icon-face-cry\" style=\"font-size: 50px; color: #696969;\"></i></h1>" +
+                "</div>" +
+                "</div>"
             ,id: "userFocusOn"
         });
         element.tabChange('userDemo','userFocusOn');
-
     }
 }
 

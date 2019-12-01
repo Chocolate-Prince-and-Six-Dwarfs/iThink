@@ -159,7 +159,7 @@ function getUserFans(userId) {
                 myFans="<li >\n" +
                     "                            <div class=\"title\">"+data.data[i].name+"</div>\n" +
                     "                            <div class=\"user-head\">\n" +
-                    "                                <img src=\"data:image/png;base64,"+data.data[i].head+"\" alt=\"\">\n" +
+                    "                                <b class=\"clickUserFans\" userId=\""+data.data[i].id+"\"><img src=\"data:image/png;base64,"+data.data[i].head+"\" alt=\"\"></b>\n" +
                     "                            </div>\n" +
                     "                        </li>\n" +
                     "                        <hr>";

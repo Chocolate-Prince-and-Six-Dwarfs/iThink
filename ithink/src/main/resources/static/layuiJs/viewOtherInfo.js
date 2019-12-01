@@ -8,6 +8,7 @@ layui.define(['element','jquery','layer'],function (exports) {
         $("#followButDiv").empty();
     }
     //console.log(userId);
+    getFollow(userId);
     getOtherUserInfo(userId);
     exports('viewOtherInfo',{}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
@@ -131,6 +132,26 @@ function getUserLoginId() {
         },
         error:function () {
             console.log("读取用户Id失败.")
+        }
+    });
+}
+function getFollow(userOtherId){//获取关注状态
+    $.ajax({
+        url:"user/getFollow",
+        type:"post",
+        data:{
+            userId:userLoginId,
+            followId:userOtherId,
+        },
+        success:function (data) {
+            if(data==1){
+                $("#follow").text("已关注");
+            }else{
+                $("#follow").text("关注");
+            }
+        },
+        error:function () {
+            console.log("网络错误,获取关注状态失败");
         }
     });
 }
