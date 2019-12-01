@@ -14,6 +14,7 @@ layui.define(['laypage','layer', 'form','jquery','element'], function(exports){
         }
     });
     deleteAndChangeIdea(layer);
+    clickToViewOther();
     form.render();
 
     switch(location.hash) {
@@ -213,7 +214,7 @@ function addEdit(editId){
         releaseIdeaInfo(form,layer,layedit,editIndex);
     });
 }
-var ideaId;
+var ideaId;//我的创意模块的修改创意时所需的创意id.
 function deleteAndChangeIdea(layer){
     $(document).off('click','.deleteIdea').on('click','.deleteIdea',function () {
         var id=$(this).attr('ideaId');
@@ -324,5 +325,12 @@ function releaseIdeaInfo(form,layer,layedit,editIndex){//发布创意
                 layer.msg("发布创意失败");
             }
         });
+    });
+}
+
+function clickToViewOther() {
+    $(document).off('click','.clickUserFans').on('click','.clickUserFans',function () {
+        var userId=$(this).attr('userId');
+        window.location.href='/otherUser?userId='+userId;
     });
 }
