@@ -132,6 +132,62 @@ function getUserIdeas(layer,userId) {
     })
 }
 
+function getUserCollect(userId) {
+    $.ajax({
+        url:"user/getCollectById",
+        type:"post",
+        dataType: "json",
+        data:{
+            id: userId,
+        },
+        success:function (data) {
+            console.log("成功"+data.achievement[0]+"---"+data.topic);
+            if(data.achievement.length==0&&data.topic.length==0){
+                return false;
+            }
+            $(".userCollectionsContent").empty();
+            var myCollection="";
+            var text="<h2  style=\"text-align: center;font-weight: bold\">我的收藏</h2>\n" +
+                "    <div class=\"layui-tab-content\">\n" +
+                "        <ul class=\"userCollectionsContentUL\"><hr>\n" +
+                "            \n" +
+                "        </ul>\n" +
+                "    </div>";
+            $(".userCollectionsContent").append(text);
+            for(var i in data.achievement) {
+                myCollection = "<li>\n" +
+                    "                <div class=\"title\" style=\"text-align: center;margin-top: 20px;font-weight: bold\">创意实现</div>\n" +
+                    "                <div>\n" +
+                    "                    <span>" + getNoticeAchievementContent(data.achievement[i]) + "</span>\n" +
+                    "                </div>\n" +
+                    "            </li>\n" +
+                    "            <hr>";
+                $(".userCollectionsContentUL").append(myCollection);
+            }
+            for(var j in data.topic) {
+                myCollection = "<li>\n" +
+                    "                <div class=\"title\" style=\"text-align: center;margin-top: 20px;font-weight: bold\">创意标题："+getNoticeTopicName(data.topic[j])+"</div>\n" +
+                    "                <div>\n" +
+                    "                    <span><b style=\"font-weight: bold\">创意内容： </b>" + subStringIdeaContent(getNoticeTopicContent(data.topic[j])) + "...</span>\n" +
+                    "                </div>\n" +
+                    "<div style=\"text-align: right\">" +
+                    "<button  class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary viewIdeaInfoFromUserCollections\" ideaId=\""+data.topic[j]+"\">查看详情</button>" +
+                    "</div>" +
+                    "            </li>\n" +
+                    "            <hr>";
+                $(".userCollectionsContentUL").append(myCollection);
+            }
+            $(document).off('click','.viewIdeaInfoFromUserCollections').on('click','.viewIdeaInfoFromUserCollections',function(){
+                var ideaId=$(this).attr('ideaId');
+                window.location.href='/viewIdea?ideaId='+ideaId;
+            });
+        },
+        error:function () {
+            console.log("读取个人收藏失败");
+        }
+    })
+}
+
 function getUserFans(userId) {
     $.ajax({
         url:"/user/getInfoByUserId",
@@ -207,6 +263,26 @@ function getNoticeTopicName(topicId) {
         },
         error:function () {
             console.log("获取创意标题失败");
+        }
+    });
+    return content;
+}
+
+function getNoticeTopicContent(topicId) {
+    var content;
+    $.ajax({
+        url:"/idea/detail",
+        type:"post",
+        dataType: "json",
+        async:false,
+        data:{
+            id:topicId,
+        },
+        success:function (data) {
+            content=data.topic.content;
+        },
+        error:function () {
+            console.log("获取创意内容失败");
         }
     });
     return content;

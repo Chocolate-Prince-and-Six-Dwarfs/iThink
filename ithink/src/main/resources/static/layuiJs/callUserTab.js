@@ -134,6 +134,7 @@ function callUserCollections(element) {
             ,id: "userCollections"
         });
         element.tabChange('userDemo','userCollections');
+        getUserCollect(user_id);
     }
 }
 
