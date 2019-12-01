@@ -14,6 +14,7 @@ layui.define(['laypage','layer', 'form','jquery','element'], function(exports){
         }
     });
     deleteAndChangeIdea(layer);
+    releaseAndChangeCapsule(layer);
     clickToViewOther();//粉丝界面点击头像跳转
     form.render();
 
@@ -27,7 +28,7 @@ layui.define(['laypage','layer', 'form','jquery','element'], function(exports){
         case("#userDemo=userIdeas"):
             callUserIdeas(element,layer);
             break;
-        case("#userDemo=userIdeasCapsule"):
+        case("#userDemo=userIdeasCapsules"):
             callUserIdeasCapsules(element);
             break;
         case("#userDemo=userGroups"):
@@ -171,7 +172,7 @@ layui.use(['element','jquery','form'],function () {
             callUserCollections(element);
         }
         ,tabUserParticipate:function () {
-            callUserParticipate(element);
+            //callUserParticipate(element);
         }
         ,tabUserProfitProjects:function () {
             callUserProfitProjects(element);
@@ -253,14 +254,14 @@ function deleteAndChangeIdea(layer){
                 var iframeWin = window[layero.find('iframe')[0]['name']];
                 var ideaId=parent.ideaId;
                 //console.log(id);
-                iframeWin.addIframeEdit(ideaId);
+                iframeWin.addIframeEdit(ideaId,1);
             },
             yes:function (index, layero) {
                 var iframeWin = window[layero.find('iframe')[0]['name']];
                 var ideaId=parent.ideaId;
                 var userId=parent.user_id;
                 iframeWin.update(ideaId,userId,layer,index);
-                setTimeout(function(){ window.location.reload(); }, 1500);
+                //setTimeout(function(){ window.location.reload(); }, 1500);
             },
             btn2:function(index){
                 if(confirm('确定要关闭么?(如果关闭不会保存您的修改)')){ //只有当点击confirm框的确定时，该层才会关闭
@@ -276,6 +277,146 @@ function deleteAndChangeIdea(layer){
             }
         });
     });
+}
+
+function releaseAndChangeCapsule(layer) {
+    $(document).off('click','.addCapsule').on('click','.addCapsule',function () {
+        layer.open({
+            type: 2,
+            area: ['70%', '90%'],
+            title:"添加创意胶囊",
+            fixed: false, //不固定
+            maxmin: true,
+            anim:5,
+            isOutAnim:true,
+            resize:false,
+            btn:['添加创意胶囊','返回'],
+            btnAlign: 'c',
+            content: '/changeIdea',
+            success:function(layero,index){
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                iframeWin.addIframeEdit(-1,0);
+            },
+            yes:function (index, layero) {
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                var userId=parent.user_id;
+                iframeWin.addIframeEdit(userId,2);
+                //setTimeout(function(){ window.location.reload(); }, 1500);
+            },
+            btn2:function(index){
+                if(confirm('确定要关闭么?(如果关闭不会保存您的修改)')){ //只有当点击confirm框的确定时，该层才会关闭
+                    layer.close(index);
+                }
+                return false;
+            },
+            cancel:function (index) {
+                if(confirm('确定要关闭么?(如果关闭不会保存您的修改)')){ //只有当点击confirm框的确定时，该层才会关闭
+                    layer.close(index);
+                }
+                return false;
+            }
+        });
+    });
+    $(document).off('click','.changeCapsule').on('click','.changeCapsule',function () {
+        var capsuleId=$(this).attr('capsuleId');
+        layer.open({
+            type: 2,
+            area: ['70%', '90%'],
+            title:"修改创意胶囊",
+            fixed: false, //不固定
+            maxmin: true,
+            anim:5,
+            isOutAnim:true,
+            resize:false,
+            btn:['修改创意胶囊','返回'],
+            btnAlign: 'c',
+            content: '/changeIdea',
+            success:function(layero,index){
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                //console.log("capsuleId:"+capsuleId);
+                iframeWin.addIframeEdit(capsuleId,3);
+            },
+            yes:function (index, layero) {
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                iframeWin.addIframeEdit(capsuleId,4);
+                //setTimeout(function(){ window.location.reload(); }, 1500);
+            },
+            btn2:function(index){
+                if(confirm('确定要关闭么?(如果关闭不会保存您的修改)')){ //只有当点击confirm框的确定时，该层才会关闭
+                    layer.close(index);
+                }
+                return false;
+            },
+            cancel:function (index) {
+                if(confirm('确定要关闭么?(如果关闭不会保存您的修改)')){ //只有当点击confirm框的确定时，该层才会关闭
+                    layer.close(index);
+                }
+                return false;
+            }
+        });
+    });
+    $(document).off('click','.releaseCapsule').on('click','.releaseCapsule',function () {
+        var capsule_id=$(this).attr('capsuleId');
+        var title=getCapsuleTitle(capsule_id);
+        var capsuleContent=getCapsuleContent(capsule_id);
+        $.ajax({
+            url:'/idea/publish',
+            type:'post',
+            data: {
+                topicTitle:title,
+                capsuleId:capsule_id,
+                userId:user_id,
+                content:capsuleContent,
+            },
+            success:function (data) {
+                if(data==null){
+                    layer.msg("发布创意失败");
+                }else{
+                    layer.msg("发布创意成功");
+                }
+            },
+            error:function () {
+                layer.msg("网络错误,发布创意失败");
+            }
+        });
+    });
+}
+
+function getCapsuleTitle(capsuleId) {
+    var content;
+    $.ajax({
+        url:'capsule/getById',
+        type:'post',
+        data: {
+            id:capsuleId,
+        },
+        async:false,
+        success:function (data) {
+            content=data.data.name;
+        },
+        error:function () {
+            console.log("获取创意胶囊标题失败");
+        }
+    });
+    return content;
+}
+function getCapsuleContent(capsuleId) {
+    var content;
+    $.ajax({
+        url:'capsule/getById',
+        type:'post',
+        data: {
+            id:capsuleId,
+        },
+        async:false,
+        success:function (data) {
+            content=data.data.content;
+        },
+        error:function () {
+            console.log("获取创意胶囊内容失败");
+        }
+    });
+    return content;
 }
 
 function releaseIdeaInfo(form,layer,layedit,editIndex){//发布创意

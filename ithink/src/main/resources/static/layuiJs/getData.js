@@ -141,7 +141,7 @@ function getUserCollect(userId) {
             id: userId,
         },
         success:function (data) {
-            console.log("成功"+data.achievement[0]+"---"+data.topic);
+            //console.log("成功"+data.achievement[0]+"---"+data.topic);
             if(data.achievement.length==0&&data.topic.length==0){
                 return false;
             }
@@ -342,7 +342,7 @@ function getUserNotice(userId){
         var d=JSON.parse("["+event.data+"]");
         var notice="";
 
-        console.log(d);
+        //console.log(d);
 
         var ach=d[0].achievementLike;
         if(ach!=""&&ach!=null&&ach!="[]"){
@@ -421,4 +421,39 @@ function subStringIdeaContent(ideaContent){ //截取部分创意内容
     ideaContent = ideaContent.replace(/\s*/g, "");
     var ic=ideaContent.substring(0,100);
     return ic;
+}
+
+function getUserCapsule(userId) {
+    $.ajax({
+        url:"/user/getCapsuleById",
+        type:"post",
+        dataType: "json",
+        data:{
+            id: userId,
+        },
+        success:function (data) {
+            //console.log(data);
+            $(".capsuleList").empty();
+            var myCapsule="";
+            for(var i in data.data){
+                myCapsule="<li>\n" +
+                    "                <div class=\"title\" style=\"text-align: center;margin-top: 20px\">"+data.data[i].name+"</div>\n" +
+                    "                <div>\n" +
+                    "                    <span>"+subStringIdeaContent(data.data[i].content)+"...</span>\n" +
+                    "                </div>\n" +
+                    "                <div style=\"text-align: right\" class=\"ideaDivBut\">\n" +
+                    "                    <span>发布者:"+data.data[i].userName+"</span>\n" +
+                    "                    <span style=\"margin-left: 10px\">最近更新时间:"+formatDateTime(data.data[i].uploadTime)+"</span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary changeCapsule\" capsuleId=\""+data.data[i].id+"\">修改创意胶囊</button></span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary releaseCapsule\" capsuleId=\""+data.data[i].id+"\">将创意胶囊发布</button></span>\n" +
+                    "                </div>\n" +
+                    "            </li>\n" +
+                    "            <hr>";
+                $(".capsuleList").append(myCapsule);
+            }
+        },
+        error:function () {
+            layer.msg("读取个人创意胶囊信息失败");
+        }
+    })
 }

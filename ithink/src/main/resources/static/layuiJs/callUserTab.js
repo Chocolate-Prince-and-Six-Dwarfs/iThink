@@ -56,49 +56,17 @@ function callUserIdeasCapsules(element) {
     }else{
         element.tabAdd('userDemo',{
             title: "创意胶囊"
-            ,content: "<div class=\"userIdeasCapsulesContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\"><div class=\"idea\">\n" +
-                "    <h3>创意胶囊</h3>\n" +
-                "    <hr>\n" +
-                "    <a href=\"Put.html\"><button id=\"add\" data-src=\"Put.html\">添加胶囊</button></a>\n" +
-                "    <div>\n" +
-                "        <ul>\n" +
-                "            <li>\n" +
-                "                <p class=\"content\">内容内容内容内容内容内容内容内容内容内容内容内容内容内容\n" +
-                "                    内容内内容内容内容内容内容内容内容内容内容内容内容内容\n" +
-                "                    内容内容内容内容内容内容内容内容内容内容内容内容内容内容\n" +
-                "                    内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>\n" +
-                "                <div class=\"foot\">\n" +
-                "                    <span class=\"time\">2019-12-12</span>\n" +
-                "                    <a href=\"Put.html\"> <button class=\"revise\">修改胶囊</button><a/>\n" +
-                "                </div>\n" +
-                "\n" +
-                "            </li>\n" +
-                "            <li>\n" +
-                "                <p class=\"content\">内容内容内容内容内容内容内容内容内容内容内容内容内容内容\n" +
-                "                    内容内内容内容内容内容内容内容内容内容内容内容内容内容\n" +
-                "                    内容内容内容内容内容内容内容内容内容内容内容内容内容内容\n" +
-                "                    内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>\n" +
-                "                <div class=\"foot\">\n" +
-                "                    <span class=\"time\">2019-12-12</span>\n" +
-                "                    <a href=\"Put.html\"><button class=\"revise\">修改胶囊</button></a>\n" +
-                "                </div>\n" +
-                "            </li>\n" +
-                "            <li>\n" +
-                "                <p class=\"content\">内容内容内容内容内容内容内容内容内容内容内容内容内容内容\n" +
-                "                    内容内内容内容内容内容内容内容内容内容内容内容内容内容\n" +
-                "                    内容内容内容内容内容内容内容内容内容内容内容内容内容内容\n" +
-                "                    内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>\n" +
-                "                <div class=\"foot\">\n" +
-                "                    <span class=\"time\">2019-12-12</span>\n" +
-                "                    <a href=\"Put.html\"><button class=\"revise\">修改胶囊</button></a>\n" +
-                "                </div>\n" +
-                "            </li>\n" +
-                "        </ul>\n" +
-                "    </div>\n" +
-                "</div>\n</div>"
+            ,content: "<div class=\"userIdeasCapsulesContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\">" +
+                "    <div style=\"text-align: center\"><h2 style=\"font-weight: bold;\">创意胶囊</h2></div>" +
+                "    <hr style=\"margin-top: 1em\">" +
+                "    <div style=\"text-align: right\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary addCapsule\">添加胶囊</button></div>" +
+                "    <div class=\"capsuleList\">" +
+                "    </div>" +
+                "</div>"
             ,id: "userIdeasCapsules"
         });
         element.tabChange('userDemo','userIdeasCapsules');
+        getUserCapsule(user_id);
     }
 }
 function callUserGroups(element) {
