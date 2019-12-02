@@ -413,6 +413,20 @@ function getNoticeAchievementContent(achievementId) {
 }
 
 function getUserNotice(userId){
+    $.ajax({
+        url:"/authNotify",
+        type:"post",
+        async:false,
+        data:{
+            "id":user_id,
+        },
+        success:function () {
+            console.log("连接通知成功");
+        },
+        error:function () {
+            console.log("连接通知失败");
+        }
+    });
     source=new EventSource('/notify?id='+userId);
     // $(".userNoticesContent").empty();
     // var text="<h2  style=\"text-align: center;font-weight: bold\">我的新消息</h2>\n" +
@@ -423,6 +437,11 @@ function getUserNotice(userId){
     //     "    </div>";
     // $(".userNoticesContent").append(text);
     source.onmessage = function (event) {
+        if(event.data ==="{}")
+        {
+            return;
+        }
+
         showDot();
         //console.log("onmessage");
 

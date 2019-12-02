@@ -19,6 +19,7 @@ public class NotifyController implements NotifyInterface {
     @Autowired
     private NotifyService notifyService;
     private List<Integer> unhandledConnection = new ArrayList<Integer>();
+    private List<Integer> connectionList = new ArrayList<Integer>();
 
     // 请求地址: /notify
     // param id: 用户id
@@ -68,9 +69,8 @@ public class NotifyController implements NotifyInterface {
         JSONArray achievementCollect = new JSONArray();
         do
         {
-            if(unhandledConnection.contains(id))
+            if(!connectionList.contains(id))
             {
-                unhandledConnection.remove(id);
                 return "data:" + "{}" + "\n\n";
             }
             topicLike = notifyService.getTopicLikeAfter(id, lastUpdateTIme);
@@ -79,7 +79,9 @@ public class NotifyController implements NotifyInterface {
 
             topicCollect = notifyService.getTopicCollectAfter(id, lastUpdateTIme);
             achievementCollect = notifyService.getAchievementCollectAfter(id, lastUpdateTIme);
-        }while (topicLike.size()==0 && achievementLike.size()==0 && commentLike.size()==0 && topicCollect.size()==0 && achievementCollect.size()==0);
+        }while (( topicLike == null || topicLike.size()==0) && (achievementLike == null || achievementLike.size()==0)
+                && (commentLike == null || commentLike.size()==0) && (topicCollect == null || topicCollect.size()==0)
+                && (achievementCollect == null || achievementCollect.size()==0));
 
         // 拼接json
         jsonObject.put("id", id);
@@ -96,6 +98,21 @@ public class NotifyController implements NotifyInterface {
     }
 
 
+    // 请求地址 /authNotify
+    // param id: 用户id
+    // do: 登记通知推送
+    @RequestMapping("/authNotify")
+    @ResponseJSONP
+    public void authNotify(Integer id)
+    {
+        if(connectionList.contains(id))
+        {
+            return;
+        }
+        connectionList.add(id);
+    }
+
+
     // 请求地址: /stopNotify
     // param id: 用户id
     // do: 关闭推送，请在页面关闭或者刷新时调用(beforeunload事件)
@@ -103,6 +120,10 @@ public class NotifyController implements NotifyInterface {
     @ResponseJSONP
     public void stopNotify(Integer id) throws InterruptedException
     {
-        unhandledConnection.add(id);
+        if(!connectionList.contains(id))
+        {
+            return;
+        }
+        connectionList.remove(id);
     }
 }
