@@ -330,72 +330,44 @@ function getNoticeAchievementContent(achievementId) {
 
 function getUserNotice(userId){
     source=new EventSource('/notify?id='+userId);
-    $(".userNoticesContent").empty();
-    var text="<h2  style=\"text-align: center;font-weight: bold\">我的新消息</h2>\n" +
-        "    <div class=\"layui-tab-content\">\n" +
-        "        <ul class=\"userNoticesContentUL\"><hr>\n" +
-        "            \n" +
-        "        </ul>\n" +
-        "    </div>";
-    $(".userNoticesContent").append(text);
+    // $(".userNoticesContent").empty();
+    // var text="<h2  style=\"text-align: center;font-weight: bold\">我的新消息</h2>\n" +
+    //     "    <div class=\"layui-tab-content\">\n" +
+    //     "        <ul class=\"userNoticesContentUL\"><hr>\n" +
+    //     "            \n" +
+    //     "        </ul>\n" +
+    //     "    </div>";
+    // $(".userNoticesContent").append(text);
     source.onmessage = function (event) {
-        var d=JSON.parse("["+event.data+"]");
-        var notice="";
+        showDot();
+        //console.log("onmessage");
 
         //console.log(d);
-
-        var ach=d[0].achievementLike;
-        if(ach!=""&&ach!=null&&ach!="[]"){
-            var info1="";
-            if(ach[0][0]["type"]==true){
-                info1="赞";
-            }else{
-                info1="踩";
+        if($(".userNoticesContentUL").length !== 0)
+        {
+            appendNotify(event.data);
+        }
+        else
+        {
+            if(localStorage.getItem("notify?userId=" + user_id) !== null)
+            {
+                localStorage.setItem("notify?userId=" + user_id,  localStorage.getItem("notify?userId=" + user_id) + "," + event.data);
             }
-            notice="<li>" +getNoticeUserName(ach[0][0]["userId"])+
-                " 在"+getMSDate(ach[0][0]["time"])+"给你的创意实现：\"" +getNoticeAchievementContent(ach[0][0]["achievementId"])+"\"点了一个"+info1+
-                "</li><hr>";
-            $(".userNoticesContentUL").append(notice);
-        }
-
-        var top=d[0]["topicLike"];
-        if(top!=""&&top!=null&&top!="[]"){
-            var info2="";
-            if(top[0][0]["type"]==true){
-                info2="赞";
-            }else{
-                info2="踩";
+            else
+            {
+                localStorage.setItem("notify?userId=" + user_id,  event.data);
             }
-            notice="<li>" +getNoticeUserName(top[0][0]["userId"])+
-                " 在"+getMSDate(top[0][0]["time"])+"给你的创意：\"" +getNoticeTopicName(top[0][0]["topicId"])+"\"点了一个"+info2+
-                "</li><hr>";
-            $(".userNoticesContentUL").append(notice);
         }
 
-        var com=d[0]["commentLike"];
-        if(com!=""&&com!=null&&com!="[]"){
-            var info3="";
-            if(com[0][0]["type"]==true){
-                info3="赞";
-            }else{
-                info3="踩";
-            }
-            notice="<li>" +getNoticeUserName(com[0][0]["userId"])+
-                " 在"+getMSDate(com[0][0]["time"])+"创意实现：\"" +getNoticeAchievementContent(com[0][0]["commentId"])+"\"下你的评论上点了一个"+info3+
-                "</li><hr>";
-            $(".userNoticesContentUL").append(notice);
-        }
 
-        var toc=d[0]["topicCollect"];
-        if(toc!=""&&toc!=null&&toc!="[]"){
-            notice="<li>" +getNoticeUserName(toc[0][0]["userId"])+
-                " 在"+getMSDate(toc[0][0]["time"])+"收藏了你的创意：\"" +getNoticeTopicName(toc[0][0]["topicId"])+"\""+
-                "</li><hr>";
-            $(".userNoticesContentUL").append(notice);
-        }
+
     };
+    loadCache();
 
     $(window).on("beforeunload", function () {
+        source.close();
+        source = null;
+        saveCache();
         $.ajax({
             url:"/stopNotify",
             type:"post",
@@ -411,6 +383,164 @@ function getUserNotice(userId){
             }
         });
     })
+}
+
+function appendNotify(data)
+{
+    var d=JSON.parse("["+data+"]");
+    var notice="";
+    var ach=d[0].achievementLike;
+    if(ach!=""&&ach!=null&&ach!="[]"){
+        var info1="";
+        if(ach[0][0]["type"]==true){
+            info1="赞";
+        }else{
+            info1="踩";
+        }
+        notice="<li>" +getNoticeUserName(ach[0][0]["userId"])+
+            " 在"+getMSDate(ach[0][0]["time"])+"给你的创意实现：\"" +getNoticeAchievementContent(ach[0][0]["achievementId"])+"\"点了一个"+info1+
+            "</li><hr>";
+        $(".userNoticesContentUL").append(notice);
+    }
+
+    var top=d[0]["topicLike"];
+    if(top!=""&&top!=null&&top!="[]"){
+        var info2="";
+        if(top[0][0]["type"]==true){
+            info2="赞";
+        }else{
+            info2="踩";
+        }
+        notice="<li>" +getNoticeUserName(top[0][0]["userId"])+
+            " 在"+getMSDate(top[0][0]["time"])+"给你的创意：\"" +getNoticeTopicName(top[0][0]["topicId"])+"\"点了一个"+info2+
+            "</li><hr>";
+        $(".userNoticesContentUL").append(notice);
+    }
+
+    var com=d[0]["commentLike"];
+    if(com!=""&&com!=null&&com!="[]"){
+        var info3="";
+        if(com[0][0]["type"]==true){
+            info3="赞";
+        }else{
+            info3="踩";
+        }
+        notice="<li>" +getNoticeUserName(com[0][0]["userId"])+
+            " 在"+getMSDate(com[0][0]["time"])+"创意实现：\"" +getNoticeAchievementContent(com[0][0]["commentId"])+"\"下你的评论上点了一个"+info3+
+            "</li><hr>";
+        $(".userNoticesContentUL").append(notice);
+    }
+
+    var toc=d[0]["topicCollect"];
+    if(toc!=""&&toc!=null&&toc!="[]"){
+        notice="<li>" +getNoticeUserName(toc[0][0]["userId"])+
+            " 在"+getMSDate(toc[0][0]["time"])+"收藏了你的创意：\"" +getNoticeTopicName(toc[0][0]["topicId"])+"\""+
+            "</li><hr>";
+        $(".userNoticesContentUL").append(notice);
+    }
+}
+
+function showDot()
+{
+    // 显示圆点
+    var itemDot = $("#notify-dot-item");
+    var childDot = $("#notify-dot-child");
+    var userDot = $("#notify-dot-user");
+    var dotList = [];
+    dotList.push(itemDot);
+    dotList.push(childDot);
+    dotList.push(userDot);
+    for(var i=0; i<dotList.length; ++i)
+    {
+        if(dotList[i]!=null)
+        {
+            dotList[i].attr("status", "shown");
+            dotList[i].show(200);
+        }
+    }
+
+    if(itemDot.length === 0)
+    {
+        localStorage.setItem("notify-dot-item" + "?userId=" + user_id, "shown");
+    }
+
+    if(childDot.length === 0)
+    {
+        localStorage.setItem("notify-dot-child" + "?userId=" + user_id, "shown");
+    }
+
+    if(userDot.length === 0)
+    {
+        localStorage.setItem("notify-dot-user" + "?userId=" + user_id, "shown");
+    }
+}
+
+function hideDot(type)
+{
+    var dot = $("#notify-dot-" + type);
+    if(dot.length !== 0)
+    {
+        dot.attr("status", "hidden");
+        dot.hide(200);
+    }
+    else
+    {
+        localStorage.setItem("notify-dot-" + type + "?userId=" + user_id, "hidden");
+    }
+}
+
+function saveCache()
+{
+    // 保存通知未读状态
+    var itemDot = $("#notify-dot-item");
+    var childDot = $("#notify-dot-child");
+    var userDot = $("#notify-dot-user");
+    var dotList = [];
+    dotList.push(itemDot);
+    dotList.push(childDot);
+    dotList.push(userDot);
+    for(var i=0; i<dotList.length; ++i)
+    {
+        if(dotList[i].length !== 0)
+        {
+            if(dotList[i].attr("status") === "hidden")
+            {
+                localStorage.setItem(dotList[i].attr("id") + "?userId=" + user_id, "hidden");
+            }
+            else if(dotList[i].attr("status") === "shown")
+            {
+                localStorage.setItem(dotList[i].attr("id") + "?userId=" + user_id, "shown");
+            }
+        }
+    }
+}
+
+function loadCache()
+{
+    // 加载通知未读状态
+    var itemDot = $("#notify-dot-item");
+    var childDot = $("#notify-dot-child");
+    var userDot = $("#notify-dot-user");
+    var dotList = [];
+    dotList.push(itemDot);
+    dotList.push(childDot);
+    dotList.push(userDot);
+    for(var i=0; i<dotList.length; ++i)
+    {
+        if(dotList[i].length !== 0)
+        {
+            if(localStorage.getItem(dotList[i].attr("id") + "?userId=" + user_id) === "hidden")
+            {
+                dotList[i].attr("status", "hidden");
+                dotList[i].hide(200);
+            }
+            else if(localStorage.getItem(dotList[i].attr("id") + "?userId=" + user_id) === "shown")
+            {
+                dotList[i].attr("status", "shown");
+                dotList[i].show(200);
+            }
+        }
+    }
 }
 
 function subStringIdeaContent(ideaContent){ //截取部分创意内容

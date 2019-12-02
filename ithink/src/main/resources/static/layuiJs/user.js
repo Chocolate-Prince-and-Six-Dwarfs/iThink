@@ -16,6 +16,7 @@ layui.define(['laypage','layer', 'form','jquery','element'], function(exports){
     deleteAndChangeIdea(layer);
     releaseAndChangeCapsule(layer);
     clickToViewOther();//粉丝界面点击头像跳转
+    getUserNotice(user_id);
     form.render();
 
     switch(location.hash) {

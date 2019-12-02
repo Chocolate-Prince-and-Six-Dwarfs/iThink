@@ -61,15 +61,16 @@
                 <a href="user#userDemo=userNotices" class="layui-icon" style="font-size: 23px; ">&#xe667;</a>
             </li>
             <li class="layui-nav-item">
-                <a href="/#"><img src="/img/头像small.png" id="userImg" class="layui-nav-img" alt=""><b id="userName">我</b></a>
+                <a  onclick="hideDot('item')"><img src="/img/头像small.png" id="userImg" class="layui-nav-img" alt=""><b id="userName">我</b></a>
                 <dl class="layui-nav-child">
                     <dd><a href="/user#userDemo=userInfo">个人中心</a></dd>
-                    <dd><a href="/user#userDemo=userNotices">我的通知</a></dd>
+                    <dd><a href="/user#userDemo=userNotices" onclick="hideDot('item');hideDot('child')">我的通知<span id="notify-dot-child" class="layui-badge-dot" style="display:none;" status="hidden" /></a></dd>
                     <dd><a href="/user#userDemo=userIdeas">我的创意</a></dd>
                     <dd><a href="/user#userDemo=userGroups">我的团组</a></dd>
                     <dd><a href="/user/logout">退出</a></dd>
                 </dl>
             </li>
+            <span id="notify-dot-item" class="layui-badge-dot" style="display:none;" status="hidden" />
         </ul>
     </div>
 
