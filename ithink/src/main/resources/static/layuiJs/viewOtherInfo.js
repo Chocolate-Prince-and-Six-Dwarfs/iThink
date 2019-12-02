@@ -10,6 +10,7 @@ layui.define(['element','jquery','layer'],function (exports) {
     //console.log(userId);
     getFollow(userId);
     getOtherUserInfo(userId);
+    followAndChat(layer);
     exports('viewOtherInfo',{}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
 function getUserIdQueryString(name){
@@ -154,26 +155,53 @@ function getFollow(userOtherId){//获取关注状态
         }
     });
 }
-$(document).off("click","#follow").on("click","#follow",function () {
-    var userOtherId=getUserId();
-    console.log("other:"+userOtherId+"---login:"+userLoginId);
-    $.ajax({
-        url:"user/follow",
-        type:"post",
-        data:{
-            userId:userLoginId,
-            followId:userOtherId,
-        },
-        success:function (data) {
-            if(data==1){
-                $("#follow").text("已关注");
-            }else {
-                $("#follow").text("关注");
-            }
-        },
-        error:function () {
-            console.log("网络错误，关注失败");
-        }
-    });
-});
 
+function followAndChat(layer){
+    $(document).off("click","#follow").on("click","#follow",function () {
+        var userOtherId=getUserId();
+        //console.log("other:"+userOtherId+"---login:"+userLoginId);
+        $.ajax({
+            url:"user/follow",
+            type:"post",
+            data:{
+                userId:userLoginId,
+                followId:userOtherId,
+            },
+            success:function (data) {
+                if(data==1){
+                    $("#follow").text("已关注");
+                }else {
+                    $("#follow").text("关注");
+                }
+            },
+            error:function () {
+                console.log("网络错误，关注失败");
+            }
+        });
+    });
+
+    $(document).off("click","#chatUser").on("click","#chatUser",function () {
+        var userOtherId=getUserId();
+        //console.log("other:"+userOtherId+"---login:"+userLoginId);
+        $.ajax({
+            url:"/chat/addToPrivate",
+            type:"post",
+            data:{
+                userId1:userLoginId,
+                userId2:userOtherId,
+            },
+            success:function (data) {
+                if(data==0){
+                    layer.msg("已创建聊天，正在返回首页");
+                    setTimeout(function(){ window.location.href="/main?chat=true"; }, 1000);
+                }else {
+                    layer.msg("创建聊天成功，正在返回首页");
+                    setTimeout(function(){ window.location.href="/main?chat=true"; }, 1000);
+                }
+            },
+            error:function () {
+                console.log("网络错误，创建私聊失败");
+            }
+        });
+    });
+}

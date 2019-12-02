@@ -15,6 +15,10 @@ layui.define(['laypage','layer','form','jquery'], function(exports){
     var chatRoom = new ChatRoom(user_id);
     chatRoom.setLayuiLayer(layer);
     chatRoom.appendTo(".layui-body");
+    var chatType=getChatType();
+    if(chatType=="true"){
+        chatRoom.show();
+    }
     getUserNotice(user_id);
     exports('main', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
@@ -25,6 +29,15 @@ layui.use('element',function () {
         layer.msg(elem.text());
     });
 });
+function getChatTypeQueryString(name){
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return  unescape(r[2]); return null;
+}
+function getChatType() {
+    var chatType=decodeURI(getChatTypeQueryString("chat"), "utf-8");
+    return chatType;
+}
 function getIdeas(pageSize){//得到创意列表
     $.ajax({
         url:"idea/load",
