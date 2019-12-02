@@ -1,4 +1,7 @@
 function callUserNotices(element){
+    hideDot("item");
+    hideDot("child");
+    hideDot("user");
     if($(".layui-tab-title li[lay-id='userNotices']").length>0){
         element.tabChange('userDemo','userNotices');
         //getUserNotice(user_id);
@@ -6,13 +9,21 @@ function callUserNotices(element){
         element.tabAdd('userDemo',{
             title: "我的通知"
             ,content: "<div class=\"userNoticesContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\">" +
-                "                <div style=\"text-align: center\">" +
-                "                <h1 style=\"font-weight: bold\">空空如也<i class=\"layui-icon layui-icon-face-cry\" style=\"font-size: 50px; color: #696969;\"></i></h1>" +
+                "<div style=\"text-align: center\" class='userNoticesContentUL'>" +
                 "                </div></div>"
             ,id: "userNotices"
         });
         element.tabChange('userDemo','userNotices');
-        getUserNotice(user_id);
+        //getUserNotice(user_id);
+        if($(".userNoticesContentUL").length !== 0)
+        {
+            var cache = localStorage.getItem("notify?userId=" + user_id);
+            var jsonCache = JSON.parse("[" + cache + "]");
+            for(var i=0; i<jsonCache.length; ++i)
+            {
+                appendNotify(JSON.stringify(jsonCache[i]));
+            }
+        }
     }
 }
 function callUserReleaseIdea(element){
