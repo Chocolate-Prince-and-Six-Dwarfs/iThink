@@ -62,6 +62,6 @@ function loadTitle(keyword,element){
 function clickViewIdea() {
     $(document).off('click','.viewSearchIdeaInfo').on('click','.viewSearchIdeaInfo',function () {
         var ideaId=$(this).attr('ideaId');
-        window.location.href='/viewIdea?ideaId='+ideaId;
+        window.open('/viewIdea?ideaId='+ideaId);
     })
 }

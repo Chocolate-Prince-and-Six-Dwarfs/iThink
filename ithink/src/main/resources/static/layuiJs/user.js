@@ -310,7 +310,7 @@ function deleteAndChangeIdea(layer){
 function viewIdeaOfGroupAndInvite(layer) {
     $(document).off('click','.viewIdeaOfGroup').on('click','.viewIdeaOfGroup',function () {
         var ideaId=$(this).attr('ideaId');
-        window.location.href='/viewIdea?ideaId='+ideaId;
+        window.open('/viewIdea?ideaId='+ideaId);
     });
     $(document).off('click','.inviteOthersOfGroup').on('click','.inviteOthersOfGroup',function () {
         var ideaId=$(this).attr('ideaId');
@@ -333,7 +333,8 @@ function viewIdeaOfGroupAndInvite(layer) {
             },
             yes:function (index, layero) {
                 var iframeWin = window[layero.find('iframe')[0]['name']];
-                iframeWin.inviteOthers(ideaId);
+                var userLoginId=parent.user_id;
+                iframeWin.inviteOthers(ideaId,userLoginId);
             },
             btn2:function(index){
                 layer.close(index);
@@ -474,6 +475,7 @@ function releaseAndChangeCapsule(layer) {
                     layer.msg("发布创意失败");
                 }else{
                     layer.msg("发布创意成功");
+                    setTimeout(function(){ window.location.reload(); }, 1000);
                 }
             },
             error:function () {
@@ -551,7 +553,7 @@ function releaseIdeaInfo(form,layer,layedit,editIndex){//发布创意
             success:function (data) {
                 layer.close(loading);
                 layer.msg("发布成功");
-                window.location.href="/viewIdea?ideaId="+data;
+                setTimeout(function(){ window.open("/viewIdea?ideaId="+data); }, 1000);
             },
             error:function () {
                 layer.close(loading);

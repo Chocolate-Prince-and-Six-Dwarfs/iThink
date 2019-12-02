@@ -223,7 +223,7 @@ function getUserCollect(userId) {
             }
             $(document).off('click','.viewIdeaInfoFromUserCollections').on('click','.viewIdeaInfoFromUserCollections',function(){
                 var ideaId=$(this).attr('ideaId');
-                window.location.href='/viewIdea?ideaId='+ideaId;
+                window.open('/viewIdea?ideaId='+ideaId);
             });
         },
         error:function () {

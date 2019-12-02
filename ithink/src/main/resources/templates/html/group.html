@@ -167,9 +167,10 @@
         });
     }
 
-    function inviteOthers(ideaId) {//邀请多个
+    function inviteOthers(ideaId,user_id) {//邀请多个
         var data=table.checkStatus('otherUserOfGroupList').data;   // otherUserOfGroupList为表格id
         var userList=new Array();
+        userList.push(user_id);
         for(var i in data){
             userList.push(data[i].id);
         }
