@@ -7,6 +7,7 @@ layui.define(['element','jquery','layer'],function (exports) {
     //console.log(keyword);
     $(".keywordLegend").prepend("\""+keyword+"\"的");
     loadTitle(keyword,element);
+    clickViewIdea();
     exports('searchContent', {}); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
 function getQueryString(name){
@@ -43,7 +44,10 @@ function loadTitle(keyword,element){
                     var searchRes="<div class=\"layui-colla-item\">\n" +
                         "                <h2 class=\"layui-colla-title\">创意标题："+data.data[i].title+"</h2>\n" +
                         "                <div class=\"layui-colla-content layui-show\">"+data.data[i].content+"\n" +
-                        "                </div>\n" +
+                        "                <div style=\"text-align: right\">\n" +
+                        "                        <button class=\"layui-btn　layui-btn-sm layui-btn-radius layui-btn-normal viewSearchIdeaInfo\" ideaId=\""+data.data[i].id+"\">查看详情</button>\n" +
+                        "                </div>" +
+                        "</div>\n" +
                         "            </div>";
                     $(".search_content_list").append(searchRes);
                     element.render("collapse");
@@ -53,5 +57,11 @@ function loadTitle(keyword,element){
         error:function () {
             console.log("搜索出错。");
         }
+    })
+}
+function clickViewIdea() {
+    $(document).off('click','.viewSearchIdeaInfo').on('click','.viewSearchIdeaInfo',function () {
+        var ideaId=$(this).attr('ideaId');
+        window.location.href='/viewIdea?ideaId='+ideaId;
     })
 }
