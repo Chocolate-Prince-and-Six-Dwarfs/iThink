@@ -44,6 +44,14 @@ public class CreativeIdeaService {
 //    private ElasticsearchTemplate elasticsearchTemplate;
     @Autowired
     private AchievementService achievementService;
+    @Resource
+    private ChatRoomMapper chatRoomMapper;
+    @Resource
+    private GroupMemberMapper groupMemberMapper;
+    @Resource
+    private PrivateChatMapper privateChatMapper;
+    @Resource
+    private GroupChatRecordMapper groupChatRecordMapper;
 
 
     // param bbsTopicList: mybatis查询数据库得到的实体列表
@@ -638,7 +646,7 @@ public class CreativeIdeaService {
 
             // 删除创意实现
             BbsAchievementExample bbsAchievementExample1 = new BbsAchievementExample();
-            bbsAchievementExample1.createCriteria().andAchievementIdEqualTo(id);
+            bbsAchievementExample1.createCriteria().andTopicIdEqualTo(id);
             List<BbsAchievement> bbsAchievementList = bbsAchievementMapper.selectByExample(bbsAchievementExample1);
             for (BbsAchievement bbsAchievement: bbsAchievementList)
             {
@@ -652,6 +660,33 @@ public class CreativeIdeaService {
             tmpList.add(bbsTopic);
             Thread delThread = new Thread(() -> delBbsTopic(tmpList), "delThread_" + new Date().toString());
             delThread.start();
+
+            // 删除创意主题对应的聊天室
+            // 查找聊天室id
+            ChatRoomExample chatRoomExample = new ChatRoomExample();
+            chatRoomExample.createCriteria().andTopicIdEqualTo(id);
+            List<ChatRoom> chatRoomList = chatRoomMapper.selectByExample(chatRoomExample);
+            if( chatRoomList.size()> 0)
+            {
+                Integer chatRoomId = chatRoomList.get(0).getId();
+                // 删除所有群成员
+                GroupMemberExample groupMemberExample = new GroupMemberExample();
+                groupMemberExample.createCriteria().andChatRoomIdEqualTo(chatRoomId);
+                groupMemberMapper.deleteByExample(groupMemberExample);
+
+                // 删除私聊
+                PrivateChatExample privateChatExample = new PrivateChatExample();
+                privateChatExample.createCriteria().andChatRoomIdEqualTo(chatRoomId);
+                privateChatMapper.deleteByExample(privateChatExample);
+
+                // 删除聊天记录
+                GroupChatRecordExample groupChatRecordExample = new GroupChatRecordExample();
+                groupChatRecordExample.createCriteria().andToIdEqualTo(chatRoomId);
+                groupChatRecordMapper.deleteByExample(groupChatRecordExample);
+
+                // 删除群
+                chatRoomMapper.deleteByPrimaryKey(chatRoomId);
+            }
 
             // 删除创意主题
             BbsTopicExample bbsTopicExample = new BbsTopicExample();

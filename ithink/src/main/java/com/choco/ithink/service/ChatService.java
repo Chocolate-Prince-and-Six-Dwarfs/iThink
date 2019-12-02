@@ -306,6 +306,14 @@ public class ChatService {
                         // 添加用户
                         for (Integer userId : userIdList)
                         {
+                            // 检查是否已经存在于团组中
+                            GroupMemberExample groupMemberExample = new GroupMemberExample();
+                            groupMemberExample.createCriteria().andChatRoomIdEqualTo(chatRoomId).andUserIdEqualTo(userId);
+                            if(groupMemberMapper.selectByExample(groupMemberExample).size()==1)
+                            {
+                                continue;
+                            }
+
                             GroupMember groupMember = new GroupMember();
                             groupMember.setTime(now);
                             groupMember.setChatRoomId(chatRoomId);
@@ -314,7 +322,7 @@ public class ChatService {
                             if(status!=1)
                             {
                                 // 删除成员
-                                GroupMemberExample groupMemberExample = new GroupMemberExample();
+                                groupMemberExample = new GroupMemberExample();
                                 groupMemberExample.createCriteria().andChatRoomIdEqualTo(chatRoomId);
                                 groupMemberMapper.deleteByExample(groupMemberExample);
 

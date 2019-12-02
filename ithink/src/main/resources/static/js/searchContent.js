@@ -45,7 +45,7 @@ function loadTitle(keyword,element){
                         "                <h2 class=\"layui-colla-title\">创意标题："+data.data[i].title+"</h2>\n" +
                         "                <div class=\"layui-colla-content layui-show\">"+data.data[i].content+"\n" +
                         "                <div style=\"text-align: right\">\n" +
-                        "                        <button class=\"layui-btn　layui-btn-sm layui-btn-radius layui-btn-normal viewSearchIdeaInfo\" ideaId=\""+data.data[i].id+"\">查看详情</button>\n" +
+                        "                        <button class=\"layui-btn　layui-btn-sm layui-btn-radius layui-btn-normal viewSearchIdeaInfo\" style='padding:0.2em;' ideaId=\""+data.data[i].id+"\">查看详情</button>\n" +
                         "                </div>" +
                         "</div>\n" +
                         "            </div>";
