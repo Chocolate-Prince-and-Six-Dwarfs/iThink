@@ -8,7 +8,8 @@ function callUserNotices(element){
     }else{
         element.tabAdd('userDemo',{
             title: "我的通知"
-            ,content: "<div class=\"userNoticesContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\">" +
+            ,content: "<div class=\"userNoticesContent\" style=\"width: 80%; position: relative; left:10%;right: 10%\">" +
+                "<h2 　style=\"text-align: center;font-weight: bold\">我的消息</h2><hr>" +
                 "<div style=\"text-align: center\" class='userNoticesContentUL'>" +
                 "                </div></div>"
             ,id: "userNotices"
@@ -32,7 +33,7 @@ function callUserReleaseIdea(element){
     }else{
         element.tabAdd('userDemo',{
             title: "发布创意"
-            ,content: "<div class=\"userReleaseIdeaContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\"><div class=\"put\">\n" +
+            ,content: "<div class=\"userReleaseIdeaContent\" style=\"width: 80%; position: relative; left:10%;right: 10%\"><div class=\"put\">\n" +
                 "    <input lay-verify=\"required\" id=\"topicTitle\" type=\"text\" placeholder=\"请输入标题\">\n" +
                 "    <textarea lay-verify=\"required\" id=\"ideaEdit\" style=\"display: none;\"></textarea>\n" +
                 "</div>\n" +
@@ -50,7 +51,7 @@ function callUserIdeas(element,layer) {
     }else{
         element.tabAdd('userDemo',{
             title: "我的创意"
-            ,content: "<div class=\"userIdeasContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\">" +
+            ,content: "<div class=\"userIdeasContent\" style=\"width: 80%; position: relative; left:10%;right: 10%\">" +
                 "<div style=\"text-align: center\">" +
                 "<h1 style=\"font-weight: bold\">空空如也<i class=\"layui-icon layui-icon-face-cry\" style=\"font-size: 50px; color: #696969;\"></i></h1>" +
                 "</div>" +
@@ -67,7 +68,7 @@ function callUserIdeasCapsules(element) {
     }else{
         element.tabAdd('userDemo',{
             title: "创意胶囊"
-            ,content: "<div class=\"userIdeasCapsulesContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\">" +
+            ,content: "<div class=\"userIdeasCapsulesContent\" style=\"width: 80%; position: relative; left:10%;right: 10%\">" +
                 "    <div style=\"text-align: center\"><h2 style=\"font-weight: bold;\">创意胶囊</h2></div>" +
                 "    <hr style=\"margin-top: 1em\">" +
                 "    <div style=\"text-align: right\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary addCapsule\">添加胶囊</button></div>" +
@@ -86,7 +87,7 @@ function callUserGroups(element) {
     }else{
         element.tabAdd('userDemo',{
             title: "我的团组"
-            ,content: "<div class=\"userGroupsContent\"><div class=\"team\">" +
+            ,content: "<div class=\"userGroupsContent\" style=\"width: 80%; position: relative; left:10%;right: 10%\"><div class=\"team\">" +
                 "                <div style=\"text-align: center\">" +
                 "                <h1 style=\"font-weight: bold\">空空如也<i class=\"layui-icon layui-icon-face-cry\" style=\"font-size: 50px; color: #696969;\"></i></h1>" +
                 "                </div></div>"
@@ -102,7 +103,7 @@ function callUserCollections(element) {
     }else{
         element.tabAdd('userDemo',{
             title: "我的收藏"
-            ,content: "<div class=\"userCollectionsContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\">" +
+            ,content: "<div class=\"userCollectionsContent\" style=\"width: 80%; position: relative; left:10%;right: 10%\">" +
                 "<div style=\"text-align: center\">" +
                 "<h1 style=\"font-weight: bold\">空空如也<i class=\"layui-icon layui-icon-face-cry\" style=\"font-size: 50px; color: #696969;\"></i></h1>" +
                 "</div>" +
@@ -120,7 +121,7 @@ function callUserProfitProjects(element) {
     }else{
         element.tabAdd('userDemo',{
             title: "投资人认证"
-            ,content: "                    <div class=\"UserProfitProjects\" style=\"width: 60%; position: relative; left:20%;right: 20%\">\n" +
+            ,content: "                    <div class=\"UserProfitProjects\" style=\"width: 80%; position: relative; left:10%;right: 10%\">\n" +
                 "                        <fieldset class=\"layui-elem-field layui-field-title\" style=\"margin-top: 30px;\">\n" +
                 "                            <legend>投资人认证</legend>\n" +
                 "                        </fieldset>\n" +
@@ -182,14 +183,13 @@ function callUserFans(element) {
     }else{
         element.tabAdd('userDemo',{
             title: "我的粉丝"
-            ,content: "<div class=\"userFansContent\" style=\"width: 60%; position: relative; left:20%;\">\n" +
+            ,content: "<div class=\"userFansContent\" style=\"width: 80%; position: relative; left:10%;right: 10%\">\n" +
                 "                                <div style=\"text-align: center\">\n" +
                 "                                <h1 style=\"font-weight: bold\">空空如也<i class=\"layui-icon layui-icon-face-cry\" style=\"font-size: 50px; color: #696969;\"></i></h1>\n" +
                 "                                </div></div>"
             ,id: "userFans"
         });
         element.tabChange('userDemo','userFans');
-
         getUserFans(user_id);
     }
 }
@@ -199,14 +199,15 @@ function callUserFocusOn(element) {
     }else{
         element.tabAdd('userDemo',{
             title: "我的关注"
-            ,content: "<div class=\"userFocusOnContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\">" +
+            ,content: "<div class=\"userFocusOnContent\" style=\"width: 80%; position: relative; left:10%;right: 10%\">" +
                 "<div style=\"text-align: center\">" +
-                "<h1 style=\"font-weight: bold\">空空如也（该模块未加载）<i class=\"layui-icon layui-icon-face-cry\" style=\"font-size: 50px; color: #696969;\"></i></h1>" +
+                "<h1 style=\"font-weight: bold\">空空如也<i class=\"layui-icon layui-icon-face-cry\" style=\"font-size: 50px; color: #696969;\"></i></h1>" +
                 "</div>" +
                 "</div>"
             ,id: "userFocusOn"
         });
         element.tabChange('userDemo','userFocusOn');
+        getUserFocusOn(user_id);
     }
 }
 

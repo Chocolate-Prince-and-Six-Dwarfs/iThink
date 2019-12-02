@@ -316,6 +316,8 @@ public class ChatController implements ChatInterface {
         JSONArray userList = chatService.getUserListByChatRoomId(chatRoomId);
 
         // 拼接json
+        jsonObject.put("code",0);
+        jsonObject.put("msg","");
         jsonObject.put("chatRoomId", chatRoomId);
         jsonObject.put("userList", userList);
 

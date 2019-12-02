@@ -13,9 +13,10 @@ layui.define(['laypage','layer', 'form','jquery','element'], function(exports){
             layer.msg("申请成功");
         }
     });
-    deleteAndChangeIdea(layer);//个人创意修改，删除与创建团组
+    deleteAndChangeIdea(layer);//个人创意修改，创意删除与创建团组
     releaseAndChangeCapsule(layer);//创意胶囊的发布与修改
     clickToViewOther();//粉丝界面点击头像跳转
+    viewIdeaOfGroupAndInvite(layer);//团组邀请与查看聊天室所属创意详情
     getUserNotice(user_id);
     form.render();
 
@@ -207,7 +208,6 @@ function addEdit(editId){
         releaseIdeaInfo(form,layer,layedit,editIndex);
     });
 }
-var ideaId;//我的创意模块的修改创意时所需的创意id.
 function deleteAndChangeIdea(layer){
     $(document).off('click','.deleteIdea').on('click','.deleteIdea',function () {
         var id=$(this).attr('ideaId');
@@ -237,7 +237,7 @@ function deleteAndChangeIdea(layer){
         });
     });
     $(document).off('click','.changeIdea').on('click','.changeIdea',function(){
-        ideaId=$(this).attr('ideaId');
+        var ideaId=$(this).attr('ideaId');
         layer.open({
             type: 2,
             area: ['70%', '90%'],
@@ -253,13 +253,11 @@ function deleteAndChangeIdea(layer){
             success:function(layero, index){
                 //var body = layer.getChildFrame('body',index);
                 var iframeWin = window[layero.find('iframe')[0]['name']];
-                var ideaId=parent.ideaId;
                 //console.log(id);
                 iframeWin.addIframeEdit(ideaId,1);
             },
             yes:function (index, layero) {
                 var iframeWin = window[layero.find('iframe')[0]['name']];
-                var ideaId=parent.ideaId;
                 var userId=parent.user_id;
                 iframeWin.update(ideaId,userId,layer,index);
                 //setTimeout(function(){ window.location.reload(); }, 1500);
@@ -296,13 +294,87 @@ function deleteAndChangeIdea(layer){
             },
             success:function (data) {
                 if(data==0){
-                    layer.msg("团组已创建");
+                    layer.msg("团组已创建,请勿重复操作");
                 }else{
                     layer.msg("创建团组成功");
+                    window.location.reload();
                 }
             },
             error:function () {
                 layer.msg("网络错误，创建团组失败");
+            }
+        });
+    });
+}
+
+function viewIdeaOfGroupAndInvite(layer) {
+    $(document).off('click','.viewIdeaOfGroup').on('click','.viewIdeaOfGroup',function () {
+        var ideaId=$(this).attr('ideaId');
+        window.location.href='/viewIdea?ideaId='+ideaId;
+    });
+    $(document).off('click','.inviteOthersOfGroup').on('click','.inviteOthersOfGroup',function () {
+        var ideaId=$(this).attr('ideaId');
+        var chatRoomId=$(this).attr('chatRoomId');
+        layer.open({
+            type: 2,
+            area: ['80%', '90%'],
+            title:"团组邀请",
+            fixed: false, //不固定
+            maxmin: true,
+            anim:5,
+            isOutAnim:true,
+            resize:false,
+            btn:['邀请','返回'],
+            btnAlign: 'c',
+            content: '/group',
+            success:function(layero,index){
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                iframeWin.getTableOfGroup(ideaId,chatRoomId);
+            },
+            yes:function (index, layero) {
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                iframeWin.inviteOthers(ideaId);
+            },
+            btn2:function(index){
+                layer.close(index);
+                return false;
+            },
+            cancel:function (index) {
+                layer.close(index);
+                return false;
+            }
+        });
+    });
+    $(document).off('click','.kickOthersOfGroup').on('click','.kickOthersOfGroup',function () {
+        var chatRoomId=$(this).attr('chatRoomId');
+        layer.open({
+            type: 2,
+            area: ['80%', '90%'],
+            title:"团组用户信息",
+            fixed: false, //不固定
+            maxmin: true,
+            anim:5,
+            isOutAnim:true,
+            resize:false,
+            btn:['确定','返回'],
+            btnAlign: 'c',
+            content: '/group',
+            success:function(layero,index){
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                var userLoginId=parent.user_id;
+                iframeWin.getUserTableOfGroup(chatRoomId,userLoginId);
+            },
+            yes:function (index, layero) {
+                layer.close(index);
+                return false;
+            },
+            btn2:function(index){
+                layer.close(index);
+                return false;
+            },
+            cancel:function (index) {
+                layer.close(index);
+                return false;
             }
         });
     });
@@ -491,6 +563,10 @@ function releaseIdeaInfo(form,layer,layedit,editIndex){//发布创意
 
 function clickToViewOther() {
     $(document).off('click','.clickUserFans').on('click','.clickUserFans',function () {
+        var userId=$(this).attr('userId');
+        window.location.href='/otherUser?userId='+userId;
+    });
+    $(document).off('click','.clickUserFocusOn').on('click','.clickUserFocusOn',function () {
         var userId=$(this).attr('userId');
         window.location.href='/otherUser?userId='+userId;
     });

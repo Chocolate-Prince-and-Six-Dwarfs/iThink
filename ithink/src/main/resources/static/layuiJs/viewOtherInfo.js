@@ -69,7 +69,6 @@ layui.use(['laypage', 'layer', 'table'], function(){
     var layer = layui.layer //弹层
         ,table = layui.table; //表格
 
-
     var userId=getUserId();
     //执行一个 table 实例
     table.render({
@@ -86,7 +85,7 @@ layui.use(['laypage', 'layer', 'table'], function(){
             ,dataName: 'data' //规定数据列表的字段名称，默认：data
         }
         ,title: '用户表'
-        ,page: false //开启分页
+        ,page: false //是否开启分页
         ,style: "color: block;"
         ,cols: [[ //表头
             {field: 'title', title: '创意名称', width:'15%', fixed: 'left', style: 'color:black;font-weight:bold'}

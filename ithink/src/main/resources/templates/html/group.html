@@ -6,8 +6,243 @@
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet"  href="/layui/css/layui.css">
     <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
+    <style>
+        .layui-table-cell{
+            height:45px;
+            line-height: 45px;
+        }
+    </style>
 </head>
 <body>
-123
+<div>
+    <table class="layui-hide" id="otherUserOfGroupList" lay-filter="otherUserOfGroup"></table>
+    <script type="text/html" id="viewContent">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" style="color: black;">详细信息</a>
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="inviteOtherUser" style="color: black;">邀请</a>
+    </script>
+    <script type="text/html" id="viewGroupUserContent">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" style="color: black;">详细信息</a>
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="kickOtherUser" style="color: black;">踢出团组</a>
+    </script>
+</div>
 </body>
+<script type="text/javascript">
+    var layer;
+    var table;
+    function getTableOfGroup(ideaId,chatroom_id) {
+        layui.use(['layer', 'table'], function(){
+            layer = layui.layer; //弹层
+            table = layui.table; //表格
+
+            //执行一个 table 实例
+            table.render({
+                elem: '#otherUserOfGroupList'
+                ,height: 'full-40'
+                ,title: '该创意下所有用户表'
+                ,page: false //是否开启分页
+                ,style: "color: block;"
+                ,url:'/idea/getAchievementUserList' //数据接口
+                ,where:{ id:ideaId }
+                ,method:'post'
+                ,response: {
+                    statusName: 'code' //规定数据状态的字段名称，默认：code
+                    ,statusCode: 0 //规定成功的状态码，默认：0
+                    ,msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                    ,countName: 'count' //规定数据总数的字段名称，默认：count
+                    ,dataName: 'data' //规定数据列表的字段名称，默认：data
+                }
+                ,cols://表头
+                    [
+                        [
+                            {checkbox: true},
+                            {field: 'name', title: '用户名', width:'13%' , style: 'color:black;font-weight:bold'}
+                            ,{field: 'head', title: '头像', width:'8%', style: 'color:black;font-weight:bold',templet: function(d){
+                                return '<div style="text-align: center"><img src="data:image/png;base64,'+d.head+'" style="width: 40px;height: 40px;border-radius: 50%"></div>'
+                            }}
+                            ,{field: 'sex', title: '性别', width:'8%', style: 'color:black;font-weight:bold',templet:function (d) {
+                                return getUserData(d.id).sex;
+                            }}
+                            ,{field: 'email', title: '邮箱', width:'20%', style: 'color:black;font-weight:bold',templet:function (d) {
+                                return getUserData(d.id).email;
+                            }}
+                            ,{field: 'credit', title: '信用', width:'10%', sort: true , style: 'color:black;font-weight:bold',templet:function (d) {
+                                return getUserData(d.id).credit;
+                            }}
+                            ,{fixed: 'right', width: '25%', align:'center', toolbar: '#viewContent', style: 'color:black;font-weight:bold'}
+                        ]
+                    ]
+            });
+
+            //监听行工具事件
+            table.on('tool(otherUserOfGroup)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    ,layEvent = obj.event; //获得 lay-event 对应的值
+                //console.log(data);
+                var userId=data.id;
+                var userList=new Array();
+                userList.push(userId);
+                userList.push(userId);
+                if(layEvent === 'detail'){
+                    window.open('/otherUser?userId='+ encodeURI(encodeURI(userId)));
+                }else if(layEvent==='inviteOtherUser'){
+                    inviteAjax(ideaId,userList);
+                }
+                else{
+                    layer.msg('非法的操作');
+                    return false;
+                }
+            });
+
+            table.on('checkbox(otherUserOfGroup)', function(obj){  //监听复选框选择
+                //console.log(obj.checked); //当前是否选中状态
+                //console.log(obj.data); //选中行的相关数据
+                //console.log(obj.type); //如果触发的是全选，则为：all，如果触发的是单选，则为：one
+            });
+        });
+    }
+
+    function getUserTableOfGroup(chatroom_id,user_login_id) {
+        layui.use(['layer', 'table'], function(){
+            layer = layui.layer; //弹层
+            table = layui.table; //表格
+
+            //执行一个 table 实例
+            table.render({
+                elem: '#otherUserOfGroupList'
+                ,height: 'full-40'
+                ,url:'/chat/getUserListByChatRoomId' //数据接口
+                ,where:{ chatRoomId:chatroom_id }
+                ,method:'post'
+                ,response: {
+                    statusName: 'code' //规定数据状态的字段名称，默认：code
+                    ,statusCode: 0 //规定成功的状态码，默认：0
+                    ,msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                    ,dataName: 'userList' //规定数据列表的字段名称，默认：data
+                }
+                ,title: '团组用户表'
+                ,page: false //是否开启分页
+                ,style: "color: block;"
+                ,cols://表头
+                    [
+                        [
+                            {field: 'name', title: '用户名', width:'13%' , style: 'color:black;font-weight:bold'}
+                            ,{field: 'head', title: '头像', width:'8%', style: 'color:black;font-weight:bold',templet: function(d){
+                                return '<div style="text-align: center"><img src="data:image/png;base64,'+d.head+'" style="width: 40px;height: 40px;border-radius: 50%"></div>'
+                            }}
+                            ,{field: 'sex', title: '性别', width:'8%', style: 'color:black;font-weight:bold'}
+                            ,{field: 'email', title: '邮箱', width:'20%', style: 'color:black;font-weight:bold',}
+                            ,{field: 'credit', title: '信用', width:'10%', sort: true , style: 'color:black;font-weight:bold'}
+                            ,{fixed: 'right', width: '25%', align:'center', toolbar: '#viewGroupUserContent', style: 'color:black;font-weight:bold'}
+                        ]
+                    ]
+            });
+
+            //监听行工具事件
+            table.on('tool(otherUserOfGroup)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    ,layEvent = obj.event; //获得 lay-event 对应的值
+                var kick_user_id=data.id;
+                if(layEvent === 'detail'){
+                    window.open('/otherUser?userId='+ encodeURI(encodeURI(kick_user_id)));
+                }else if(layEvent==='kickOtherUser'){
+                    if(user_login_id===kick_user_id){
+                        layer.confirm('是否解散该群？', {
+                            btn: ['是', '否']
+                        }, function(index, layero){
+                            kickAjax(user_login_id,chatroom_id,kick_user_id,"解散成功");
+                            setTimeout(function(){ parent.window.location.reload(); }, 500);
+                        }, function(index){
+                            layer.close(index);
+                        });
+                    }else{
+                        kickAjax(user_login_id,chatroom_id,kick_user_id,"将用户踢出成功");
+                        setTimeout(function(){ window.location.reload(); }, 500);
+                    }
+                }
+                else{
+                    layer.msg('非法的操作');
+                    return false;
+                }
+            });
+        });
+    }
+
+    function inviteOthers(ideaId) {//邀请多个
+        var data=table.checkStatus('otherUserOfGroupList').data;   // otherUserOfGroupList为表格id
+        var userList=new Array();
+        for(var i in data){
+            userList.push(data[i].id);
+        }
+        if(userList==null||userList==""){
+            layer.msg("请选择要邀请的用户");
+            return false;
+        }
+        inviteAjax(ideaId,userList);
+    }
+
+    function kickAjax(user_id,chatroom_id,kicked_user,successInfo) {//踢人
+        $.ajax({
+            url:'/chat/kickFromGroup',
+            type:'post',
+            data: {
+                requestId:user_id,
+                kickId:kicked_user,
+                chatRoomId:chatroom_id,
+            },
+            success:function (data) {
+                if(data==0){
+                    layer.msg("将用户踢出失败");
+                }else{
+                    layer.msg(successInfo);
+                }
+            },
+            error:function () {
+                layer.msg("网络错误，将用户踢出失败");
+            }
+        });
+    }
+
+    function inviteAjax(ideaId,userId) {//邀请
+        $.ajax({
+            url:'/chat/addToGroup',
+            type:'post',
+            data: {
+                topicId:ideaId,
+                userIdList:userId,
+            },
+            success:function (data) {
+                if(data==0){
+                    layer.msg("用户已加入团组");
+                }else{
+                    layer.msg("邀请成功");
+                }
+            },
+            error:function () {
+                layer.msg("网络错误，邀请失败");
+            }
+        });
+    }
+
+    function getUserData(userId) {
+        var userData;
+        $.ajax({
+            url:'user/getById',
+            type:'post',
+            dataType:'json',
+            async:false,
+            data:
+            {
+                id:userId,
+            },
+            success:function (data) {
+                userData=data;
+            },
+            error:function () {
+                console.log('获取用户信息失败');
+            }
+        });
+        return userData;
+    }
+
+</script>
 </html>

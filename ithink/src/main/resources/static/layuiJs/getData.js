@@ -127,22 +127,25 @@ function getUserIdeas(layer,userId) {
 
         },
         error:function () {
-            layer.msg("读取个人创意信息失败");
+            console.log("读取个人创意信息失败");
         }
     })
 }
 
-function getUserGroups(userId) {
+function getUserGroups(uId) {
     $.ajax({
         url:"/chat/getGroupListByUserId",
         type:"post",
         dataType: "json",
         data:{
-            id: userId,
+            userId: uId,
         },
         success:function (data) {
-            console.log(data);
+            //console.log(data);
             $(".userGroupsContent").empty();
+            if(data.length==0){
+                return false;
+            }
             var myIdeas="";
             var text="<h2  style=\"text-align: center;font-weight: bold\">我的聊天室</h2>\n" +
                 "    <div class=\"layui-tab-content\">\n" +
@@ -151,19 +154,15 @@ function getUserGroups(userId) {
                 "        </ul>\n" +
                 "    </div>";
             $(".userGroupsContent").append(text);
-            for(var i in data.data){
+            for(var i in data){
                 myIdeas="<li>\n" +
-                    "                <div class=\"title\" style=\"text-align: center;margin-top: 20px\"><b>聊天室名称:</b>"+data.data[i].name+"</div>\n" +
-                    "                <div>\n" +
-                    "                    <span>"+subStringIdeaContent(data.data[i].content)+"...</span>\n" +
-                    "                </div>\n" +
+                    "                <div class=\"title\" style=\"text-align: center;margin-top: 20px\"><b>聊天室名称:</b>"+data[i].name+"&nbsp;&nbsp;&nbsp;<b>聊天室所属创意：</b>"+data[i].topicTitle+"</div>\n" +
                     "                <div style=\"text-align: right\" class=\"ideaDivBut\">\n" +
-                    "                    <span>时间:"+data.data[i].time+"</span>\n" +
-                    "                    <span style=\"margin-left: 10px\">收藏数:"+data.data[i].collect+"</span>\n" +
-                    "                    <span style=\"margin-left: 10px\">点赞数:"+data.data[i].like+"</span>\n" +
-                    "                    <span  style=\"margin-left: 10px\"><button data-type=\"changeIdea\" class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary changeIdea\" ideaId=\""+data.data[i].id+"\">修改创意</button></span>\n" +
-                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary deleteIdea\" ideaId=\""+data.data[i].id+"\">删除创意</button></span>\n" +
-                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary createGroup\" ideaId=\""+data.data[i].id+"\">生成团组</button></span>\n" +
+                    "                    <span><b>创建时间:</b>"+myTime(data[i].time)+"</span>\n" +
+                    "                    <span style=\"margin-left: 10px\"><b>群主:</b>"+data[i].ownerName+"</span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary viewIdeaOfGroup\" ideaId=\""+data[i].topicId+"\">查看创意</button></span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary kickOthersOfGroup\" ideaId=\""+data[i].topicId+"\" chatRoomId=\""+data[i].id+"\">查看成员</button></span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary inviteOthersOfGroup\" ideaId=\""+data[i].topicId+"\" chatRoomId=\""+data[i].id+"\">邀请</button></span>\n" +
                     "                </div>\n" +
                     "            </li>\n" +
                     "            <hr>";
@@ -172,7 +171,7 @@ function getUserGroups(userId) {
 
         },
         error:function () {
-            layer.msg("读取个人创意信息失败");
+            console.log("读取个人团组信息失败");
         }
     })
 }
@@ -233,6 +232,46 @@ function getUserCollect(userId) {
     })
 }
 
+function getUserFocusOn(userId) {
+    $.ajax({
+        url:"/user/getInfoByUserId",
+        type:"post",
+        dataType: "json",
+        data:{
+            id: userId,
+            opinion:"follows",
+        },
+        success:function (data) {
+            //console.log(data);
+            if(data.count==0){
+                return false;
+            }
+            $(".userFocusOnContent").empty();
+            var myFocusOn="";
+            var text="<h2  style=\"text-align: center;font-weight: bold\">我的关注</h2>\n" +
+                "    <div class=\"layui-tab-content\">\n" +
+                "        <ul class=\"userFocusOnContentUL\" style=\"border: 1px solid #c0c0c0;\">\n" +
+                "            \n" +
+                "        </ul>\n" +
+                "    </div>";
+            $(".userFocusOnContent").append(text);
+            for(var i in data.data){
+                myFocusOn="<li >\n" +
+                    "                            <div class=\"title\">"+data.data[i].name+"</div>\n" +
+                    "                            <div class=\"user-head\">\n" +
+                    "                                <b class=\"clickUserFocusOn\" userId=\""+data.data[i].id+"\"><img src=\"data:image/png;base64,"+data.data[i].head+"\" alt=\"\"></b>\n" +
+                    "                            </div>\n" +
+                    "                        </li>\n" +
+                    "                        <hr>";
+                $(".userFocusOnContentUL").append(myFocusOn);
+            }
+        },
+        error:function () {
+            console.log("读取关注列表失败！");
+        }
+    })
+}
+
 function getUserFans(userId) {
     $.ajax({
         url:"/user/getInfoByUserId",
@@ -268,7 +307,7 @@ function getUserFans(userId) {
             }
         },
         error:function () {
-            console.log("读取失败！");
+            console.log("读取粉丝列表失败！");
         }
     })
 }
