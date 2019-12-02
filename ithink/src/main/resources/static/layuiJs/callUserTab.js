@@ -6,7 +6,7 @@ function callUserNotices(element){
         element.tabAdd('userDemo',{
             title: "我的通知"
             ,content: "<div class=\"userNoticesContent\" style=\"width: 60%; position: relative; left:20%;right: 20%\">" +
-                "<div style=\"text-align: center\">" +
+                "                <div style=\"text-align: center\">" +
                 "                <h1 style=\"font-weight: bold\">空空如也<i class=\"layui-icon layui-icon-face-cry\" style=\"font-size: 50px; color: #696969;\"></i></h1>" +
                 "                </div></div>"
             ,id: "userNotices"
@@ -75,17 +75,14 @@ function callUserGroups(element) {
     }else{
         element.tabAdd('userDemo',{
             title: "我的团组"
-            ,content: "<div class=\"userGroupsContent\"><div class=\"team\">\n" +
-                "<div class=\"bgc\">\n" +
-                "    <h3>我的团组</h3>\n" +
-                "    <hr>\n" +
-                "    <p>未完待续....</p>\n" +
-                "</div>\n" +
-                "\n" +
-                "</div>\n</div>"
+            ,content: "<div class=\"userGroupsContent\"><div class=\"team\">" +
+                "                <div style=\"text-align: center\">" +
+                "                <h1 style=\"font-weight: bold\">空空如也<i class=\"layui-icon layui-icon-face-cry\" style=\"font-size: 50px; color: #696969;\"></i></h1>" +
+                "                </div></div>"
             ,id: "userGroups"
         });
         element.tabChange('userDemo','userGroups');
+        getUserGroups(user_id);
     }
 }
 function callUserCollections(element) {

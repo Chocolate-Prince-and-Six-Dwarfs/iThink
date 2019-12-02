@@ -132,6 +132,51 @@ function getUserIdeas(layer,userId) {
     })
 }
 
+function getUserGroups(userId) {
+    $.ajax({
+        url:"/chat/getGroupListByUserId",
+        type:"post",
+        dataType: "json",
+        data:{
+            id: userId,
+        },
+        success:function (data) {
+            console.log(data);
+            $(".userGroupsContent").empty();
+            var myIdeas="";
+            var text="<h2  style=\"text-align: center;font-weight: bold\">我的聊天室</h2>\n" +
+                "    <div class=\"layui-tab-content\">\n" +
+                "        <ul class=\"userGroupsContentUL\"><hr>\n" +
+                "            \n" +
+                "        </ul>\n" +
+                "    </div>";
+            $(".userGroupsContent").append(text);
+            for(var i in data.data){
+                myIdeas="<li>\n" +
+                    "                <div class=\"title\" style=\"text-align: center;margin-top: 20px\"><b>聊天室名称:</b>"+data.data[i].name+"</div>\n" +
+                    "                <div>\n" +
+                    "                    <span>"+subStringIdeaContent(data.data[i].content)+"...</span>\n" +
+                    "                </div>\n" +
+                    "                <div style=\"text-align: right\" class=\"ideaDivBut\">\n" +
+                    "                    <span>时间:"+data.data[i].time+"</span>\n" +
+                    "                    <span style=\"margin-left: 10px\">收藏数:"+data.data[i].collect+"</span>\n" +
+                    "                    <span style=\"margin-left: 10px\">点赞数:"+data.data[i].like+"</span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button data-type=\"changeIdea\" class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary changeIdea\" ideaId=\""+data.data[i].id+"\">修改创意</button></span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary deleteIdea\" ideaId=\""+data.data[i].id+"\">删除创意</button></span>\n" +
+                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary createGroup\" ideaId=\""+data.data[i].id+"\">生成团组</button></span>\n" +
+                    "                </div>\n" +
+                    "            </li>\n" +
+                    "            <hr>";
+                $(".userGroupsContentUL").append(myIdeas);
+            }
+
+        },
+        error:function () {
+            layer.msg("读取个人创意信息失败");
+        }
+    })
+}
+
 function getUserCollect(userId) {
     $.ajax({
         url:"user/getCollectById",

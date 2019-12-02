@@ -63,4 +63,10 @@ public class IndexController {
     {
         return "changeIdea";
     }
+
+    @RequestMapping("/group")
+    public String group()
+    {
+        return "group";
+    }
 }

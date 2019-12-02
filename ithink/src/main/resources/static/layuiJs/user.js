@@ -13,8 +13,8 @@ layui.define(['laypage','layer', 'form','jquery','element'], function(exports){
             layer.msg("申请成功");
         }
     });
-    deleteAndChangeIdea(layer);
-    releaseAndChangeCapsule(layer);
+    deleteAndChangeIdea(layer);//个人创意修改，删除与创建团组
+    releaseAndChangeCapsule(layer);//创意胶囊的发布与修改
     clickToViewOther();//粉丝界面点击头像跳转
     form.render();
 
@@ -274,6 +274,34 @@ function deleteAndChangeIdea(layer){
                     layer.close(index);
                 }
                 return false;
+            }
+        });
+    });
+    $(document).off('click','.createGroup').on('click','.createGroup',function(){
+        var idea_id=$(this).attr('ideaId');
+        var group_name=getNoticeTopicName(idea_id);
+        group_name=group_name.substring(0,20)+"的聊天室";
+        var idList=new Array();
+        idList[0]=user_id;
+        idList[1]=user_id;
+        $.ajax({
+            url:'/chat/addToGroup',
+            type:'post',
+            data: {
+                topicId:idea_id,
+                name:group_name,
+                userIdList:idList,
+                ownerId:user_id,
+            },
+            success:function (data) {
+                if(data==0){
+                    layer.msg("团组已创建");
+                }else{
+                    layer.msg("创建团组成功");
+                }
+            },
+            error:function () {
+                layer.msg("网络错误，创建团组失败");
             }
         });
     });
