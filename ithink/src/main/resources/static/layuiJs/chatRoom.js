@@ -338,7 +338,7 @@ class ChatRoom
             let id = imgList.eq(i).attr("fromId");
             imgList.eq(i).off("click").on("click", function ()
             {
-                window.open('/otherUser?userId='+ encodeURI(encodeURI(id)));
+                window.location.href = ('/otherUser?userId='+ encodeURI(encodeURI(id)));
             });
         }
 
@@ -348,7 +348,7 @@ class ChatRoom
             let id = userList.eq(i).attr("fromId");
             userList.eq(i).off("click").on("click", function ()
             {
-                window.open('/otherUser?userId='+ encodeURI(encodeURI(id)));
+                window.location.href = ('/otherUser?userId='+ encodeURI(encodeURI(id)));
             });
         }
 
@@ -606,7 +606,7 @@ class ChatRoom
         //user.css("margin-left", "inherit");
         user.text(data.fromName);
         user.off("click").on("click", function () {
-            window.open('/otherUser?userId='+ encodeURI(encodeURI(data.fromId)));
+            window.location.href = ('/otherUser?userId='+ encodeURI(encodeURI(data.fromId)));
         });
 
         let time = $("<div>");
@@ -671,7 +671,7 @@ class ChatRoom
         head.css("height", "2em");
         head.css("width", "2em");
         head.off("click").on("click", function () {
-            window.open('/otherUser?userId='+ encodeURI(encodeURI(data.fromId)));
+            window.location.href = ('/otherUser?userId='+ encodeURI(encodeURI(data.fromId)));
         });
 
         let user = $("<div>");
@@ -686,7 +686,7 @@ class ChatRoom
         //user.css("margin-left", "inherit");
         user.text(data.fromName);
         user.off("click").on("click", function () {
-            window.open('/otherUser?userId='+ encodeURI(encodeURI(data.fromId)));
+            window.location.href = ('/otherUser?userId='+ encodeURI(encodeURI(data.fromId)));
         });
 
         let time = $("<div>");
