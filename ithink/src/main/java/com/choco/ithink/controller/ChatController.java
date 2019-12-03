@@ -234,7 +234,8 @@ public class ChatController implements ChatInterface {
         {
             PrivateChatExample privateChatExample = new PrivateChatExample();
             privateChatExample.createCriteria().andUserId1EqualTo(userId1).andUserId2EqualTo(userId2);
-            privateChatExample.createCriteria().andUserId1EqualTo(userId2).andUserId2EqualTo(userId1);
+            PrivateChatExample.Criteria addon = privateChatExample.createCriteria().andUserId1EqualTo(userId2).andUserId2EqualTo(userId1);
+            privateChatExample.or(addon);
             List<PrivateChat> privateChatList = privateChatMapper.selectByExample(privateChatExample);
             // 已经存在
             if (privateChatList.size() > 0)
