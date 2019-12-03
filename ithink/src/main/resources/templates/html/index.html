@@ -243,7 +243,6 @@
         <div class="layui-inline">
           <label class="layui-form-label">生日</label>
           <div class="layui-input-inline">
-<!--            <input type="text" required lay-verify="required" class="layui-input" id="user_birthday" placeholder="yyyy-MM-dd">-->
             <input type="text" required lay-verify="required" class="layui-input myButton" id="user_birthday" readonly="true" placeholder="点击选择生日"/>
           </div>
         </div>
@@ -270,37 +269,6 @@
     </div>
   </form>
 
-  <!--<div class="top">
-    <div class="layui-anim layui-anim-up layui-anim-scale left">
-      <p class="navigationTitleP">iThink</p>
-    </div>
-    <div class="layui-anim layui-anim-scaleSpring" style="width:28%;position: relative;right: 20%; font-family:'幼圆'; font-size: 20px; font-weight: bold; color: #fff;">
-      <p>欢迎来到iThink</p>
-      <p>不要我觉得 我要你觉得</p>
-    </div>
-    <div class="right">
-      <button type="button" id="btn1" class="navigationBtnD" style="margin-bottom: 1em">登录</button>
-      <button type="button" id="btn2" class="navigationBtnZ" style="margin-bottom: 1em">注册</button>
-    </div>
-
-  </div>
-  <div class="mid">
-    <div class="bgc">
-      <div class="mid-left">
-        <p class="layui-anim layui-anim-up ">你是否经常有好的想法点子</p>
-        <p class="layui-anim layui-anim-up ">却因为没有办法实现而苦恼</p>
-        <p class="layui-anim layui-anim-up ">来iThink将你的想法变成现实</p>
-      </div>
-      <div class="mid-right">
-        <p class="layui-anim layui-anim-up ">你是否有能力并且想做点什么</p>
-        <p class="layui-anim layui-anim-up ">却因为没有好的想法而作罢</p>
-        <p class="layui-anim layui-anim-up ">来iThink寻找你想要的想法</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="foot"></div>-->
-
   <div class="newmid">
     <div class="btndiv">
       <button type="button" id="btn1" class="navigationBtnD" style="margin-bottom: 1em">登录</button>
@@ -321,18 +289,6 @@
     laydate.render({
       elem: '#user_birthday',
       max:getNowFormatDate(),
-      /*ready:function(value){
-        var month=value.month;
-        var date=value.date;
-        if(value.month>=1&&value.month<10){
-          month="0"+value.month;
-        }
-        if(value.date>=1&&value.date<10){
-          date="0"+value.date;
-        }
-        var birthday=value.year+"-"+month+"-"+date;
-        Register(layer,birthday);
-      },*/
       done:function (value) {
         Register(layer,value);
       }
