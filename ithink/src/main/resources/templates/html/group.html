@@ -146,10 +146,10 @@
                     window.open('/otherUser?userId='+ encodeURI(encodeURI(kick_user_id)));
                 }else if(layEvent==='kickOtherUser'){
                     if(user_login_id===kick_user_id){
-                        layer.confirm('是否解散该群？', {
+                        layer.confirm('是否退出该群？(若您为群主，群将会解散)', {
                             btn: ['是', '否']
                         }, function(index, layero){
-                            kickAjax(user_login_id,chatroom_id,kick_user_id,"解散成功");
+                            kickAjax(user_login_id,chatroom_id,kick_user_id,"退出成功");
                             setTimeout(function(){ parent.window.location.reload(); }, 500);
                         }, function(index){
                             layer.close(index);
@@ -192,7 +192,7 @@
             },
             success:function (data) {
                 if(data==0){
-                    layer.msg("将用户踢出失败");
+                    layer.msg("将用户踢出失败，非群主用户只能踢出自己");
                 }else{
                     layer.msg(successInfo);
                 }

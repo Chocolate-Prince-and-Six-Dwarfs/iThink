@@ -155,17 +155,32 @@ function getUserGroups(uId) {
                 "    </div>";
             $(".userGroupsContent").append(text);
             for(var i in data){
-                myIdeas="<li>\n" +
-                    "                <div class=\"title\" style=\"text-align: center;margin-top: 20px\"><b>聊天室名称:</b>"+data[i].name+"&nbsp;&nbsp;&nbsp;<b>聊天室所属创意：</b>"+data[i].topicTitle+"</div>\n" +
-                    "                <div style=\"text-align: right\" class=\"ideaDivBut\">\n" +
-                    "                    <span><b>创建时间:</b>"+myTime(data[i].time)+"</span>\n" +
-                    "                    <span style=\"margin-left: 10px\"><b>群主:</b>"+data[i].ownerName+"</span>\n" +
-                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary viewIdeaOfGroup\" ideaId=\""+data[i].topicId+"\">查看创意</button></span>\n" +
-                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary kickOthersOfGroup\" ideaId=\""+data[i].topicId+"\" chatRoomId=\""+data[i].id+"\">查看成员</button></span>\n" +
-                    "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary inviteOthersOfGroup\" ideaId=\""+data[i].topicId+"\" chatRoomId=\""+data[i].id+"\">邀请</button></span>\n" +
-                    "                </div>\n" +
-                    "            </li>\n" +
-                    "            <hr>";
+                if(data[i].topicId!=null)
+                {
+                    myIdeas = "<li>\n" +
+                        "                <div class=\"title\" style=\"text-align: center;margin-top: 20px\"><b>聊天室名称:</b>" + data[i].name + "&nbsp;&nbsp;&nbsp;<b>聊天室所属创意：</b>" + data[i].topicTitle + "</div>\n" +
+                        "                <div style=\"text-align: right\" class=\"ideaDivBut\">\n" +
+                        "                    <span><b>创建时间:</b>" + myTime(data[i].time) + "</span>\n" +
+                        "                    <span style=\"margin-left: 10px\"><b>群主:</b>" + data[i].ownerName + "</span>\n" +
+                        "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary viewIdeaOfGroup\" ideaId=\"" + data[i].topicId + "\">查看创意</button></span>\n" +
+                        "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary kickOthersOfGroup\" ideaId=\"" + data[i].topicId + "\" chatRoomId=\"" + data[i].id + "\">查看成员</button></span>\n" +
+                        "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary inviteOthersOfGroup\" ideaId=\"" + data[i].topicId + "\" chatRoomId=\"" + data[i].id + "\">邀请</button></span>\n" +
+                        "                </div>\n" +
+                        "            </li>\n" +
+                        "            <hr>";
+                }
+                else
+                {
+                    myIdeas = "<li>\n" +
+                        "                <div class=\"title\" style=\"text-align: center;margin-top: 20px\"><b>聊天室名称:</b>" + data[i].name + "&nbsp;&nbsp;&nbsp;<b>聊天室所属创意：</b>" + "无，此为私聊" + "</div>\n" +
+                        "                <div style=\"text-align: right\" class=\"ideaDivBut\">\n" +
+                        "                    <span><b>创建时间:</b>" + myTime(data[i].time) + "</span>\n" +
+                        "                    <span style=\"margin-left: 10px\"><b>群主:</b>" + data[i].ownerName + "</span>\n" +
+                        "                    <span  style=\"margin-left: 10px\"><button class=\"layui-btn layui-btn-radius layui-btn-sm layui-btn-primary kickOthersOfGroup\" ideaId=\"" + data[i].topicId + "\" chatRoomId=\"" + data[i].id + "\">查看成员</button></span>\n" +
+                        "                </div>\n" +
+                        "            </li>\n" +
+                        "            <hr>";
+                }
                 $(".userGroupsContentUL").append(myIdeas);
             }
 
