@@ -420,6 +420,31 @@ public class ChatService {
         // 检查请求者是否是群主
         ChatRoom chatRoom = chatRoomMapper.selectByPrimaryKey(chatRoomId);
         Integer ownerId = chatRoom.getOwnerId();
+
+        if(chatRoom.getTopicId() == null)
+        {
+            // 删除所有群成员
+            GroupMemberExample groupMemberExample = new GroupMemberExample();
+            groupMemberExample.createCriteria().andChatRoomIdEqualTo(chatRoomId);
+            groupMemberMapper.deleteByExample(groupMemberExample);
+
+            // 删除私聊
+            PrivateChatExample privateChatExample = new PrivateChatExample();
+            privateChatExample.createCriteria().andChatRoomIdEqualTo(chatRoomId);
+            privateChatMapper.deleteByExample(privateChatExample);
+
+            // 删除聊天记录
+            GroupChatRecordExample groupChatRecordExample = new GroupChatRecordExample();
+            groupChatRecordExample.createCriteria().andToIdEqualTo(chatRoomId);
+            groupChatRecordMapper.deleteByExample(groupChatRecordExample);
+
+            // 删除群
+            chatRoomMapper.deleteByPrimaryKey(chatRoomId);
+            status = 1;
+
+            return status;
+        }
+
         // 是群主
         try {
             if (requestId == ownerId)
