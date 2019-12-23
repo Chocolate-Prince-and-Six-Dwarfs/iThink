@@ -319,4 +319,7 @@
       user_credit = #{userCredit,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+  <select id="selectUser" parameterType="com.choco.ithink.pojo.User" resultMap="BaseResultMap">
+    select * from user_info where user_email=#{userEmail} and user_password=#{userPassword}
+  </select>
 </mapper>

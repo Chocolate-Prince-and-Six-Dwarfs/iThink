@@ -14,6 +14,12 @@ public interface UserInterface {
     // return: 匹配返回json格式{status: 1}, 若不匹配但用户已存在则返回{status: 0}, 若用户不存在则返回{status: -1}, 输入不符合规范返回{status: -2}, 未知错误返回{status: -400}
     JSONObject login(String email, String pwd, HttpServletRequest request);
 
+    //请求地址： user/wxlogin
+    // param email: 登录键(邮箱)
+    // param pwd: 用户密码
+    // do: 接收code并向微信服务器发送
+    boolean wxlogin(String email,String pwd);
+
     // 请求地址： user/logout
     // do: 退出登录
     String logout(HttpServletRequest request);

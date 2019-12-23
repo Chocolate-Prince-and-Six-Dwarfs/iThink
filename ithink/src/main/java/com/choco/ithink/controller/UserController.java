@@ -76,6 +76,21 @@ public class UserController implements UserInterface {
         return result;
     }
 
+    //请求地址： user/wxlogin
+    // param email: 登录键(邮箱)
+    // param pwd: 用户密码
+    // do:
+    @RequestMapping("/wxlogin")
+    @ResponseBody
+    public boolean wxlogin (String email, String pwd) {
+        System.out.println("微信小程序调用接口！！！邮箱:" + email + "密码:" + pwd);
+        boolean wxlogin = userService.wxlogin(email, pwd);
+        if (wxlogin) {
+            return true;
+        }
+        return false;
+    }
+
 
     // 请求地址： user/logout
     // do: 退出登录

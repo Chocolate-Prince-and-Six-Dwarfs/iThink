@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.choco.ithink.DAO.mapper.*;
 import com.choco.ithink.exception.PrimarykeyException;
+import com.choco.ithink.interfaces.UserInterface;
 import com.choco.ithink.pojo.*;
 import com.choco.ithink.tool.Tool;
 import org.springframework.lang.Nullable;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
-public class UserService {
+public class UserService  {
     // 用于数据库查询的mapper接口
     @Resource
     private UserMapper userMapper;
@@ -107,6 +108,19 @@ public class UserService {
         }
     }
 
+    //param emile:用户邮箱
+    //param pwd:用户密码
+    public boolean wxlogin(String email, String pwd) {
+        User user = new User ();
+        user.setUserEmail ( email );
+        user.setUserPassword ( pwd );
+
+        User userEntity = userMapper.selectUser( user );
+        if (userEntity != null){
+            return true;
+        }
+        return false;
+    }
 
     // param s: 字符串
     // param pattern: 正则表达式
@@ -564,4 +578,6 @@ public class UserService {
             return 0;
         }
     }
+
+
 }
