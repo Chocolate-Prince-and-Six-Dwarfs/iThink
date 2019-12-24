@@ -22,7 +22,7 @@ public interface UserMapper {
 
     User selectByPrimaryKey(Integer userId);
 
-    User selectUser(User user);
+    /*User selectUser(User user);*/
 
     int updateByExampleSelective(@Param("record") User record, @Param("example") UserExample example);
 

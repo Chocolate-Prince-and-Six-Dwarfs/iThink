@@ -108,9 +108,11 @@ public class UserService  {
         }
     }
 
-    //param emile:用户邮箱
-    //param pwd:用户密码
-    public boolean wxlogin(String email, String pwd) {
+    // param emile: 用户邮箱
+    // param pwd: 用户密码
+    // do: 检查用户名是否匹配
+    //return: 匹配返回true，不匹配返回false
+    /*public boolean wxlogin(String email, String pwd) {
         User user = new User ();
         user.setUserEmail ( email );
         user.setUserPassword ( pwd );
@@ -120,7 +122,7 @@ public class UserService  {
             return true;
         }
         return false;
-    }
+    }*/
 
     // param s: 字符串
     // param pattern: 正则表达式

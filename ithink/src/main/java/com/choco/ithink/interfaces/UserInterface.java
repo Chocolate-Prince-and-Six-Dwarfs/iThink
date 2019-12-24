@@ -18,7 +18,7 @@ public interface UserInterface {
     // param email: 登录键(邮箱)
     // param pwd: 用户密码
     // do: 接收code并向微信服务器发送
-    boolean wxlogin(String email,String pwd);
+    /*Integer wxlogin(String email,String pwd,HttpServletRequest request);*/
 
     // 请求地址： user/logout
     // do: 退出登录

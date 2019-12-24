@@ -43,7 +43,6 @@ function Login(layer) {
                 //成功的函数 注意res是返回的结果
                 success: function (res) {
                     // 如果结果是1，说明成功
-                    //  console.log(res.email);
                     if (res.status === 1) {
                         layer.msg("登陆成功");
                         window.location.href="main";
